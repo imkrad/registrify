@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('document_addons', function (Blueprint $table) {
-            $table->id();
+        Schema::create('addons', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->tinyIncrements('id');
+            $table->decimal('fee',12,2);
+            $table->unsignedInteger('itemable_id');
+            $table->string('itemable_type');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('document_addons');
+        Schema::dropIfExists('addons');
     }
 };

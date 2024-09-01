@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('list_addons', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id');
-            $table->boolean('is_perpage');
+            $table->decimal('fee',12,2);
             $table->tinyInteger('name_id')->unsigned()->index();
-            $table->foreign('name_id')->references('id')->on('list_names')->onDelete('cascade');
-            $table->tinyInteger('type_id')->unsigned()->index();
-            $table->foreign('type_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
+            $table->foreign('name_id')->references('id')->on('list_names')->onDelete('cascade'); 
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('list_addons');
     }
 };

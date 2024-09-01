@@ -41,5 +41,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ListMenusTableSeeder::class);
         $this->call(ListStatusesTableSeeder::class);
+        $this->call(ListNamesTableSeeder::class);
+        $this->call(ListDropdownsTableSeeder::class);
+        $this->call(DocumentsTableSeeder::class);
+        $this->call(DocumentFeesTableSeeder::class);
     }
 }

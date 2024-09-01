@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('document_fees', function (Blueprint $table) {
-            $table->id();
+            $table->engine = 'InnoDB';
+            $table->tinyIncrements('id');
+            $table->decimal('fee',12,2);
+            $table->tinyInteger('type_id')->unsigned()->index();
+            $table->foreign('type_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
+            $table->tinyInteger('document_id')->unsigned()->index();
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
             $table->timestamps();
         });
     }

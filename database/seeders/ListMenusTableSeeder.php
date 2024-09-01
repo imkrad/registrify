@@ -32,6 +32,20 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
+            1 => 
+            array (
+                'id' => 2,
+                'name' => 'Documents',
+                'icon' => 'ri-file-text-fill',
+                'route' => '/documents',
+                'path' => 'Documents',
+                'group' => 'Menu',
+                'module' => 'Executive',
+                'order' => 2,
+                'has_child' => 0,
+                'is_mother' => 1,
+                'is_active' => 1,
+            ),
         ));
 
         

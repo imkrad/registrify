@@ -5,8 +5,8 @@
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                 <input type="text" v-model="filter.keyword" placeholder="Search Documents" class="form-control" style="width: 60%;">
                 <select v-model="filter.type" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 100px;">
-                    <option :value="null" selected>Select Laboratory</option>
-                    <!-- <option :value="list.value" v-for="list in dropdowns.laboratories" v-bind:key="list.id">{{list.name}}</option> -->
+                    <option :value="null" selected>Select Type</option>
+                    <option :value="list.value" v-for="list in documents" v-bind:key="list.id">{{list.name}}</option>
                 </select>
                 <span @click="refresh()" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
@@ -17,13 +17,57 @@
             </div>
         </b-col>
     </b-row>
-    <Create ref="create"/>
+    <div class="table-responsive">
+        <table class="table table-nowrap align-middle mb-0">
+            <thead class="table-light">
+                <tr class="fs-11">
+                    <th></th>
+                    <th style="width: 45%;">Document</th>
+                    <th style="width: 15%;" class="text-center">Regular Fee</th>
+                    <th style="width: 15%;" class="text-center">Express Fee</th>
+                    <th style="width: 15%;" class="text-center">Per page</th>
+                    <th style="width: 7%;" ></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(list,index) in lists" v-bind:key="index">
+                    <td class="text-center"> 
+                        {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
+                    </td>
+                    <td>
+                        <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
+                        <p class="fs-12 text-muted mb-0">{{list.type}}</p>
+                    </td>
+                    <td class="text-center fs-12">{{list.fees[0].fee}}</td>
+                    <td class="text-center fs-12">{{list.fees[1].fee}}</td>
+                    <td class="text-center fs-12">
+                        <span v-if="list.is_perpage" class="badge bg-success">True</span>
+                        <span v-else class="badge bg-danger">False</span>
+                    </td>
+                    <td class="text-end">
+                        <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
+                            <i class="ri-eye-fill align-bottom"></i>
+                        </b-button>
+                        <b-button @click="openEdit(list,index)" variant="soft-warning" class="me-1" v-b-tooltip.hover title="Edit" size="sm">
+                            <i class="ri-pencil-fill align-bottom"></i>
+                        </b-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
+    </div>
+    <View :names="subnames" ref="view"/>
+    <Create :documents="documents" :fees="fees" :names="names" @update="fetch()" @updateData="updateData" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';
+import View from '../Modals/View.vue';
 import Create from '../Modals/Create.vue';
+import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { Create },
+    components: { Pagination, Create, View },
+    props:['documents','names','fees','subnames'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -34,6 +78,7 @@ export default {
                 keyword: null,
                 type: null,
             },
+            index: null
         }
     },
     watch: {
@@ -49,13 +94,12 @@ export default {
             this.fetch();
         }, 300),
         fetch(page_url){
-            page_url = page_url || '/customers';
+            page_url = page_url || '/documents';
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
-                    status: this.filter.status,
-                    sortby: this.filter.sortby,
-                    sort: this.filter.sort,
+                    type: this.filter.type,
+                    option: 'lists',
                     count: ((window.innerHeight-420)/52)
                 }
             })
@@ -70,6 +114,16 @@ export default {
         },
         openCreate(){
             this.$refs.create.show();
+        },
+        openEdit(data,index){
+            this.index = index;
+            this.$refs.create.edit(data);
+        },
+        openView(data){
+            this.$refs.view.show(data);
+        },
+        updateData(data){
+            this.lists[this.index] = data;
         }
     }
 }
