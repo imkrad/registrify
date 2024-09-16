@@ -1,103 +1,19 @@
 <template>
     <Head title="Mobile Carwash" />
     <div class="layout-wrapper landing">
-        <section class="section nft-hero job-hero-section bg-light pb-0" id="hero" style="margin-top: -170px;">
-            <div class="bg-overlay"></div>
-            <BContainer>
-                <BRow class="justify-content-between align-items-center">
-                    <BCol lg="6">
-                        <div>
-                            <img src="images/goodwash2.png" class="logo" alt="logo light" height="150">
-                            <hr class="text-muted"/>
-                            <p class="lead lh-base mb-1 text-primary fw-semibold cntr question">Hello! Need a good car wash?</p>
-                            <p class="lead text-muted lh-base mb-4 cntr details">We bring top-quality car wash services right to your doorstep. <br />Book our mobile car wash today for a spotless clean without leaving home.</p>
-                            <BRow class="mt-n2">
-                                <BCol lg="6" class="hidemobile">
-                                    <ul class="list-unstyled text-muted vstack gap-0 ff-secondary">
-                                        <li>
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 text-success me-1">
-                                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    Premium Carwash
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 text-success me-1">
-                                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    Home Service
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </BCol>
-                                <BCol lg="6" class="hidemobile">
-                                    <ul class="list-unstyled text-muted vstack gap-0 ff-secondary">
-                                        <li>
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 text-success me-1">
-                                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    Exterior & Interior Cleaning
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 text-success me-1">
-                                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    Fast & Quality Services
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </BCol>
-                            </BRow>
-                            <template class="hidemobile1">
-                                <BButton @click="openRegister()" variant="primary" class="submit-btn w-80 h-100" type="submit"><i class="ri-send-plane-2-fill me-2"></i>BOOK NOW</BButton>
-                            </template>
-
-                            
-                        </div>
-                    </BCol>
-                    <BCol lg="" class="hidemobile">
-                        <div class="position-relative home-img text-center mt-5 mt-lg-0">
-                            <img src="/images/job.png" alt="" class="user-img rightpic" style="margin-right: -130px;">
-
-                            <div class="circle-effect">
-                                <div class="circle"></div>
-                                <div class="circle2"></div>
-                                <div class="circle3"></div>
-                                <div class="circle4"></div>
-                            </div>
-                        </div>
-                    </BCol>
-                </BRow>
-            </BContainer>
-        </section>
-
-        
-        
+       
         <section class="py-5 bg-primary position-relative">
             <div class="bg-overlay bg-overlay-pattern opacity-50"></div>
             <b-container class="hidemobile">
                 <b-row class="align-items-center gy-4">
                     <b-col sm>
                         <div>
-                            <h4 class="text-white mb-0 fw-semibold">Be one of our Customers!</h4>
+                            <h4 class="text-white mb-0 fw-semibold">Registrify | College Registrar's Office </h4>
                         </div>
                     </b-col>
                     <b-col sm="auto">
                         <div>
-                            <button @click="openRegister()" class="btn bg-gradient btn-danger">BOOK NOW</button>
+                            <button @click="openRegister()" class="btn bg-gradient btn-warning fw-bold">REQUEST DOCUMENT</button>
                         </div>
                     </b-col>
                 </b-row>
@@ -116,8 +32,8 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="text-center mb-5">
-                            <h3 class="mb-1 fw-semibold rstitle">Rates and Services</h3>
-                            <p class="text-muted mb-4 rsdef">Simple pricing. No hidden fees.</p>
+                            <h3 class="mb-1 fw-semibold rstitle">College Registrar's Office</h3>
+                            <p class="text-muted mb-4 rsdef">List of documents and fees.</p>
                         </div>
                     </div>
                 </div>
@@ -130,36 +46,27 @@
                                 <div class="ribbon-two ribbon-two-danger"><span>Popular</span></div>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
-                                        <h5 class="mb-0 fw-semibold rstitle1">G1 - Mobile Good Wash</h5>
-                                        <p class="text-muted mb-0 rsdef1">Time-Saving Convenience. Skip the car wash line and get premium service at home. Our services offers car detailing without hassle.</p>
+                                        <h5 class="mb-0 fw-semibold rstitle1">College Unit</h5>
+                                        <p class="text-muted mb-0 rsdef1">List of Documents</p>
                                     </div>
                                 </div>
                                 <hr class="text-muted"/>
                                 <div class="row">
-                                    <div class="col-lg-4">
-                                        <ul class="list-unstyled text-muted vstack gap-0 ff-secondary">
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Detailers Wash</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Interior Cleaning</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Wheel & Tire Detailing</span></li>                  
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-12">
                                         <div class="table-responsive">
                                             <table class="table table-nowrap table-bordered align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr class="fs-11">
-                                                        <th style="width: 25%;" class="text-center">SEDAN</th>
-                                                        <th style="width: 25%;" class="text-center">COMPACT</th>
-                                                        <th style="width: 25%;" class="text-center">PICK UP</th>
-                                                        <th style="width: 25%;" class="text-center">SUV</th>
+                                                        <th style="width: 30%;" class="text-center">Document</th>
+                                                        <th style="width: 35%;" class="text-center">Regular Processing Fee (5-7 days)</th>
+                                                        <th style="width: 35%;" class="text-center">Express Processing Fee (1-3 days)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="rsfont">
-                                                        <td class="text-center">₱300</td>
-                                                        <td class="text-center">₱350</td>
-                                                        <td class="text-center">₱350</td>
-                                                        <td class="text-center">₱350</td>
+                                                    <tr class="fs-12" v-for="(list,index) in colleges" v-bind:key="index">
+                                                        <td class="text-center">{{list.name.name}}</td>
+                                                        <td class="text-center">{{(list.fees[0].fee != '₱0.00') ? list.fees[0].fee : '-'}}</td>
+                                                        <td class="text-center">{{(list.fees[1].fee != '₱0.00') ? list.fees[1].fee : '-'}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -175,40 +82,27 @@
                                 <div class="ribbon-two ribbon-two-warning"><span>Hot</span></div>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
-                                        <h5 class="mb-0 fw-semibold rstitle1">MI - Mobile Premium Wash</h5>
-                                        <p class="text-muted mb-0 rsdef1">We bring premium car care, right at your doorstep. No hassle, just clean car.</p>
+                                        <h5 class="mb-0 fw-semibold rstitle1">Graduate School</h5>
+                                        <p class="text-muted mb-0 rsdef1">List of Documents</p>
                                     </div>
                                 </div>
                                 <hr class="text-muted"/>
                                 <div class="row">
-                                    <div class="col-lg-4">
-                                        <div></div>
-                                        <ul class="list-unstyled text-muted vstack gap-0 ff-secondary">
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Detailers Wash</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Interior Vacuum Cleaning</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Interior Sunshield & Anti-Bac Protectant</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Detailers Wash</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">Wheel & Tire Detailing</span></li>
-                                            <li><i class="ri-checkbox-circle-fill text-success align-middle rsdetails"></i><span class="text-muted ms-1 rsdetails">UV Protectant Carnauba Wax</span></li>                    
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div class="table-responsive mt-4">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
                                             <table class="table table-nowrap table-bordered align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr class="fs-11">
-                                                        <th style="width: 25%;" class="text-center">SEDAN</th>
-                                                        <th style="width: 25%;" class="text-center">COMPACT</th>
-                                                        <th style="width: 25%;" class="text-center">PICK UP</th>
-                                                        <th style="width: 25%;" class="text-center">SUV</th>
+                                                        <th style="width: 30%;" class="text-center">Document</th>
+                                                        <th style="width: 35%;" class="text-center">Regular Processing Fee (5-7 days)</th>
+                                                        <th style="width: 35%;" class="text-center">Express Processing Fee (1-3 days)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="rsfont">
-                                                        <td class="text-center">₱400</td>
-                                                        <td class="text-center">₱450</td>
-                                                        <td class="text-center">₱450</td>
-                                                        <td class="text-center">₱450</td>
+                                                    <tr class="fs-12" v-for="(list,index) in graduates" v-bind:key="index">
+                                                        <td class="text-center">{{list.name.name}}</td>
+                                                        <td class="text-center">{{(list.fees[0].fee != '₱0.00') ? list.fees[0].fee : '-'}}</td>
+                                                        <td class="text-center">{{(list.fees[1].fee != '₱0.00') ? list.fees[1].fee : '-'}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -231,10 +125,10 @@
                     <b-col lg="7" class="mt-4 hidemobile">
                         <div>
                             <div>
-                                <img src="images/goodwash.png" alt="logo light" height="100%" width="150">
+                                <img src="images/logo-light.png" alt="logo light" height="100%" width="150">
                             </div>
                             <div class="mt-4 fs-13 hidemobile">
-                                <p>Goodwash Mobile Carwash </p>
+                                <p>Registrify | College Registrar's Office </p>
                                 <p class="ff-secondary">Goodwash Mobile Carwash, brings professional car detailing right at your doorstep. Enjoy our quality services, including exterior wash, waxing, interior cleaning, and more, all at affordable prices. </p>
                             </div>
                         </div>
@@ -247,16 +141,16 @@
                                 <div class="text-muted mt-4 fs-13">
                                     <ul class="list-unstyled ff-secondary footer-list">
                                         <li>
-                                            Goodwash Mobile Home Service Carwash
+                                            Ateneo de Zamboanga University
                                         </li>
                                         <li>
-                                            Anywhere in Zamboanga City
+                                            BC109 University Communications
                                         </li>
                                         <li>
-                                            Mobile no.:  0953-302-7522
+                                            Office Bellarmine Campion Building 
                                         </li>
                                         <li>
-                                            Email:goodwashzc@gmail.com
+                                            (+63) 966 342 8252 or 991-0871 local 1011.
                                         </li>
                                     </ul>
                                 </div>
@@ -273,7 +167,7 @@
                     </b-col>
                     <b-col sm="6">
                         <div>
-                            <p class="copy-rights mb-0 currentyear">{{ new Date().getFullYear() }} © Goodwash
+                            <p class="copy-rights mb-0 currentyear">{{ new Date().getFullYear() }} © Registrify
                             </p>
                         </div>
                     </b-col>
@@ -326,71 +220,48 @@
         </b-button>
     </div>
 
-    <BModal v-model="showModal" style="--vz-modal-width: 600px;" hide-footer body-class="p-0" header-class="p-0"
+    <BModal v-model="showModal" style="--vz-modal-width: 500px;" hide-footer body-class="p-0" header-class="p-0"
         class="v-modal-custom" content-class="border-0 overflow-hidden" centered hide-header-close>
         <div class="modal-body login-modal p-5">
-            <h5 class="text-white fs-18 mb-1 mt-n4">Booking Form</h5>
-            <p class="text-white-50 fs-12 mb-4">Please fill out the form carefully to ensure all information is accurate.</p>
+            <h5 class="text-white fs-16 mb-1 mt-n4">Booking Form</h5>
+            <p class="text-white-50 fs-11 mb-4">Please fill out the form carefully to ensure all information is accurate.</p>
             <div class="vstack gap-2 justify-content-center">
                <form class="customform mb-n5" style="color: white;">
                     <BRow class="g-3 mb-2"> 
                         <BCol lg="12" class="mt-n2 mb-0">
                             <hr class="text-muted"/>
                         </BCol>
+                        <BCol lg="12" class="mt-0 mb-2">
+                            <div class="d-flex">
+                                <div style="width: 100%;">
+                                    <InputLabel for="name" value="ID Number" :message="form.errors.email"/>
+                                    <TextInput id="name" v-model="form.id_number" type="email" class="form-control" placeholder="Please enter your id number" @input="handleInput('email')" :light="true"/>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <b-button @click="openAdd()" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1"><i class="ri-add-circle-fill"></i></b-button>
+                                </div>
+                            </div>
+                        </BCol>
                         <BCol lg="12" class="mt-n1">
                             <InputLabel for="name" value="Fullname" :message="form.errors.firstname"/>
                               <b-row class="g-3 mt-n3">
                                 <b-col lg>
                                     <div class="input-group mb-0">
-                                        <input type="text" v-model="form.firstname" placeholder="Firstname" class="form-control" style="width: 50%;">
-                                        <input type="text" v-model="form.lastname" placeholder="Lastname" class="form-control" style="width: 50%;">
+                                        <input type="text" v-model="form.firstname" placeholder="Firstname" class="form-control" style="width: 30%;">
+                                        <input type="text" v-model="form.firstname" placeholder="Middlename" class="form-control" style="width: 30%;">
+                                        <input type="text" v-model="form.lastname" placeholder="Lastname" class="form-control" style="width: 25%;">
+                                        <input type="text" v-model="form.suffix" placeholder="Suffix" class="form-control" style="width: 15%;">
                                     </div>
                                 </b-col>
                             </b-row>
                         </BCol>
-                        <BCol lg="6" class="mt-0">
+                        <BCol lg="6" class="mt-0 mb-3">
                             <InputLabel for="name" value="Email Address" :message="form.errors.email"/>
                             <TextInput id="name" v-model="form.email" type="email" class="form-control" placeholder="Please enter email" @input="handleInput('email')" :light="true"/>
                         </BCol>
-                        <BCol lg="6" class="mt-0">
+                        <BCol lg="6" class="mt-0 mb-3">
                             <InputLabel for="name" value="Contact no." :message="form.errors.contact_no"/>
                             <TextInput id="name" v-model="form.contact_no" type="text" class="form-control" placeholder="Please enter contact no." @input="handleInput('contact_no')" :light="true"/>
-                        </BCol>
-                        <BCol lg="6" class="mt-0">
-                            <InputLabel for="name" value="Type" :message="form.errors.type"/>
-                            <select class="form-select mb-3" v-model="form.type" aria-label="Default select example" style="min-height: 38.4px !important;">
-                                <option value="null" selected class="text-muted" disabled>Select type</option>
-                                <option value="Sedan">Sedan</option>
-                                <option value="Suv">Suv</option>
-                                <option value="Auv">Auv</option>
-                                <option value="Pickup">Pick up</option>
-                            </select>
-                        </BCol>
-                        <BCol lg="6" class="mt-0">
-                            <InputLabel for="name" value="Date & Time" :message="form.errors.date"/>
-                              <b-row class="g-3 mt-n3">
-                                <b-col lg>
-                                    <div class="input-group mb-0">
-                                        <input type="date" v-model="form.date" placeholder="Date" class="form-control" style="height: 38.5px; width: 60%;">
-                                        <select class="form-select mb-3" v-model="form.time" aria-label="Default select example" style="height: 38.5px; width: 40% ">
-                                            <option value="null" selected class="text-muted" disabled>Select Time</option>
-                                            <option value="08:00:00">8:00 am</option>
-                                            <option value="11:00:00">11:00 am</option>
-                                            <option value="14:00:00">2:00 pm</option>
-                                            <option value="16:00:00">4:00pm</option>
-                                            <option value="18:00:00">6:00pm</option>
-                                        </select>
-                                    </div>
-                                </b-col>
-                            </b-row>
-                        </BCol>
-                        <BCol lg="6" class="mt-n2">
-                            <InputLabel for="name" value="Service" :message="form.errors.type"/>
-                            <select class="form-select mb-3" v-model="form.service" aria-label="Default select example" style="min-height: 38.4px !important;">
-                                <option value="null" selected class="text-muted" disabled>Select type</option>
-                                <option value="G1 - Mobile Good Wash">G1 - Mobile Good Wash</option>
-                                <option value="M1 - Mobile Premium Wash">M1 - Mobile Premium Wash</option>
-                            </select>
                         </BCol>
                     </BRow>
                </form>
@@ -400,21 +271,10 @@
         <div class="modal-body p-5">
             <form class="customform">
                 <BRow class="g-3" style="margin-top: -35px;"> 
-                    <BCol lg="6">
-                        <BRow class="g-2"> 
-                            <BCol lg="12" class="mt-n1">
-                                <InputLabel for="barangay" value="Barangay" :message="form.errors.barangay_code"/>
-                                <Multiselect :options="barangays" :searchable="true" label="name" v-model="form.barangay_code" placeholder="Select Barangay" @input="handleInput('barangay_code')"/>
-                            </BCol>
-                            <BCol lg="12" class="mt-1">
-                                <InputLabel for="address" value="Address" :message="form.errors.address"/>
-                                <TextInput id="address" v-model="form.address" type="text" class="form-control" placeholder="Please enter street/house no." @input="handleInput('address')" :light="true"/>
-                            </BCol>
-                        </BRow>
+                    <BCol lg="12 mt-1">
+                        <InputLabel for="barangay" value="Document Type" :message="form.errors.barangay_code"/>
+                        <Multiselect :options="types" :searchable="true" label="name" v-model="form.barangay_code" placeholder="Select Barangay" @input="handleInput('barangay_code')"/>
                     </BCol>
-                    <BCol lg="6">
-                        <Map @set="handleCoordinates" ref="map" class="leaflet-map" style="margin-top:-7px;"/>
-                    </BCol> 
                     <BCol lg="12" class="mt-0"><hr class="text-muted"/></BCol>
                 </BRow>
                 <div class="mt-n1 form-check">
@@ -459,7 +319,7 @@ import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default { 
     layout: null,
     components: {Multiselect, InputLabel, TextInput, Map},
-    props: ['barangays'],
+    props: ['graduates','colleges','types'],
     data() {
         return {
             showModal: false,

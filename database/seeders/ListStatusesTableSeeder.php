@@ -22,7 +22,7 @@ class ListStatusesTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'name' => 'Pending',
-                'type' => 'Customer',
+                'type' => 'Student',
                 'color' => 'bg-warning',
                 'others' => 'text-warning',
                 'is_active' => 1,
@@ -33,31 +33,9 @@ class ListStatusesTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'name' => 'Confirmed',
-                'type' => 'Customer',
+                'type' => 'Student',
                 'color' => 'bg-info',
-                'others' => 'text-info',
-                'is_active' => 1,
-                'created_at' => '2024-08-18 15:57:50',
-                'updated_at' => '2024-08-18 15:57:50',
-            ),
-            2 => 
-            array (
-                'id' => 3,
-                'name' => 'Completed',
-                'type' => 'Customer',
-                'color' => 'bg-success',
                 'others' => 'text-success',
-                'is_active' => 1,
-                'created_at' => '2024-08-18 15:57:50',
-                'updated_at' => '2024-08-18 15:57:50',
-            ),
-            3 => 
-            array (
-                'id' => 4,
-                'name' => 'Cancelled',
-                'type' => 'Customer',
-                'color' => 'bg-danger',
-                'others' => 'text-danger',
                 'is_active' => 1,
                 'created_at' => '2024-08-18 15:57:50',
                 'updated_at' => '2024-08-18 15:57:50',

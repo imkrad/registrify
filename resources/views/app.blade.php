@@ -8,7 +8,7 @@
         <meta name="keywords" content="ADZU, Registrify">
         <meta name="author" content="Krad">
         <meta property="og:title" content="Registrify | AdZU">
-        <meta property="og:description" content="Documnet Requesting, Tracking and Management System">
+        <meta property="og:description" content="Document Requesting, Tracking and Management System">
         <meta property="og:image" content="URL to the template's logo or featured image">
         <meta property="og:url" content="URL to the template's webpage">
         <meta name="twitter:card" content="summary_large_image">
