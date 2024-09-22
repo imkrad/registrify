@@ -1,5 +1,5 @@
 <template>
-    <Head title="Mobile Carwash" />
+    <Head title="Ateneo"/>
     <div class="layout-wrapper landing">
        
         <section class="py-5 bg-primary position-relative">
@@ -64,7 +64,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr class="fs-12" v-for="(list,index) in colleges" v-bind:key="index">
-                                                        <td class="text-center">{{list.name.name}}</td>
+                                                        <td class="text-center">{{list.name}}</td>
                                                         <td class="text-center">{{(list.fees[0].fee != '₱0.00') ? list.fees[0].fee : '-'}}</td>
                                                         <td class="text-center">{{(list.fees[1].fee != '₱0.00') ? list.fees[1].fee : '-'}}</td>
                                                     </tr>
@@ -100,7 +100,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr class="fs-12" v-for="(list,index) in graduates" v-bind:key="index">
-                                                        <td class="text-center">{{list.name.name}}</td>
+                                                        <td class="text-center">{{list.name}}</td>
                                                         <td class="text-center">{{(list.fees[0].fee != '₱0.00') ? list.fees[0].fee : '-'}}</td>
                                                         <td class="text-center">{{(list.fees[1].fee != '₱0.00') ? list.fees[1].fee : '-'}}</td>
                                                     </tr>
@@ -219,76 +219,6 @@
             <i class="ri-arrow-up-line"></i>
         </b-button>
     </div>
-
-    <BModal v-model="showModal" style="--vz-modal-width: 500px;" hide-footer body-class="p-0" header-class="p-0"
-        class="v-modal-custom" content-class="border-0 overflow-hidden" centered hide-header-close>
-        <div class="modal-body login-modal p-5">
-            <h5 class="text-white fs-16 mb-1 mt-n4">Booking Form</h5>
-            <p class="text-white-50 fs-11 mb-4">Please fill out the form carefully to ensure all information is accurate.</p>
-            <div class="vstack gap-2 justify-content-center">
-               <form class="customform mb-n5" style="color: white;">
-                    <BRow class="g-3 mb-2"> 
-                        <BCol lg="12" class="mt-n2 mb-0">
-                            <hr class="text-muted"/>
-                        </BCol>
-                        <BCol lg="12" class="mt-0 mb-2">
-                            <div class="d-flex">
-                                <div style="width: 100%;">
-                                    <InputLabel for="name" value="ID Number" :message="form.errors.email"/>
-                                    <TextInput id="name" v-model="form.id_number" type="email" class="form-control" placeholder="Please enter your id number" @input="handleInput('email')" :light="true"/>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <b-button @click="openAdd()" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1"><i class="ri-add-circle-fill"></i></b-button>
-                                </div>
-                            </div>
-                        </BCol>
-                        <BCol lg="12" class="mt-n1">
-                            <InputLabel for="name" value="Fullname" :message="form.errors.firstname"/>
-                              <b-row class="g-3 mt-n3">
-                                <b-col lg>
-                                    <div class="input-group mb-0">
-                                        <input type="text" v-model="form.firstname" placeholder="Firstname" class="form-control" style="width: 30%;">
-                                        <input type="text" v-model="form.firstname" placeholder="Middlename" class="form-control" style="width: 30%;">
-                                        <input type="text" v-model="form.lastname" placeholder="Lastname" class="form-control" style="width: 25%;">
-                                        <input type="text" v-model="form.suffix" placeholder="Suffix" class="form-control" style="width: 15%;">
-                                    </div>
-                                </b-col>
-                            </b-row>
-                        </BCol>
-                        <BCol lg="6" class="mt-0 mb-3">
-                            <InputLabel for="name" value="Email Address" :message="form.errors.email"/>
-                            <TextInput id="name" v-model="form.email" type="email" class="form-control" placeholder="Please enter email" @input="handleInput('email')" :light="true"/>
-                        </BCol>
-                        <BCol lg="6" class="mt-0 mb-3">
-                            <InputLabel for="name" value="Contact no." :message="form.errors.contact_no"/>
-                            <TextInput id="name" v-model="form.contact_no" type="text" class="form-control" placeholder="Please enter contact no." @input="handleInput('contact_no')" :light="true"/>
-                        </BCol>
-                    </BRow>
-               </form>
-            </div>
-        </div>
-       
-        <div class="modal-body p-5">
-            <form class="customform">
-                <BRow class="g-3" style="margin-top: -35px;"> 
-                    <BCol lg="12 mt-1">
-                        <InputLabel for="barangay" value="Document Type" :message="form.errors.barangay_code"/>
-                        <Multiselect :options="types" :searchable="true" label="name" v-model="form.barangay_code" placeholder="Select Barangay" @input="handleInput('barangay_code')"/>
-                    </BCol>
-                    <BCol lg="12" class="mt-0"><hr class="text-muted"/></BCol>
-                </BRow>
-                <div class="mt-n1 form-check">
-                    <input type="checkbox" v-model="form.check" class="form-check-input" id="checkTerms">
-                    <label class="form-check-label" for="checkTerms">I agree to the <span class="fw-semibold">Terms of Service</span> and Privacy Policy</label>
-                </div>
-                <div class="text-end mt-2">
-                    <button @click="submit('ok')" class="btn btn-primary btn-md" type="button" :disabled="!form.check">
-                        <div class="btn-content">Submit Now</div>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </BModal>
     <b-modal v-model="message" hide-footer class="v-modal-custom" modal-class="zoomIn" body-class="p-0" centered hide-header-close style="z-index: 5000;">
         <div class="text-end me-4">
             <button type="button" class="btn-close text-end" @click="check()"></button>
@@ -309,57 +239,17 @@
             <p class="mb-0 text-muted fs-10">Thank you for signing up! We look forward to your participation</p>
         </div>
     </b-modal>
+    <Form :colleges="colleges" :graduates="graduates" :types="types" ref="form"/>
 </template>
 <script>
-import Map from './Map.vue';
-import { useForm } from '@inertiajs/vue3';
-import Multiselect from "@vueform/multiselect";
-import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
-import TextInput from '@/Shared/Components/Forms/TextInput.vue';
+import Form from './Form.vue';
 export default { 
     layout: null,
-    components: {Multiselect, InputLabel, TextInput, Map},
     props: ['graduates','colleges','types'],
-    data() {
-        return {
-            showModal: false,
-            form: useForm({
-                firstname: null,
-                lastname: null,
-                contact_no: null,
-                email: null,
-                type: null,
-                barangay_code: null,
-                address: null,
-                date: null,
-                time: null,
-                longitude: null,
-                latitude: null,
-                service: null,
-                check: false
-            }),
-            coordinates: {},
-            tos: false
-        };
-    },
+    components: { Form },
     methods: {
-        submit(){
-            this.form.post('/',{
-                preserveScroll: true,
-                onSuccess: (response) => {
-                    this.form.clearErrors();
-                    this.form.reset();
-                    this.hide();
-                },
-            });
-        },
-        handleInput(field) {
-            this.form.errors[field] = false;
-        },
         openRegister(){
-            this.form.check = false;
-            this.showModal = true;
-            this.$refs.map.view();
+            this.$refs.form.show();
         },
         topFunction() {
             document.body.scrollTop = 0;
@@ -371,11 +261,6 @@ export default {
         check(){
             this.$page.props.flash = {};
             this.message = false;
-        },
-        handleCoordinates(coords) {
-            this.coordinates = coords;
-            this.form.longitude = this.coordinates.lng;
-            this.form.latitude = this.coordinates.lat;
         },
     },
     mounted() {

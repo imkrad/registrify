@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" style="--vz-modal-width: 700px;" header-class="p-3 bg-light" :title="(!editable) ? 'Create Document' : 'Edit Document'" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+    <b-modal v-model="showModal" style="--vz-modal-width: 800px;" header-class="p-3 bg-light" :title="(!editable) ? 'Create Document' : 'Edit Document'" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <form class="customform">
             <BRow class="g-3 mt-2">
                 

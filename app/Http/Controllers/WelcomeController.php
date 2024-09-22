@@ -6,6 +6,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\ListDropdown;
+use App\Models\Student;
 use App\Services\DropdownService;
 use App\Traits\HandlesTransaction;
 use Illuminate\Support\Facades\Mail;
@@ -20,20 +21,46 @@ class WelcomeController extends Controller
     }
 
     public function index(Request $request){
-        return inertia('Welcome',[
-            'colleges' => $this->colleges(),
-            'graduates' => $this->graduates(),
-            'types' => $this->types()
-        ]); 
+        switch($request->option){
+            case 'search':
+                return $this->search($request);
+            break;
+            default:
+                return inertia('Welcome',[
+                    'colleges' => $this->colleges(),
+                    'graduates' => $this->graduates(),
+                    'types' => $this->types()
+                ]); 
+        }
+    }
+
+    private function search($request){
+        $idnumber = $request->idnumber;
+        $data = Student::where('id_number',$idnumber)->first();
+        return $data;
     }
 
     private function colleges(){
-        $data = Document::with('name','type','fees','addons')->where('type_id',2)->get();
+        $data = Document::with('name','type','fees','addons')->where('type_id',2)->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name->name,
+                'fees' => $item->fees,
+                'is_primary' => $item->is_primary
+            ];
+        });
         return $data;
     }
 
     private function graduates(){
-        $data = Document::with('name','type','fees','addons')->where('type_id',3)->get();
+        $data = Document::with('name','type','fees','addons')->where('type_id',3)->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name->name,
+                'fees' => $item->fees,
+                'is_primary' => $item->is_primary
+            ];
+        });
         return $data;
     }
 
