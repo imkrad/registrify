@@ -122,6 +122,7 @@ export default {
                 checked: [],
                 others: [],
                 type: null,
+                student_id: null,
                 check: false
             }),
             student: null,
@@ -170,7 +171,10 @@ export default {
                 }
             })
             .then(response => {
-                this.student = response.data;
+                if(response.data){
+                    this.student = response.data;
+                    this.form.student_id = response.data.id;
+                }
             })
             .catch(err => console.log(err));
         },

@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->datetime('due_at')->nullable();
+            $table->datetime('claimed_at')->nullable();
             $table->integer('student_id')->unsigned()->index();
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->tinyInteger('type_id')->unsigned()->index();
             $table->foreign('type_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
             $table->tinyInteger('status_id')->unsigned()->index();
             $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
