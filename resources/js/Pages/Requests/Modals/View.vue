@@ -25,7 +25,12 @@
                     <label>Contact no.</label>
                 </div>
             </div>
-            <div class="col-md-12 mt-0 mb-n2"><hr class="text-muted"/></div>
+            <div class="col-md-12 mt-0 mb-n3"><hr class="text-muted"/></div>
+            <div class="alert alert-info alert-dismissible fade show material-shadow fs-11" role="alert">
+                <strong v-if="selected.is_express">Express Processing Fee</strong>
+                <strong v-else>Regular Processing Fee</strong>
+            </div>
+            <div class="col-md-12 mt-n4 mb-n2"><hr class="text-muted"/></div>
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-nowrap align-middle mb-0">
@@ -58,8 +63,8 @@
             </div>
         </div>
         <template v-slot:footer>
-            <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button @click="submit('ok')" variant="primary" :disabled="form.processing" block>Submit</b-button>
+            <b-button @click="hide()" variant="light" block>Close</b-button>
+            <!-- <b-button @click="submit('ok')" variant="primary" :disabled="form.processing" block>Submit</b-button> -->
         </template>
     </b-modal>
 </template>

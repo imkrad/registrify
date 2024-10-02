@@ -192,9 +192,9 @@
     "file": "assets/remixicon-B83Wci9r.woff2",
     "src": "public/fonts/remixicon.woff2"
   },
-  "public/images/bg-home.jpg": {
-    "file": "assets/bg-home-DTOHC1iM.jpg",
-    "src": "public/images/bg-home.jpg"
+  "public/images/adzu.png": {
+    "file": "assets/job-IuhbbFLJ.png",
+    "src": "public/images/job.png"
   },
   "public/images/bg-pattern.png": {
     "file": "assets/bg-pattern-C6uw14rj.png",
@@ -204,25 +204,21 @@
     "file": "assets/cover-pattern-CzcjCYXt.png",
     "src": "public/images/cover-pattern.png"
   },
-  "public/images/goodwash.png": {
-    "file": "assets/goodwash-D_T-t0mx.png",
-    "src": "public/images/goodwash.png"
-  },
   "public/images/job.png": {
-    "file": "assets/job-CPUTb3Q9.png",
+    "file": "assets/job-IuhbbFLJ.png",
     "src": "public/images/job.png"
   },
   "public/images/logo-dark.png": {
-    "file": "assets/logo-dark-D4ccpHnt.png",
+    "file": "assets/logo-dark-B3FnuBf_.png",
     "src": "public/images/logo-dark.png"
   },
   "public/images/logo-light.png": {
-    "file": "assets/logo-light-9TqfRNmK.png",
-    "src": "public/images/logo-light.png"
+    "file": "assets/logo-dark-B3FnuBf_.png",
+    "src": "public/images/logo-dark.png"
   },
   "public/images/logo-sm.png": {
-    "file": "assets/logo-sm-BMbbSDmV.png",
-    "src": "public/images/logo-sm.png"
+    "file": "assets/job-IuhbbFLJ.png",
+    "src": "public/images/job.png"
   },
   "public/images/sidebar/img-1.jpg": {
     "file": "assets/img-1-C6VsSbnm.jpg",
@@ -241,7 +237,7 @@
     "src": "public/images/sidebar/img-4.jpg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-C02qAKWd.js",
+    "file": "assets/app-CYc2ZRMx.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -258,18 +254,15 @@
       "node_modules/leaflet/dist/leaflet-src.esm.js"
     ],
     "css": [
-      "assets/app-BNpqHix6.css"
+      "assets/app-Dc-89gKd.css"
     ],
     "assets": [
-      "assets/job-CPUTb3Q9.png",
-      "assets/logo-dark-D4ccpHnt.png",
-      "assets/logo-light-9TqfRNmK.png",
+      "assets/job-IuhbbFLJ.png",
       "assets/img-1-C6VsSbnm.jpg",
       "assets/img-2-B0ULeiCa.jpg",
       "assets/img-3-h1U1KdmN.jpg",
       "assets/img-4-iSVl4_tu.jpg",
-      "assets/goodwash-D_T-t0mx.png",
-      "assets/logo-sm-BMbbSDmV.png",
+      "assets/logo-dark-B3FnuBf_.png",
       "assets/hkgrotesk-light-CFOlwwJU.eot",
       "assets/hkgrotesk-light-Bch7Jc8H.woff",
       "assets/hkgrotesk-regular-C5FQFgYW.eot",
@@ -281,7 +274,6 @@
       "assets/hkgrotesk-bold-CNnIfM9m.woff",
       "assets/cover-pattern-CzcjCYXt.png",
       "assets/bg-pattern-C6uw14rj.png",
-      "assets/bg-home-DTOHC1iM.jpg",
       "assets/materialdesignicons-webfont-Cd51xsCA.eot",
       "assets/materialdesignicons-webfont-DsMmahHu.woff2",
       "assets/materialdesignicons-webfont-BqTIB9TP.woff",
