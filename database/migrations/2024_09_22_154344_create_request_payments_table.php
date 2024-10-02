@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('request_payments', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('or_number')->nullable();
             $table->decimal('total',12,2)->default(0.00);
             $table->tinyInteger('status_id')->unsigned()->index();
             $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');

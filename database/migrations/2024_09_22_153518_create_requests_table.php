@@ -16,6 +16,7 @@ return new class extends Migration
             $table->increments('id');
             $table->datetime('due_at')->nullable();
             $table->datetime('claimed_at')->nullable();
+            $table->boolean('is_express');
             $table->integer('student_id')->unsigned()->index();
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->tinyInteger('type_id')->unsigned()->index();

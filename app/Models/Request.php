@@ -10,7 +10,7 @@ class Request extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id','type_id','status_id','due_at','claimed_at'
+        'student_id','type_id','status_id','due_at','claimed_at','is_express'
     ];
 
     public function student()

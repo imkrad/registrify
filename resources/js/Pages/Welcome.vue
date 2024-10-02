@@ -239,13 +239,13 @@
             <p class="mb-0 text-muted fs-10">Thank you for signing up! We look forward to your participation</p>
         </div>
     </b-modal>
-    <Form :colleges="colleges" :graduates="graduates" :types="types" ref="form"/>
+    <Form :colleges="colleges" :graduates="graduates" :types="types" :fees="fees" ref="form"/>
 </template>
 <script>
 import Form from './Form.vue';
 export default { 
     layout: null,
-    props: ['graduates','colleges','types'],
+    props: ['graduates','colleges','types','fees'],
     components: { Form },
     methods: {
         openRegister(){

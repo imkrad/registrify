@@ -61,18 +61,18 @@
             <form class="customform">
                 <BRow class="g-3" style="margin-top: -35px;"> 
                     <BCol lg="12" style="margin-top: 13px; margin-bottom: -12px;">
-                        <div class="row">
-                            <BCol lg="6" class="fs-12" :class="(form.errors.sex) ? 'text-danger' : ''">Please select a type :</BCol>
+                        <div class="row fs-11">
+                            <BCol lg="6" :class="(form.errors.sex) ? 'text-danger' : ''">Please select a type :</BCol>
                             <div class="col-md-3" v-for="(list,index) in types"  v-bind:key="index">
                                 <div class="custom-control custom-radio mb-3">
-                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('type')" :value="list.value" v-model="form.type">
-                                    <label class="custom-control-label fw-normal fs-12" for="customRadio1">{{list.name}}</label>
+                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('type')" :value="list.value" v-model="form.type_id">
+                                    <label class="custom-control-label fw-normal" for="customRadio1">{{list.name}}</label>
                                 </div>
                             </div>
                         </div>
                     </BCol>
                     <BCol lg="12" class="mt-n2 mb-n3"><hr class="text-muted"/></BCol>
-                    <BCol lg="12" v-if="form.type">
+                    <BCol lg="12" v-if="form.type_id">
                         <div class="primary-documents-grid fs-14">
                             <div v-for="(primaryDoc, index) in primaryDocuments" :key="index" class="primary-item">
                                 <BFormGroup class="form-check-primary mb-n1">
@@ -81,9 +81,9 @@
                             </div>
                         </div>
                     </BCol>
-                    <BCol lg="12" v-if="form.type" class="mt-1 mb-n4"><hr class="text-muted"/></BCol>
-                    <BCol lg="12" v-if="form.type">
-                        <InputLabel value="Others" :message="form.errors.name_id"/>
+                    <BCol lg="12" v-if="form.type_id" class="mt-1 mb-n3"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.type_id">
+                        <!-- <InputLabel value="Others" :message="form.errors.name_id"/> -->
                         <Multiselect 
                         :options="nonPrimaryDocuments" 
                         v-model="form.others"
@@ -92,7 +92,19 @@
                         mode="tags"
                         placeholder="Select name"/>
                     </BCol>
-                    <BCol lg="12" v-if="form.type" class="mt-1 mb-n4"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.type_id" class="mt-0 mb-n3"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.type_id" style="margin-top: 13px; margin-bottom: -5px;">
+                        <div class="row fs-11">
+                            <BCol lg="6" :class="(form.errors.is_express) ? 'text-danger' : ''">Processing Type :</BCol>
+                            <div class="col-md-3" v-for="(list,index) in fees"  v-bind:key="index">
+                                <div class="custom-control custom-radio mb-3">
+                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('type')" :value="list.value" v-model="form.is_express">
+                                    <label class="custom-control-label fw-normal" for="customRadio1">{{list.name}} <span class="text-muted fs-11">({{ list.others }})</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </BCol>
+                    <BCol lg="12" v-if="form.type_id" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
                 </BRow>
                 <div class="mt-4 form-check">
                     <input type="checkbox" v-model="form.check" class="form-check-input" id="checkTerms">
@@ -114,14 +126,15 @@ import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
     components: {Multiselect, InputLabel, TextInput },
-    props: ['graduates','colleges','types'],
+    props: ['graduates','colleges','types','fees'],
     data(){
         return {
             form: useForm({
                 idnumber: null,
                 checked: [],
                 others: [],
-                type: null,
+                type_id: null,
+                is_express: null,
                 student_id: null,
                 check: false
             }),
@@ -134,7 +147,7 @@ export default {
         }
     },
     watch: {
-        'form.type': function(newType) {
+        'form.type_id': function(newType) {
             let selectedArray = [];
             if (newType === 2) {
                 selectedArray = this.colleges;
@@ -156,6 +169,7 @@ export default {
             this.form.post('/',{
                 preserveScroll: true,
                 onSuccess: (response) => {
+                    this.form.idnumber = null;
                     this.form.clearErrors();
                     this.form.reset();
                     this.hide();

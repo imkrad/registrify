@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Request as Transaction;
+use App\Models\DocumentFee;
 use Hashids\Hashids;
 use Illuminate\Http\Request;
 use App\Models\Document;
@@ -11,6 +13,7 @@ use App\Services\DropdownService;
 use App\Traits\HandlesTransaction;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FormSubmissionMail;
+use App\Http\Requests\TransactionRequest;
 
 class WelcomeController extends Controller
 {
@@ -29,7 +32,8 @@ class WelcomeController extends Controller
                 return inertia('Welcome',[
                     'colleges' => $this->colleges(),
                     'graduates' => $this->graduates(),
-                    'types' => $this->types()
+                    'types' => $this->types(),
+                    'fees' => $this->fees()
                 ]); 
         }
     }
@@ -72,6 +76,84 @@ class WelcomeController extends Controller
             ];
         });
         return $data;
+    }
+
+    private function fees(){
+        $data = ListDropdown::where('classification','Fee Type')->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->type,
+                'others' => $item->others
+            ];
+        });
+        return $data;
+    }
+
+    public function store(TransactionRequest $request){
+        $result = $this->handleTransaction(function () use ($request) {
+            $data = new Transaction;
+            $data->is_express = ($request->is_express == 4) ? false : true;
+            $data->student_id = $request->student_id;
+            $data->type_id = $request->type_id;
+            $data->status_id = 5;
+            if($data->save()){
+                $total = 0;
+                foreach($request->checked as $list){
+                    $document_fee = DocumentFee::where('document_id',$list)->where('type_id',$request->is_express)->first();
+                    
+                    $data->lists()->create([
+                        'quantity' => 1,
+                        'fee' => $document_fee->fee,
+                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*1,
+                        'status_id' => 10,
+                        'document_id' => $list
+                    ]);
+
+                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee);
+                }
+
+                foreach($request->others as $list){
+                    $document_fee = DocumentFee::where('document_id',$list)->where('type_id',$request->is_express)->first();
+                    
+                    $data->lists()->create([
+                        'quantity' => 1,
+                        'fee' => $document_fee->fee,
+                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*1,
+                        'status_id' => 10,
+                        'document_id' => $list
+                    ]);
+
+                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee);
+                }
+                
+                $data->payment()->create([
+                    'total' => $total,
+                    'status_id' => 8,
+                ]);
+
+                return [
+                    'data' => $data,
+                    'message' => 'Your request was completed successfully!', 
+                    'info' => "We will call you for confirmation. Thank you for choosing us.",
+                    'status' => true
+                ];
+            }else{
+                return [
+                    'data' => '',
+                    'message' => 'Your request is not processed!', 
+                    'info' => "There is an error on submitting the request.",
+                    'status' => false
+                ];
+            }
+        });
+
+        return back()->with([
+            'data' => $result['data'],
+            'message' => $result['message'],
+            'info' => $result['info'],
+            'status' => $result['status'],
+        ]);
+
     }
 
     // public function store(CustomerRequest $request){

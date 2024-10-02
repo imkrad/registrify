@@ -23,6 +23,7 @@
                 <tr class="fs-11">
                     <th></th>
                     <th style="width: 45%;">Student</th>
+                    <th style="width: 15%;" class="text-center">Processing</th>
                     <th style="width: 15%;" class="text-center">Type</th>
                     <th style="width: 15%;" class="text-center">Status</th>
                     <th style="width: 15%;" class="text-center">Total</th>
@@ -35,21 +36,24 @@
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
                     <td>
-                        <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
-                        <p class="fs-12 text-muted mb-0">{{list.type}}</p>
+                        <h5 class="fs-13 mb-0 text-dark">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</h5>
+                        <p class="fs-12 text-muted mb-0">{{list.student.id_number}}</p>
                     </td>
-                    <td class="text-center fs-12">{{list.fees[0].fee}}</td>
-                    <td class="text-center fs-12">{{list.fees[1].fee}}</td>
                     <td class="text-center fs-12">
-                        <span v-if="list.is_perpage" class="badge bg-success">True</span>
-                        <span v-else class="badge bg-danger">False</span>
+                        <span v-if="list.is_express" class="badge bg-success">Express</span>
+                        <span v-else class="badge bg-info">Regular</span>
                     </td>
+                    <td class="text-center fs-12">{{list.type.name}}</td>
+                    <td class="text-center fs-12">
+                        <span :class="'badge '+list.status.color">{{list.status.name}}</span>
+                    </td>
+                    <td class="text-center fs-12">{{list.payment.total}}</td>
                     <td class="text-end">
                         <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                             <i class="ri-eye-fill align-bottom"></i>
                         </b-button>
-                        <b-button @click="openEdit(list,index)" variant="soft-warning" class="me-1" v-b-tooltip.hover title="Edit" size="sm">
-                            <i class="ri-pencil-fill align-bottom"></i>
+                        <b-button @click="openPrint(list.id)" variant="soft-success" class="me-1" v-b-tooltip.hover title="Print" size="sm">
+                            <i class="ri-printer-fill align-bottom"></i>
                         </b-button>
                     </td>
                 </tr>
@@ -57,12 +61,14 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
+    <View ref="view"/>
 </template>
 <script>
 import _ from 'lodash';
+import View from '../Modals/View.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { Pagination },
+    components: { Pagination, View },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -106,6 +112,12 @@ export default {
                 }
             })
             .catch(err => console.log(err));
+        },
+        openView(data){
+            this.$refs.view.show(data);
+        },
+        openPrint(data){
+            window.open('/requests?option=print&id='+data);
         }
     }
 }
