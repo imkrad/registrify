@@ -15,7 +15,7 @@ class ListStatusesTableSeeder extends Seeder
     {
         
 
-        \DB::table('list_statuses')->delete();
+        \DB::table('list_statuses')->truncate();
         
         \DB::table('list_statuses')->insert(array (
             0 => 
@@ -67,6 +67,61 @@ class ListStatusesTableSeeder extends Seeder
                 'id' => 7,
                 'name' => 'Completed',
                 'type' => 'Request',
+                'color' => 'bg-success',
+                'others' => 'text-success',
+                'is_active' => 1,
+                'created_at' => '2024-08-18 15:57:50',
+                'updated_at' => '2024-08-18 15:57:50',
+            ),
+            5 => 
+            array (
+                'id' => 8,
+                'name' => 'Unpaid',
+                'type' => 'Payment',
+                'color' => 'bg-danger',
+                'others' => 'text-danger',
+                'is_active' => 1,
+                'created_at' => '2024-08-18 15:57:50',
+                'updated_at' => '2024-08-18 15:57:50',
+            ),
+            6 => 
+            array (
+                'id' => 9,
+                'name' => 'Paid',
+                'type' => 'Payment',
+                'color' => 'bg-success',
+                'others' => 'text-success',
+                'is_active' => 1,
+                'created_at' => '2024-08-18 15:57:50',
+                'updated_at' => '2024-08-18 15:57:50',
+            ),
+            7 => 
+            array (
+                'id' => 10,
+                'name' => 'Pending',
+                'type' => 'Document',
+                'color' => 'bg-warning',
+                'others' => 'text-warning',
+                'is_active' => 1,
+                'created_at' => '2024-08-18 15:57:50',
+                'updated_at' => '2024-08-18 15:57:50',
+            ),
+            8 => 
+            array (
+                'id' => 11,
+                'name' => 'Ongoing',
+                'type' => 'Document',
+                'color' => 'bg-info',
+                'others' => 'text-info',
+                'is_active' => 1,
+                'created_at' => '2024-08-18 15:57:50',
+                'updated_at' => '2024-08-18 15:57:50',
+            ),
+            9 => 
+            array (
+                'id' => 12,
+                'name' => 'Completed',
+                'type' => 'Document',
                 'color' => 'bg-success',
                 'others' => 'text-success',
                 'is_active' => 1,
