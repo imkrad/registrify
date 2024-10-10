@@ -1,0 +1,97 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Auto generated seeder file.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        
+
+        \DB::table('users')->delete();
+        
+        \DB::table('users')->insert(array (
+            0 => 
+            array (
+                'id' => 1,
+                'username' => 'administrator',
+                'email' => 'registrify@admin.com',
+                'password' => '$2y$12$/yNP2jb68Ko.ubv7EVozkOc6MoVYGdjJA2D4yvQ6TUd0IuVnktwxG',
+                'role' => 'Administrator',
+                'is_active' => 1,
+                'is_new' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-05-15 08:46:33',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-09-01 22:12:52',
+                'updated_at' => '2024-09-01 22:12:52',
+            ),
+            1 => 
+            array (
+                'id' => 8,
+                'username' => 'RUser',
+                'email' => 'receiver@gmail.com',
+                'password' => '$2y$12$I6S4kx9k5swtkS7jew9vGemH103Le/.KuD9Ew2m3mqrSQwgH388TW',
+                'role' => 'Receiver',
+                'is_active' => 1,
+                'is_new' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-10-09 20:12:22',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-10-09 20:07:01',
+                'updated_at' => '2024-10-09 20:07:01',
+            ),
+            2 => 
+            array (
+                'id' => 9,
+                'username' => 'PUser',
+                'email' => 'processor@gmail.com',
+                'password' => '$2y$12$LiApVEv5.3TGs0GByIFeb.viuYuyzv5l5D3p6T.I09zBFwx7YTY1i',
+                'role' => 'Processor',
+                'is_active' => 1,
+                'is_new' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-10-09 20:12:24',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-10-09 20:07:29',
+                'updated_at' => '2024-10-09 20:07:29',
+            ),
+            3 => 
+            array (
+                'id' => 14,
+                'username' => 'RUsers',
+                'email' => 'releaser@gmail.com',
+                'password' => '$2y$12$Nv4/oaK2jIhwzvzLlQgCcexSmjGV53VvnZ7pvrzhy45sZSrPdIZc.',
+                'role' => 'Releaser',
+                'is_active' => 1,
+                'is_new' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-10-09 20:12:26',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-10-09 20:08:34',
+                'updated_at' => '2024-10-09 20:08:34',
+            ),
+        ));
+
+        
+    }
+}

@@ -78,7 +78,7 @@ class ListStatusesTableSeeder extends Seeder
                 'id' => 8,
                 'name' => 'Unpaid',
                 'type' => 'Payment',
-                'color' => 'bg-danger',
+                'color' => 'bg-danger-subtle',
                 'others' => 'text-danger',
                 'is_active' => 1,
                 'created_at' => '2024-08-18 15:57:50',
