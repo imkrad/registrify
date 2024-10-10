@@ -178,6 +178,8 @@ export default {
         },
         searchId(){
             this.searched = true;
+            this.student = null;
+            this.form.student_id = null;
             axios.get('/',{
                 params : {
                     idnumber: this.form.idnumber,

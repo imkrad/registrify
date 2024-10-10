@@ -37,6 +37,21 @@ class HandleInertiaRequests extends Middleware
             ];
         }
 
+        $lists = ListMenu::where('is_mother',1)->where('module','Main')->orderBy('order','ASC')->get();
+        foreach($lists as $list){
+            $submenus = [];
+            if($list['has_child']){
+                $subs = ListMenu::where('is_active',1)->where('group',$list['name'])->get();
+                foreach($subs as $menu){
+                    $submenus[] = $menu;
+                }
+            }
+            $main[] = [
+                'main' => $list,
+                'submenus' => $submenus
+            ];
+        }
+
         return [
             ...parent::share($request),
             'user' => (\Auth::check()) ? new UserResource(User::with('profile')->where('id',\Auth::user()->id)->first()) : '',
@@ -49,6 +64,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'menus' => [
                 'executive' => $executive,
+                'main' => $main
             ]
         ];
     }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('code')->unique();
             $table->datetime('due_at')->nullable();
             $table->datetime('claimed_at')->nullable();
             $table->boolean('is_express');

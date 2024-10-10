@@ -26,7 +26,7 @@ class RequestController extends Controller
     private function lists($request){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('student','type','payment','status')
+            ->with('student','type','payment.status','status')
             ->with('lists.status','lists.document.name','lists.document.type')
             // ->when($request->keyword, function ($query, $keyword) {
             //     $query->whereHas('name',function ($query) use ($keyword) {

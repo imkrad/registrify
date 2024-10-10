@@ -63,21 +63,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne('App\Models\UserProfile', 'user_id');
     }
 
-    public function userrole()
-    {
-        return $this->hasOne('App\Models\UserRole', 'user_id');
-    }
-
-    public function first()
-    {
-        return $this->haMany('App\Models\ChatConverstion', 'first_id');
-    }
-
-    public function second()
-    {
-        return $this->hasMany('App\Models\ChatConverstion', 'second_id');
-    }
-
     public function authentications()
     {
         return $this->haMany('App\Models\AuthenticationLog', 'user_id');

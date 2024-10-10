@@ -3,10 +3,10 @@
         <b-col lg>
             <div class="input-group mb-1">
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                <input type="text" v-model="filter.keyword" placeholder="Search Documents" class="form-control" style="width: 60%;">
-                <select v-model="filter.type" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 100px;">
+                <input type="text" v-model="filter.keyword" placeholder="Search Users" class="form-control" style="width: 60%;">
+                <select v-model="filter.status" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 100px;">
                     <option :value="null" selected>Select Type</option>
-                    <option :value="list.value" v-for="list in documents" v-bind:key="list.id">{{list.name}}</option>
+                    <option :value="list.value" v-for="list in statuses" v-bind:key="list.id">{{list.name}}</option>
                 </select>
                 <span @click="refresh()" class="input-group-text" v-b-tooltip.hover title="Refresh" style="cursor: pointer;"> 
                     <i class="bx bx-refresh search-icon"></i>
@@ -22,12 +22,11 @@
             <thead class="table-light">
                 <tr class="fs-11">
                     <th></th>
-                    <th style="width: 45%;">Student</th>
-                    <th style="width: 15%;" class="text-center">Processing</th>
-                    <th style="width: 15%;" class="text-center">Type</th>
-                    <th style="width: 15%;" class="text-center">Payment</th>
+                    <th style="width: 30%;">Name</th>
+                    <th style="width: 15%;" class="text-center">Role</th>
+                    <th style="width: 15%;" class="text-center">Email</th>
+                    <th style="width: 15%;" class="text-center">Contact no.</th>
                     <th style="width: 15%;" class="text-center">Status</th>
-                    <th style="width: 15%;" class="text-center">Total</th>
                     <th style="width: 7%;" ></th>
                 </tr>
             </thead>
@@ -37,27 +36,21 @@
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
                     <td>
-                        <h5 class="fs-13 mb-0 text-dark">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</h5>
-                        <p class="fs-12 text-muted mb-0">{{list.student.id_number}}</p>
+                        <h5 class="fs-13 mb-0 text-dark">{{list.lastname}}, {{list.firstname}} {{list.middlename[0]}}.</h5>
                     </td>
+                    <td class="text-center fs-12">{{list.role}}</td>
+                    <td class="text-center fs-12">{{list.email}}</td>
+                    <td class="text-center fs-12">{{list.mobile}}</td>
                     <td class="text-center fs-12">
-                        <span v-if="list.is_express" class="badge bg-success">Express</span>
-                        <span v-else class="badge bg-info">Regular</span>
+                        <span v-if="list.is_active" class="badge bg-success">Active</span>
+                        <span v-else class="badge bg-danger">Inactive</span>
                     </td>
-                    <td class="text-center fs-12">{{list.type.name}}</td>
-                    <td class="text-center fs-12">
-                        <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span>
-                    </td>
-                    <td class="text-center fs-12">
-                        <span :class="'badge '+list.status.color">{{list.status.name}}</span>
-                    </td>
-                    <td class="text-center fs-12">{{list.payment.total}}</td>
                     <td class="text-end">
                         <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                             <i class="ri-eye-fill align-bottom"></i>
                         </b-button>
-                        <b-button @click="openPrint(list.id)" variant="soft-success" class="me-1" v-b-tooltip.hover title="Print" size="sm">
-                            <i class="ri-printer-fill align-bottom"></i>
+                        <b-button @click="openEdit(list,index)" variant="soft-warning" class="me-1" v-b-tooltip.hover title="Edit" size="sm">
+                            <i class="ri-pencil-fill align-bottom"></i>
                         </b-button>
                     </td>
                 </tr>
@@ -65,14 +58,15 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <View ref="view"/>
+    <Create :statuses="statuses" @update="fetch()" @updateData="updateData" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';
-import View from '../Modals/View.vue';
+import Create from '../Modals/Create.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { Pagination, View },
+    components: { Pagination, Create },
+    props:['statuses'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -81,7 +75,7 @@ export default {
             links: {},
             filter: {
                 keyword: null,
-                type: null,
+                status: null,
             },
             index: null
         }
@@ -99,11 +93,10 @@ export default {
             this.fetch();
         }, 300),
         fetch(page_url){
-            page_url = page_url || '/requests';
+            page_url = page_url || '/users';
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
-                    type: this.filter.type,
                     option: 'lists',
                     count: ((window.innerHeight-420)/52)
                 }
@@ -117,11 +110,18 @@ export default {
             })
             .catch(err => console.log(err));
         },
+        openCreate(){
+            this.$refs.create.show();
+        },
+        openEdit(data,index){
+            this.index = index;
+            this.$refs.create.edit(data);
+        },
         openView(data){
             this.$refs.view.show(data);
         },
-        openPrint(data){
-            window.open('/requests?option=print&id='+data);
+        updateData(data){
+            this.lists[this.index] = data;
         }
     }
 }

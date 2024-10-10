@@ -10,7 +10,7 @@ class Request extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id','type_id','status_id','due_at','claimed_at','is_express'
+        'code','student_id','type_id','status_id','due_at','claimed_at','is_express'
     ];
 
     public function student()
@@ -41,5 +41,15 @@ class Request extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
     }
 }

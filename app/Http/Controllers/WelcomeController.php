@@ -92,6 +92,7 @@ class WelcomeController extends Controller
     public function store(TransactionRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
             $data = new Transaction;
+            $data->code = 'RGSTR-'.date('m').date('Y').'-'.str_pad((Transaction::count()+1), 4, '0', STR_PAD_LEFT);  
             $data->is_express = ($request->is_express == 4) ? false : true;
             $data->student_id = $request->student_id;
             $data->type_id = $request->type_id;
