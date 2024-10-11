@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     {
         
 
-        \DB::table('users')->delete();
+        \DB::table('users')->truncate();
         
         \DB::table('users')->insert(array (
             0 => 
@@ -89,6 +89,42 @@ class UsersTableSeeder extends Seeder
                 'two_factor_confirmed_at' => NULL,
                 'created_at' => '2024-10-09 20:08:34',
                 'updated_at' => '2024-10-09 20:08:34',
+            ),
+            4 => 
+            array (
+                'id' => 15,
+                'username' => 'UCashier',
+                'email' => 'cashier@gmail.com',
+                'password' => '$2y$12$Aiz4nPqFxDGmPqcQ9zBwo./rnRstB/R267Bisaf2CYIDi.sTdiEJq',
+                'role' => 'Cashier',
+                'is_active' => 1,
+                'is_new' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-10-11 09:54:04',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-10-11 09:53:29',
+                'updated_at' => '2024-10-11 09:53:29',
+            ),
+            5 => 
+            array (
+                'id' => 17,
+                'username' => 'RUserss',
+                'email' => 'registrar@gmail.com',
+                'password' => '$2y$12$ML0kxo2t9Q97Eu3VPKWOyuVx4R.LXUG/TqPIzI6q6JBQdBsQT.fjK',
+                'role' => 'Registrar',
+                'is_active' => 1,
+                'is_new' => 0,
+                'two_factor_secret' => NULL,
+                'two_factor_recovery_codes' => NULL,
+                'remember_token' => NULL,
+                'email_verified_at' => '2024-10-11 10:10:41',
+                'password_changed_at' => NULL,
+                'two_factor_confirmed_at' => NULL,
+                'created_at' => '2024-10-11 10:10:18',
+                'updated_at' => '2024-10-11 10:10:18',
             ),
         ));
 

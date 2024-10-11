@@ -102,6 +102,34 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
+            6 => 
+            array (
+                'id' => 7,
+                'name' => 'Requests',
+                'icon' => 'ri-git-repository-commits-line',
+                'route' => '/requests',
+                'path' => 'Requests',
+                'group' => 'Menu',
+                'module' => 'Main',
+                'order' => 2,
+                'has_child' => 0,
+                'is_mother' => 1,
+                'is_active' => 1,
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'name' => 'Documents',
+                'icon' => 'ri-file-text-fill',
+                'route' => '/documents',
+                'path' => 'Documents',
+                'group' => 'Menu',
+                'module' => 'Main',
+                'order' => 4,
+                'has_child' => 0,
+                'is_mother' => 1,
+                'is_active' => 1,
+            ),
         ));
 
         

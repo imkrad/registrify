@@ -15,7 +15,7 @@ class UserProfilesTableSeeder extends Seeder
     {
         
 
-        \DB::table('user_profiles')->delete();
+        \DB::table('user_profiles')->truncate();
         
         \DB::table('user_profiles')->insert(array (
             0 => 
@@ -73,6 +73,34 @@ class UserProfilesTableSeeder extends Seeder
                 'user_id' => 14,
                 'created_at' => '2024-10-09 20:08:34',
                 'updated_at' => '2024-10-09 20:08:34',
+            ),
+            4 => 
+            array (
+                'id' => 8,
+                'firstname' => 'User',
+                'lastname' => 'Cashier',
+                'middlename' => 'D',
+                'suffix' => NULL,
+                'gender' => 'Male',
+                'mobile' => '09123456987',
+                'avatar' => 'avatar',
+                'user_id' => 15,
+                'created_at' => '2024-10-11 09:53:29',
+                'updated_at' => '2024-10-11 09:53:29',
+            ),
+            5 => 
+            array (
+                'id' => 9,
+                'firstname' => 'Registrar',
+                'lastname' => 'Userss',
+                'middlename' => 'A',
+                'suffix' => NULL,
+                'gender' => 'Male',
+                'mobile' => '09123654456',
+                'avatar' => 'avatar',
+                'user_id' => 17,
+                'created_at' => '2024-10-11 10:10:18',
+                'updated_at' => '2024-10-11 10:10:18',
             ),
         ));
 

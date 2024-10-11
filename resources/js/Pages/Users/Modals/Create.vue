@@ -86,7 +86,7 @@ export default {
                 gender: null,
                 role: null
             }),
-            roles: ['Receiver','Processor','Releaser'],
+            roles: ['Receiver','Processor','Releaser','Cashier','Registrar'],
             showModal: false,
             editable: false
         }

@@ -22,12 +22,13 @@
             <thead class="table-light">
                 <tr class="fs-11">
                     <th></th>
-                    <th style="width: 45%;">Student</th>
-                    <th style="width: 15%;" class="text-center">Processing</th>
+                    <th style="width: 10%;">Code</th>
+                    <th style="width: 20%;" class="text-center">Student</th>
                     <th style="width: 15%;" class="text-center">Type</th>
-                    <th style="width: 15%;" class="text-center">Payment</th>
-                    <th style="width: 15%;" class="text-center">Status</th>
-                    <th style="width: 15%;" class="text-center">Total</th>
+                    <th style="width: 15%;" class="text-center">Processing</th>
+                    <th style="width: 10%;" class="text-center">Payment</th>
+                    <th style="width: 10%;" class="text-center">Status</th>
+                    <th style="width: 10%;" class="text-center">Total</th>
                     <th style="width: 7%;" ></th>
                 </tr>
             </thead>
@@ -36,15 +37,13 @@
                     <td class="text-center"> 
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
-                    <td>
-                        <h5 class="fs-13 mb-0 text-dark">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</h5>
-                        <p class="fs-12 text-muted mb-0">{{list.student.id_number}}</p>
-                    </td>
+                    <td class="fs-12">{{list.code}}</td>
+                    <td class="text-center">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</td>
+                    <td class="text-center fs-12">{{list.type.name}}</td>
                     <td class="text-center fs-12">
                         <span v-if="list.is_express" class="badge bg-success">Express</span>
                         <span v-else class="badge bg-info">Regular</span>
                     </td>
-                    <td class="text-center fs-12">{{list.type.name}}</td>
                     <td class="text-center fs-12">
                         <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span>
                     </td>
