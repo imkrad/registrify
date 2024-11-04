@@ -82,7 +82,8 @@ class WelcomeController extends Controller
         $data = ListDropdown::where('classification','Fee Type')->get()->map(function ($item) {
             return [
                 'value' => $item->id,
-                'name' => $item->type,
+                'name' => $item->name,
+                'type' => $item->type,
                 'others' => $item->others
             ];
         });
@@ -94,7 +95,7 @@ class WelcomeController extends Controller
             $data = new Transaction;
             $data->code = 'RGSTR-'.date('m').date('Y').'-'.str_pad((Transaction::count()+1), 4, '0', STR_PAD_LEFT);  
             $data->is_express = ($request->is_express == 4) ? false : true;
-            $data->student_id = $request->student_id;
+            $data->user_id = $request->user_id;
             $data->type_id = $request->type_id;
             $data->status_id = 5;
             if($data->save()){

@@ -13,7 +13,9 @@
                     </b-col>
                     <b-col sm="auto">
                         <div>
-                            <button @click="openRegister()" class="btn bg-gradient btn-warning fw-bold">REQUEST DOCUMENT</button>
+                            
+                            <button @click="openSignup()" class="btn bg-gradient btn-warning w-lg fw-bold me-2">SIGN UP</button>
+                            <button @click="login" class="btn bg-gradient btn-light fw-bold me-2">LOGIN</button>
                         </div>
                     </b-col>
                 </b-row>
@@ -22,7 +24,8 @@
                 <b-row class="align-items-center gy-3">
                 <div class="d-grid mt-n3 mb-n5" >
                     <BButton @click="openRegister()" variant="warning" class="submit-btn w-80 h-100 fw-semibold" type="submit">BOOK NOW</BButton>
-                </div></b-row>
+                </div>
+            </b-row>
             </b-container>
         </section>
 
@@ -31,14 +34,18 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        <div class="text-center mb-5">
+                        <div class="text-center mb-2">
                             <h3 class="mb-1 fw-semibold rstitle">College Registrar's Office</h3>
                             <p class="text-muted mb-4 rsdef">List of documents and fees.</p>
                         </div>
+                        <!-- <div class="d-flex gap-2 justify-content-center mt-1 mb-5">
+                            <button @click="openSignup()" class="btn bg-gradient btn-primary w-lg fw-bold me-0">SIGN UP</button>
+                            <button @click="openRegister()" class="btn bg-gradient btn-warning w-lg fw-bold">REQUEST DOCUMENT</button>
+                        </div> -->
                     </div>
                 </div>
 
-                <div class="row gy-4 mt-n5">
+                <div class="row gy-4 mt-0">
                     
                     <div class="col-lg-12">
                         <div class="card mb-0 ribbon-box right">
@@ -240,16 +247,24 @@
         </div>
     </b-modal>
     <Form :colleges="colleges" :graduates="graduates" :types="types" :fees="fees" ref="form"/>
+    <Signup ref="signup"/>
 </template>
 <script>
 import Form from './Form.vue';
+import Signup from './Signup.vue';
 export default { 
     layout: null,
     props: ['graduates','colleges','types','fees'],
-    components: { Form },
+    components: { Form, Signup },
     methods: {
         openRegister(){
             this.$refs.form.show();
+        },
+        openSignup(){
+            this.$refs.signup.show();
+        },
+        login(){
+            window.location.href = '/login';
         },
         topFunction() {
             document.body.scrollTop = 0;

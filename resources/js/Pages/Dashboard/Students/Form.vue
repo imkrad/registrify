@@ -10,25 +10,8 @@
                         <BCol lg="12" class="mt-n2 mb-0">
                             <hr class="text-muted"/>
                         </BCol>
-                        <BCol lg="12" class="mt-0 mb-2">
-                            <div class="d-flex">
-                                <div style="width: 100%;">
-                                    <InputLabel for="name" value="ID Number" :message="form.errors.email"/>
-                                    <TextInput id="name" v-model="form.idnumber" type="email" class="form-control" placeholder="Please enter your id number" @input="handleInput('idnumber')" :light="true"/>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <b-button @click="openAdd()" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1"><i class="ri-add-circle-fill"></i></b-button>
-                                    <b-button @click="searchId()" style="margin-top: 20px;" variant="success" class="waves-effect waves-light ms-1"><i class="ri-search-eye-line"></i></b-button>
-                                </div>
-                            </div>
-                        </BCol>
-                        <BCol lg="12" v-if="!searched">
-                            <div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show material-shadow fs-12 mt-n3" role="alert">
-                                <i class="ri-alert-line label-icon"></i><strong>No student selected</strong> - Search for the ID number. If it does not exist, please add it.
-                            </div>
-                        </BCol>
-                        <BCol lg="12" v-else>
-                            <div v-if="student" class="mt-n3">
+                        <BCol lg="12">
+                            <div class="mt-n3 mb-n2">
                                 <div class="col">
                                     <div class="card card-body">
                                         <div class="d-flex mb-0 align-items-center">
@@ -36,21 +19,18 @@
                                                 <img  src="images/avatar.png" alt="" class="avatar-sm rounded-circle">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h5 class="card-title text-primary mb-1">{{student.lastname}}, {{student.firstname}} {{student.middlename}}</h5>
+                                                <h5 class="card-title text-primary mb-1">{{$page.props.user.data.name}}</h5>
                                                 <div class="hstack text-dark gap-3 fs-12 flex-wrap">
-                                                    <div><span class="text-muted">ID number :</span> <span class="">{{student.id_number}}</span></div>
+                                                    <div><span class="text-muted">ID number :</span> <span class="">{{$page.props.user.data.username}}</span></div>
                                                     <div class="vr"></div>
-                                                    <div><span class="text-muted">Email :</span> <span class="">{{student.email}}</span></div>
+                                                    <div><span class="text-muted">Email :</span> <span class="">{{$page.props.user.data.email}}</span></div>
                                                     <div class="vr"></div>
-                                                    <div><span class="text-muted">Contact no.</span> : <span class="">{{student.contact_no}}</span></div>
+                                                    <div><span class="text-muted">Contact no.</span> : <span class="">{{$page.props.user.data.mobile}}</span></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div v-else class="alert alert-danger alert-dismissible alert-label-icon label-arrow fade show material-shadow fs-12 mt-n3" role="alert">
-                                <i class="ri-alert-line label-icon"></i><strong>Student not found</strong> - You entered an incorrect or non-existent ID number.
                             </div>
                         </BCol>
                     </BRow>
@@ -130,12 +110,12 @@ export default {
     data(){
         return {
             form: useForm({
-                idnumber: null,
+                idnumber: this.$page.props.user.data.username,
                 checked: [],
                 others: [],
                 type_id: null,
                 is_express: null,
-                user_id: null,
+                user_id: this.$page.props.user.data.id,
                 check: false
             }),
             student: null,
@@ -172,29 +152,12 @@ export default {
                     this.form.idnumber = null;
                     this.form.clearErrors();
                     this.form.reset();
-                    this.hide();
+                    this.showModal = false;
                 },
             });
         },
-        searchId(){
-            this.searched = true;
-            this.student = null;
-            this.form.student_id = null;
-            axios.get('/',{
-                params : {
-                    idnumber: this.form.idnumber,
-                    option: 'search'
-                }
-            })
-            .then(response => {
-                if(response.data){
-                    this.student = response.data;
-                    this.form.user_id = response.data.user_id;
-                }
-            })
-            .catch(err => console.log(err));
-        },
         show(){
+            this.form.reset();
             this.showModal = true;
         },
         handleInput(field) {

@@ -150,6 +150,17 @@ class ListStatusesTableSeeder extends Seeder
                 'created_at' => '2024-08-18 15:57:50',
                 'updated_at' => '2024-08-18 15:57:50',
             ),
+            12 => 
+            array (
+                'id' => 15,
+                'name' => 'For Review',
+                'type' => 'Student',
+                'color' => 'bg-info',
+                'others' => 'text-info',
+                'is_active' => 1,
+                'created_at' => '2024-08-18 15:57:50',
+                'updated_at' => '2024-08-18 15:57:50',
+            ),
         ));
 
         

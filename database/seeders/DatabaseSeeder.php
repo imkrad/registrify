@@ -45,8 +45,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ListDropdownsTableSeeder::class);
         $this->call(DocumentsTableSeeder::class);
         $this->call(DocumentFeesTableSeeder::class);
-        $this->call(CollegesTableSeeder::class);
-        $this->call(CoursesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(UserProfilesTableSeeder::class);
     }

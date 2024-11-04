@@ -80,7 +80,7 @@ export default {
                 email: null,
                 contact_no: null,
                 sex: null,
-                id_number: null
+                id_number: null,
             }),
             showModal: false,
             editable: false

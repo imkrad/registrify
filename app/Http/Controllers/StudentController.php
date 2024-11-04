@@ -58,6 +58,7 @@ class StudentController extends Controller
     }
 
     public function update(Request $request){
+        $data = Student::where('id',$request->id)->update(['status_id' => $request->status]);
         $data = Student::find($request->id);
         return back()->with([
             'data' =>  new StudentResource($data),

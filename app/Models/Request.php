@@ -10,12 +10,12 @@ class Request extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code','student_id','type_id','status_id','due_at','claimed_at','is_express'
+        'code','user_id','type_id','status_id','due_at','claimed_at','is_express'
     ];
 
-    public function student()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Student', 'student_id', 'id');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     public function type()
@@ -36,11 +36,6 @@ class Request extends Model
     public function payment()
     {
         return $this->hasOne('App\Models\RequestPayment', 'request_id');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     public function getUpdatedAtAttribute($value)

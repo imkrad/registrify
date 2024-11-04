@@ -20,7 +20,7 @@ class TransactionResource extends JsonResource
             'code' => $this->code,
             'type' => $this->type,
             'status' => $this->status,
-            'student' => $this->student,
+            'student' => $this->user->student,
             'is_express' => $this->is_express,
             'lists' => $this->lists,
             'payment' => $this->payment,

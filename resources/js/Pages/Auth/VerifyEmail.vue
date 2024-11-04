@@ -27,19 +27,19 @@ export default {
                         <BCard no-body class="mt-4">
 
                             <BCardBody class="p-4">
-                                <div class="mb-4">
+                                <!-- <div class="mb-4">
                                     <div class="avatar-lg mx-auto">
                                         <div class="avatar-title bg-light text-primary display-5 rounded-circle">
                                             <i class="ri-mail-line"></i>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="p-2 mt-4">
                                     <div class="text-muted text-center mb-4 mx-lg-3">
                                         <h4 class="fs-15">Verify Your Email</h4>
                                         <div class="text-sm text-muted fs-11">
-                                            Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+                                            Check Email for verification
                                         </div>
                                     </div>
 

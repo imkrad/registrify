@@ -10,7 +10,7 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
-        'firstname','middlename','lastname','suffix','email','contact_no','sex','id_number','status_id'
+        'firstname','middlename','lastname','suffix','email','contact_no','sex','id_number','status_id','user_id'
     ];
 
     public function status()
@@ -18,6 +18,16 @@ class Student extends Model
         return $this->belongsTo('App\Models\ListStatus', 'status_id', 'id');
     }
 
+    public function attachments()
+    {
+        return $this->hasMany('App\Models\StudentAttachment', 'student_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+    
     public function setFirstnameAttribute($value)
     {
         $this->attributes['firstname'] = ucwords(strtolower($value));
@@ -36,6 +46,16 @@ class Student extends Model
     public function setSuffixAttribute($value)
     {
         $this->attributes['suffix'] = ucwords(strtolower($value));
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
     }
   
 }
