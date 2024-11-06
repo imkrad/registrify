@@ -24,6 +24,7 @@ class TransactionResource extends JsonResource
             'is_express' => $this->is_express,
             'lists' => $this->lists,
             'payment' => $this->payment,
+            'attachments' => $this->attachments,
             'created_at' => $this->created_at
         ];
     }

@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\ListDropdown;
 use App\Models\RequestList;
 use App\Models\RequestPayment;
+use App\Models\RequestAttachment;
 use App\Traits\HandlesTransaction;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\StudentResource;
@@ -57,13 +58,97 @@ class DashboardController extends Controller
     }
 
     public function store(Request $request){
-        $data = Transaction::where('id',$request->id)->update(['status_id' => $request->status_id]);
-        return back()->with([
-            'data' => $data,
-            'message' => 'Request was updated.',
-            'info' => 'You\'ve successfully created new student.',
-            'status' => true,
+        switch($request->option){
+            case 'receipt':
+                $data = $this->upload($request);
+                $data = TransactionResource::collection(
+                    Transaction::query()
+                    ->with('user.student','type','payment.status','status','attachments')
+                    ->with('lists.status','lists.document.name','lists.document.type')
+                    ->where('user_id',\Auth::user()->id)
+                    ->whereIn('status_id',[5,6,13])->orderBy('created_at','DESC')->get()
+                );
+                return response()->json([
+                    'message' => 'Files uploaded successfully',
+                    'status' => 15,
+                    'data' => $data
+                ], 200);
+            break;
+            case 'request':
+                $data = Transaction::where('id',$request->id)->update(['status_id' => $request->status_id]);
+            break;
+            default:
+            $data = Transaction::where('id',$request->id)->update(['status_id' => $request->status_id]);
+            if($data){
+                $total = 0;
+                foreach($request->lists as $list){
+                    RequestList::where('id',$list['id'])->update([
+                        'pages' => $list['pages'],
+                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $list['total'])*$list['pages']
+                    ]);
+                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $list['total'])*$list['pages'];
+                }
+                RequestPayment::where('request_id',$request->id)->update(['total' => $total]);
+            }
+            return back()->with([
+                'data' => $data,
+                'message' => 'Request was updated.',
+                'info' => 'You\'ve successfully updated the request.',
+                'status' => true,
+            ]);
+        }
+        
+    }
+
+    private function upload($request){
+        $request->validate([
+            'files.*' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // each file must be an image or PDF with max size of 2MB
         ]);
+        $uploadedFiles = $request->file('files'); 
+        $filePaths = [];
+
+        foreach ($uploadedFiles as $file) {
+            $path = $file->store('uploads/receipts', 'public');
+            $filePaths[] = $path; 
+            $fileSizeInBytes  = $file->getSize();
+            if ($fileSizeInBytes >= 1048576) { // If 1 MB or more
+                $fileSize = round($fileSizeInBytes / 1048576, 2) . ' MB';
+            } else {
+                $fileSize = round($fileSizeInBytes / 1024, 2) . ' KB';
+            }
+
+            RequestAttachment::create([
+                'request_id' => $request->id,
+                'file' => $path,
+                'size' => $fileSize
+            ]);
+        }
+        RequestPayment::where('request_id',$request->id)->update(['status_id' => 9]);
+        Transaction::where('id',$request->id)->update(['status_id' => 6]);
+
+        
+        // $name = 'receipt_'.$request->id.'_'.\Auth::user()->id;
+        // if($request->hasFile('files'))
+        // {   
+        //     $files = $request->file('files');   
+        //     foreach ($files as $file) {
+        //         if($count == 0){
+        //             $file_name = strtolower($name).'.'.$file->getClientOriginalExtension();
+        //         }else{
+        //             $file_name = strtolower($name).'-'.$count.'.'.$file->getClientOriginalExtension();
+        //             $count++;
+        //         }
+        //         $file_path = $file->storeAs('uploads/receipts', $file_name, 'public');
+
+        //         $attachment = [
+        //             'name' => $file_name,
+        //             'file' => $file_path,
+        //             'added_by' => \Auth::user()->id,
+        //             'created_at' => date('M d, Y g:i a', strtotime(now()))
+        //         ];
+        //     }
+        //     return $attachment;
+        // }
     }
 
     public function update(Request $request){
@@ -72,6 +157,7 @@ class DashboardController extends Controller
                 'or_number' => $request->or_number,
                 'status_id' => $request->status_id
             ]);
+           
             return back()->with([
                 'data' => $data,
                 'message' => 'Request was updated.',
@@ -155,9 +241,9 @@ class DashboardController extends Controller
     private function registrar(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
-            ->where('status_id',5)->orderBy('created_at','DESC')->get()
+            ->orderBy('created_at','DESC')->get()
         );
         return $data;
     }
@@ -215,8 +301,9 @@ class DashboardController extends Controller
     private function student_request(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
+            ->where('user_id',\Auth::user()->id)
             ->whereIn('status_id',[5,6,13])->orderBy('created_at','DESC')->get()
         );
         return $data;
@@ -225,8 +312,9 @@ class DashboardController extends Controller
     private function student_history(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
+            ->where('user_id',\Auth::user()->id)
             ->whereIn('status_id',[14])->orderBy('created_at','DESC')->get()
         );
         return $data;
@@ -238,7 +326,9 @@ class DashboardController extends Controller
                 'value' => $item->id,
                 'name' => $item->name->name,
                 'fees' => $item->fees,
-                'is_primary' => $item->is_primary
+                'is_primary' => $item->is_primary,
+                'is_perpage' => $item->is_perpage,
+                'quantity'=> 1
             ];
         });
         return $data;
@@ -250,7 +340,9 @@ class DashboardController extends Controller
                 'value' => $item->id,
                 'name' => $item->name->name,
                 'fees' => $item->fees,
-                'is_primary' => $item->is_primary
+                'is_primary' => $item->is_primary,
+                'is_perpage' => $item->is_perpage,
+                'quantity'=> 1
             ];
         });
         return $data;

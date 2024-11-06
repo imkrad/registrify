@@ -52,7 +52,7 @@
                                     <span :class="'badge '+list.status.color">{{list.status.name}}</span> 
                                 </td>
                                 <td class="text-center">{{ list.quantity}}</td>
-                                <td class="text-center">{{ list.fee}}</td>
+                                <td class="text-center">{{ list.total}}</td>
                                 <td class="text-end" v-if="selected.status.id == 6">
                                     <b-button v-if="list.status_id == 10" @click="update(list.id,11,index)" size="sm" variant="success" :disabled="form.processing" block>Start Now</b-button>
                                     <b-button v-if="list.status_id == 11" @click="update(list.id,12,index)" size="sm" variant="warning" :disabled="form.processing" block>End Now</b-button>

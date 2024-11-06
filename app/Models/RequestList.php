@@ -10,7 +10,7 @@ class RequestList extends Model
     use HasFactory;
 
     protected $fillable = [
-        'quantity','fee','total','status_id','document_id','request_id','user_id'
+        'quantity','pages','fee','total','status_id','document_id','request_id','user_id'
     ];
 
     public function status()

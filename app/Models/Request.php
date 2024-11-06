@@ -38,6 +38,11 @@ class Request extends Model
         return $this->hasOne('App\Models\RequestPayment', 'request_id');
     }
 
+    public function attachments()
+    {
+        return $this->hasMany('App\Models\RequestAttachment', 'request_id');
+    }
+
     public function getUpdatedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));

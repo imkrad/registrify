@@ -118,7 +118,7 @@
         @foreach($data['lists'] as $index=>$list)
             <tr style="text-align: center; font-size: 9px; color: #072388;">
                 <td style="text-align: left;">{{$list['document']['name']['name']}}</td>
-                <td><span style="font-family: DejaVu Sans;">&#8369;</span>{{number_format(trim(str_replace(',','',$list['fee']),'₱ '),2,".",",")}}</td>
+                <td><span style="font-family: DejaVu Sans;">&#8369;</span>{{number_format(trim(str_replace(',','',$list['total']),'₱ '),2,".",",")}}</td>
             </tr>
         @endforeach
         </tbody>

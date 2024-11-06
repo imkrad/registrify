@@ -1,5 +1,5 @@
 <template>
-     <BModal v-model="showModal" style="--vz-modal-width: 700px;" hide-footer body-class="p-0" header-class="p-0"
+     <BModal v-model="showModal" style="--vz-modal-width: 800px;" hide-footer body-class="p-0" header-class="p-0"
         class="v-modal-custom" content-class="border-0 overflow-hidden" centered hide-header-close>
         <div class="modal-body login-modal p-5">
             <h5 class="text-white fs-16 mb-1 mt-n4">Request Form</h5>
@@ -56,14 +56,26 @@
                         <div class="primary-documents-grid fs-14">
                             <div v-for="(primaryDoc, index) in primaryDocuments" :key="index" class="primary-item">
                                 <BFormGroup class="form-check-primary mb-n1">
-                                    <BFormCheckbox :value="primaryDoc.value" v-model="form.checked" :id="'formCheck'+index"><span class="fs-12">{{ primaryDoc.name }}</span></BFormCheckbox>
+                                    <BFormCheckbox 
+                                    :value="primaryDoc" 
+                                    v-model="form.checked" 
+                                    @change="onCheckboxChange(primaryDoc)"
+                                    :id="'formCheck'+index">
+                                        <span class="fs-12">{{ primaryDoc.name }}</span>
+                                        <span class="ms-1 text-muted">({{primaryDoc.quantity}} 
+                                            <span v-if="primaryDoc.quantity == 1">copy</span>
+                                            <span v-else>copies</span>)
+                                        </span>
+                                    </BFormCheckbox>
                                 </BFormGroup>
                             </div>
                         </div>
                     </BCol>
-                    <BCol lg="12" v-if="form.type_id" class="mt-1 mb-n3"><hr class="text-muted"/></BCol>
-                    <BCol lg="12" v-if="form.type_id">
-                        <!-- <InputLabel value="Others" :message="form.errors.name_id"/> -->
+                    <BCol lg="12" v-if="form.type_id && nonPrimaryDocuments.length > 0" class="mt-1 mb-n1">
+                        <hr class="text-muted mb-2"/>
+                        <span class="fs-11 text-muted">Other Documents</span>
+                    </BCol>
+                    <!-- <BCol lg="12" v-if="form.type_id">
                         <Multiselect 
                         :options="nonPrimaryDocuments" 
                         v-model="form.others"
@@ -71,6 +83,25 @@
                         :searchable="true" label="name"
                         mode="tags"
                         placeholder="Select name"/>
+                    </BCol> -->
+                    <BCol lg="12" v-if="form.type_id">
+                        <div class="primary-documents-grid fs-14">
+                            <div v-for="(primaryDoc, index) in nonPrimaryDocuments" :key="index" class="primary-item">
+                                <BFormGroup class="form-check-primary mb-n1">
+                                    <BFormCheckbox 
+                                    :value="primaryDoc" 
+                                    v-model="form.checked" 
+                                    @change="onCheckboxChange(primaryDoc)"
+                                    :id="'formCheckS'+index">
+                                        <span class="fs-11">{{ primaryDoc.name }}</span>
+                                        <span class="ms-1 fs-11 text-muted">({{primaryDoc.quantity}} 
+                                            <span v-if="primaryDoc.quantity == 1">copy</span>
+                                            <span v-else>copies</span>)
+                                        </span>
+                                    </BFormCheckbox>
+                                </BFormGroup>
+                            </div>
+                        </div>
                     </BCol>
                     <BCol lg="12" v-if="form.type_id" class="mt-0 mb-n3"><hr class="text-muted"/></BCol>
                     <BCol lg="12" v-if="form.type_id" style="margin-top: 13px; margin-bottom: -5px;">
@@ -98,6 +129,25 @@
             </form>
         </div>
     </BModal>
+    <BModal v-model="showQuantityModal" style="--vz-modal-width: 500px;" hide-footer hide-header centered hide-header-close>
+        <div class="modal-body p-2 mt-4" v-if="selectedDoc">
+            <h6 class="fs-12 text-muted mb-3">Please specify how many copies of the {{ selectedDoc.name }} you would like to request?</h6>
+            <BFormGroup >
+                <BFormInput
+                    id="quantityInput"
+                    v-model="selectedDoc.quantity"
+                    type="number"
+                    min="1"
+                    required
+                />
+            </BFormGroup>
+            <div class="text-end mt-2">
+                <button @click="confirmQuantity" class="btn btn-primary" type="button">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </BModal>
 </template>
 <script>
 import { useForm } from '@inertiajs/vue3';
@@ -118,6 +168,8 @@ export default {
                 user_id: this.$page.props.user.data.id,
                 check: false
             }),
+            showQuantityModal: false,
+            selectedDoc: null,
             student: null,
             showModal: false,
             searched: false,
@@ -156,9 +208,30 @@ export default {
                 },
             });
         },
+        onCheckboxChange(doc) {
+            if (this.form.checked.includes(doc)) {
+                this.selectedDoc = doc;
+                this.showQuantityModal = true;
+            } else {
+                doc.quantity = 1;
+            }
+        },
+        confirmQuantity() {
+            this.showQuantityModal = false;
+        },
         show(){
             this.form.reset();
+            this.resetDocumentQuantities(); 
             this.showModal = true;
+        },
+        resetDocumentQuantities() {
+            this.primaryDocuments.forEach(doc => {
+                doc.quantity = 1;
+            });
+
+            this.nonPrimaryDocuments.forEach(doc => {
+                doc.quantity = 1;
+            });
         },
         handleInput(field) {
             this.form.errors[field] = false;

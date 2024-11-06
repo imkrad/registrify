@@ -101,31 +101,30 @@ class WelcomeController extends Controller
             if($data->save()){
                 $total = 0;
                 foreach($request->checked as $list){
-                    $document_fee = DocumentFee::where('document_id',$list)->where('type_id',$request->is_express)->first();
-                    
-                    $data->lists()->create([
-                        'quantity' => 1,
-                        'fee' => $document_fee->fee,
-                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*1,
-                        'status_id' => 10,
-                        'document_id' => $list
-                    ]);
+                    $document_fee = DocumentFee::where('document_id',$list['value'])->where('type_id',$request->is_express)->first();
 
-                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee);
+                    $data->lists()->create([
+                        'quantity' => (int) $list['quantity'],
+                        'fee' => $document_fee->fee,
+                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'],
+                        'status_id' => 10,
+                        'document_id' => $list['value']
+                    ]);
+                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'];
                 }
 
                 foreach($request->others as $list){
                     $document_fee = DocumentFee::where('document_id',$list)->where('type_id',$request->is_express)->first();
                     
                     $data->lists()->create([
-                        'quantity' => 1,
+                        'quantity' => (int) $list['quantity'],
                         'fee' => $document_fee->fee,
-                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*1,
+                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'],
                         'status_id' => 10,
-                        'document_id' => $list
+                        'document_id' => $list['value']
                     ]);
 
-                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee);
+                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'];
                 }
                 
                 $data->payment()->create([

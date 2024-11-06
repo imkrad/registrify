@@ -41,7 +41,7 @@
                             </div>
                             <div class="flex-grow-1 ms-2">
                                 <h6 class="mb-0 fs-12">
-                                    <a href="javascript:void(0);" class="stretched-link">Attachment {{index+1}}</a>
+                                    <a :href="currentUrl+'/storage/'+list.file" target="_blank" class="stretched-link">Attachment {{index+1}}</a>
                                 </h6>
                                 <small>{{list.size}}</small>
                             </div>

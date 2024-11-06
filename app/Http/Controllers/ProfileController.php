@@ -45,6 +45,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'message' => 'Files uploaded successfully',
+            'status' => 15,
             'file_paths' => $filePaths,
         ], 200);
     }

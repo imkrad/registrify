@@ -37,10 +37,11 @@
                         <thead class="table-light">
                             <tr class="fs-11">
                                 <th style="width: 7%;"></th>
-                                <th style="width: 43%;">Document</th>
-                                <th style="width: 25%;" class="text-center">Status</th>
-                                <th style="width: 25%;" class="text-center">Quantity</th>
-                                <th style="width: 25%;" class="text-center">Fee</th>
+                                <th style="width: 33%;">Document</th>
+                                <th style="width: 15%;" class="text-center">Status</th>
+                                <th style="width: 15%;" class="text-center">Pages</th>
+                                <th style="width: 15%;" class="text-center">Quantity</th>
+                                <th style="width: 15%;" class="text-center">Fee</th>
                             </tr>
                         </thead>
                         <tbody class="fs-12">
@@ -51,20 +52,45 @@
                                     <span :class="'badge '+list.status.color">{{list.status.name}}</span>
                                 </td>
                                 <td class="text-center">
-                                    <center>
-                                        <input type="text" class="form-control form-control-sm" style="width: 50px;">
+                                    <center v-if="list.document.is_perpage">
+                                        <input v-if="selected.status.name == 'Pending'" type="text" v-model="list.pages" class="form-control form-control-sm" style="width: 50px; text-align: center;">
+                                        <div v-else>{{ list.pages }}</div>
+                                    </center>
+                                    <center v-else>
+                                        -
                                     </center>
                                 </td>
-                                <td class="text-center">{{ list.fee}}</td>
+                                <td class="text-center">{{ list.quantity}}</td>
+                                <td class="text-center">{{ list.total}}</td>
                             </tr>
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
-                                <td colspan="4"></td>
+                                <td colspan="5"></td>
                                 <td class="text-center fs-12 fw-semibold">{{ selected.payment.total }}</td>
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr class="text-muted mb-2 mt-2"/>
+            </div>
+            <div class="col-md-12">
+                <div class="row g-2">
+                    <div class="col-md-4" v-for="(list,index) in selected.attachments" v-bind:key="index">
+                        <div class="d-flex bg-light border border-dashed p-2 rounded position-relative">
+                            <div class="flex-shrink-0">
+                                <i class="ri-image-2-line fs-17 text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0 fs-12">
+                                    <a :href="currentUrl+'/storage/'+list.file" target="_blank" class="stretched-link">Attachment {{index+1}}</a>
+                                </h6>
+                                <small>{{list.size}}</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,6 +122,7 @@ export default {
         submit(data){
             this.form = this.$inertia.form({
                 id: this.selected.id,
+                lists: this.selected.lists,
                 status_id: data
             });
 
