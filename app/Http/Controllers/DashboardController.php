@@ -251,7 +251,7 @@ class DashboardController extends Controller
     private function pending(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
             ->where('status_id',13)->whereHas('payment',function ($query){
                 $query->where('status_id',9);
@@ -263,7 +263,7 @@ class DashboardController extends Controller
     private function processing(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
             ->where('status_id',6)->orderBy('created_at','DESC')->get()
         );
@@ -273,7 +273,7 @@ class DashboardController extends Controller
     private function release(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
             ->where('status_id',7)->orderBy('created_at','DESC')->get()
         );

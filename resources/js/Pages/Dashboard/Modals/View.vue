@@ -69,6 +69,26 @@
                     </table>
                 </div>
             </div>
+            <div class="col-md-12">
+                <hr class="text-muted mb-2 mt-2"/>
+            </div>
+            <div class="col-md-12">
+                <div class="row g-2">
+                    <div class="col-md-4" v-for="(list,index) in selected.attachments" v-bind:key="index">
+                        <div class="d-flex bg-light border border-dashed p-2 rounded position-relative">
+                            <div class="flex-shrink-0">
+                                <i class="ri-image-2-line fs-17 text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0 fs-12">
+                                    <a :href="currentUrl+'/storage/'+list.file" target="_blank" class="stretched-link">Attachment {{index+1}}</a>
+                                </h6>
+                                <small>{{list.size}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
