@@ -1,5 +1,5 @@
 <template>
-    <Head title="Cashier" />
+    <Head title="Registrar" />
     <PageHeader title="Dashboard" pageTitle="Lists" />
     <div class="row g-3">
         <div class="col-md-3">
