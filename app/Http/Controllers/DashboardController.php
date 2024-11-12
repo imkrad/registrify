@@ -304,7 +304,7 @@ class DashboardController extends Controller
             ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
             ->where('user_id',\Auth::user()->id)
-            ->whereIn('status_id',[5,6,13])->orderBy('created_at','DESC')->get()
+            ->whereIn('status_id',[5,6,7,13])->orderBy('created_at','DESC')->get()
         );
         return $data;
     }
