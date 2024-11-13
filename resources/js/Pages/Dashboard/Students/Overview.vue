@@ -20,7 +20,18 @@
                         </thead>
                         <tbody>
                             <tr v-for="(list,index) in lists.requests.data" v-bind:key="index">
-                                <td> {{ list.code }} </td>
+                                <td>
+                                    <h5 class="fs-13 mb-0 text-dark">{{list.code}}</h5>
+                                    <p class="fs-12 text-danger mb-0" v-if="list.comments.length > 0">
+                                        <span v-if="count(list.comments) > 0">
+                                            {{ count(list.comments) }} unseen <span v-if="list.comments.length == 1">comment</span><span v-else>comments</span>
+                                        </span>
+                                        <span v-else class="fs-12 text-muted mb-0">
+                                            No comments
+                                        </span>
+                                    </p>
+                                    <p class="fs-12 text-muted mb-0" v-else>No comments</p>
+                                </td>
                                 <td class="text-center">
                                     <span :class="'badge '+list.status.color">
                                         <span v-if="list.status.name == 'Completed'">Ready for Release</span>
@@ -124,6 +135,9 @@ export default {
         },
         updateData(data){
             this.lists.requests.data = data;
+        },
+        count(array){
+            return array.filter(item => item.is_seened === 0).length;
         }
     }
 }

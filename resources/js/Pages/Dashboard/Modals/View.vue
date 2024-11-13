@@ -93,13 +93,17 @@
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
             <b-button v-if="$page.props.user.data.role == 'Receiver' && selected.status.id == 13" @click="submit(6)" variant="primary" :disabled="form.processing" block>Confirm</b-button>
+            <b-button v-if="$page.props.user.data.role == 'Processor' && selected.status.id == 6 && allStatusId10(selected.lists)" @click="addComment(selected.id)" variant="primary" :disabled="form.processing" block>Add Comment</b-button>
             <b-button v-if="$page.props.user.data.role == 'Processor' && selected.status.id == 6 && allStatusId12(selected.lists)" @click="submit(7)" variant="primary" :disabled="form.processing" block>Process</b-button>
             <b-button v-if="$page.props.user.data.role == 'Releaser' && selected.status.id == 7" @click="submit(14)" variant="primary" :disabled="form.processing" block>Release</b-button>
         </template>
-    </b-modal>
+    </b-modal>    
+    <Comment ref="comment"/>
 </template>
 <script>
+import Comment from './Comment.vue';
 export default {
+    components: { Comment },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -145,11 +149,18 @@ export default {
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.selected.lists[this.index] = response.props.flash.data;
+                    this.hide();
                 },
             });
         },
         allStatusId12(array) {
             return array.every(item => item.status_id === 12);
+        },
+        allStatusId10(array) {
+            return array.every(item => item.status_id === 10);
+        },
+        addComment(id){
+            this.$refs.comment.show(id);
         },
         hide(){
             this.showModal = false;

@@ -39,6 +39,17 @@
                     </table>
                 </div>
             </div>
+            <div class="col-md-12" v-if="selected.comments.length > 0">
+                <hr class="text-muted mb-2 mt-2"/>
+            </div>
+            <div class="col-md-12" v-if="selected.comments.length > 0">
+                <span class="text-muted fs-11">Comments: </span>
+                <div class="alert alert-dark border-0 mb-0" role="alert">
+                    <ul class="mb-0">
+                        <li v-for="(list,index) in selected.comments" v-bind:key="index">{{list.message}}</li>
+                    </ul>
+                </div>
+            </div>
             <div class="col-md-12">
                 <hr class="text-muted mb-2 mt-2"/>
             </div>
@@ -68,7 +79,6 @@
     <Paid @update="updateData" ref="paid"/>
 </template>
 <script>
-import { list } from 'postcss';
 import Paid from './Paid.vue';
 export default {
     components: { Paid },
@@ -79,7 +89,8 @@ export default {
                 student: {},
                 lists: [],
                 payment: {},
-                status: {}
+                status: {},
+                comments: []
             },
             form: {},
             showModal: false
@@ -88,6 +99,19 @@ export default {
     methods: { 
         show(data){
             this.selected = data;
+            if(data.comments.length > 0){
+                this.form = this.$inertia.form({
+                    id: this.selected.id,
+                    option: 'seen'
+                });
+
+                this.form.post('/dashboard',{
+                    preserveScroll: true,
+                    onSuccess: (response) => {
+                        
+                    },
+                });
+            }
             this.showModal = true;
         },
         submit(){

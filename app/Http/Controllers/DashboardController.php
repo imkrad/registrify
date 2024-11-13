@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\ListDropdown;
 use App\Models\RequestList;
 use App\Models\RequestPayment;
+use App\Models\RequestComment;
 use App\Models\RequestAttachment;
 use App\Traits\HandlesTransaction;
 use App\Http\Resources\TransactionResource;
@@ -76,6 +77,10 @@ class DashboardController extends Controller
             break;
             case 'request':
                 $data = Transaction::where('id',$request->id)->update(['status_id' => $request->status_id]);
+            break;
+            case 'seen':
+                $data = RequestComment::where('request_id', $request->id)
+                ->update(['is_seened' => 1]);
             break;
             default:
             $data = Transaction::where('id',$request->id)->update(['status_id' => $request->status_id]);
@@ -251,11 +256,14 @@ class DashboardController extends Controller
     private function pending(){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status','attachments')
-            ->with('lists.status','lists.document.name','lists.document.type')
-            ->where('status_id',13)->whereHas('payment',function ($query){
-                $query->where('status_id',9);
-            })->orderBy('created_at','DESC')->get()
+            ->with('user.student', 'type', 'payment.status', 'status', 'attachments')
+            ->with('lists.status', 'lists.document.name', 'lists.document.type')
+            ->where('status_id', 6)
+            ->whereDoesntHave('lists', function ($query) {
+                $query->where('status_id', '!=', 10);
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get()
         );
         return $data;
     }
@@ -265,7 +273,11 @@ class DashboardController extends Controller
             Transaction::query()
             ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
-            ->where('status_id',6)->orderBy('created_at','DESC')->get()
+            ->where('status_id',6)
+            ->whereHas('lists', function ($query) {
+                $query->whereIn('status_id', [11,12]);
+            })
+            ->orderBy('created_at','DESC')->get()
         );
         return $data;
     }
@@ -301,6 +313,7 @@ class DashboardController extends Controller
     private function student_request(){
         $data = TransactionResource::collection(
             Transaction::query()
+            ->with('comments')
             ->with('user.student','type','payment.status','status','attachments')
             ->with('lists.status','lists.document.name','lists.document.type')
             ->where('user_id',\Auth::user()->id)
