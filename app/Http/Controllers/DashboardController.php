@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use App\Models\Student;
 use App\Models\Request as Transaction;
 use Illuminate\Http\Request;
@@ -76,7 +77,50 @@ class DashboardController extends Controller
                 ], 200);
             break;
             case 'request':
-                $data = Transaction::where('id',$request->id)->update(['status_id' => $request->status_id]);
+                $data = Transaction::with('user.student')->where('id',$request->id)->update(['status_id' => $request->status_id]);
+                $data = Transaction::with('user.profile')->where('id',$request->id)->first();
+                if($request->status_id == 14){
+                    
+                    $mobile = $data->user->student->contact_no;
+                    $content = 'Hello! Your requested document is ready for pickup. Please visit the Ateneo de Zamboanga University College Registrar\'s Office. Thank you.';
+                    $client = new Client();
+                 
+                    // $result = $client->request('GET', 'https://sgateway.onewaysms.com/apis10.aspx', [
+                    //     'query' => [
+                    //         'apiusername' => ' 	APIA4J1IDC7IN',
+                    //         'apipassword' => 'APIA4J1IDC7INA4J1I',
+                    //         'senderid' => 'ONEWAY',
+                    //         'mobileno' => $mobile,
+                    //         'message' => $content,
+                    //         'languagetype' => 1
+                    //     ]
+                    // ]);
+                    // $response = json_decode($result->getBody()->getContents());
+                    try {
+                        $result = $client->request('GET', 'https://sgateway.onewaysms.com/apis10.aspx', [
+                            'query' => [
+                                'apiusername' => 'APIPBDOCZMB9Y',  // Use environment variables for security
+                                'apipassword' => 'APIPBDOCZMB9YPBDOC',
+                                'senderid' => 'ONEWAY',
+                                'mobileno' => $mobile,
+                                'message' => $content,
+                                'languagetype' => 1
+                            ]
+                        ]);
+                    
+                        $response = json_decode($result->getBody()->getContents());
+                        
+                        if ($response) {
+                            // Check for any status or error code here
+                            // Example: if ($response->status === 'OK') { /* Success logic */ }
+                        } else {
+                            throw new Exception('Failed to decode the response.');
+                        }
+                    } catch (RequestException $e) {
+                        // Log the error or handle the exception
+                        echo 'Request failed: ' . $e->getMessage();
+                    }
+                }
             break;
             case 'seen':
                 $data = RequestComment::where('request_id', $request->id)
