@@ -210,11 +210,11 @@
   },
   "public/images/logo-dark.png": {
     "file": "assets/logo-dark-B3FnuBf_.png",
-    "src": "public/images/logo-light.png"
+    "src": "public/images/logo-dark.png"
   },
   "public/images/logo-light.png": {
     "file": "assets/logo-dark-B3FnuBf_.png",
-    "src": "public/images/logo-light.png"
+    "src": "public/images/logo-dark.png"
   },
   "public/images/logo-sm.png": {
     "file": "assets/job-IuhbbFLJ.png",
@@ -237,7 +237,7 @@
     "src": "public/images/sidebar/img-4.jpg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-BTIHMyoc.js",
+    "file": "assets/app-nQTbIZJD.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

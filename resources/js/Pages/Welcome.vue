@@ -136,7 +136,7 @@
                             </div>
                             <div class="mt-4 fs-13 hidemobile">
                                 <p>Registrify | College Registrar's Office </p>
-                                <p class="ff-secondary">Goodwash Mobile Carwash, brings professional car detailing right at your doorstep. Enjoy our quality services, including exterior wash, waxing, interior cleaning, and more, all at affordable prices. </p>
+                                <p class="ff-secondary">A college registrar's office is an administrative department within a college or university that is responsible for maintaining student records, managing course registration, and handling various academic services. </p>
                             </div>
                         </div>
                     </b-col>
