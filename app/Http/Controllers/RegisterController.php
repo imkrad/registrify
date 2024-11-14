@@ -16,6 +16,8 @@ class RegisterController extends Controller
             'email' => $request->email,
             'username' => $request->email,
             'password' => Hash::make($request->password),
+            'is_active' => 1,
+            'email_verified_at' => now(),
             'role' => 'Student'
         ]);
         if($user){
