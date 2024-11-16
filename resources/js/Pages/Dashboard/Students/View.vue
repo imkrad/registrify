@@ -73,7 +73,7 @@
         </div>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
-            <b-button v-if="selected.status.name == 'Confirmed'" @click="submit('ok')" variant="primary" :disabled="form.processing" block>Mask as Paid</b-button>
+            <b-button v-if="selected.status.name == 'Confirmed'" @click="submit('ok')" variant="primary" :disabled="form.processing" block>Mark as Paid</b-button>
         </template>
     </b-modal>
     <Paid @update="updateData" ref="paid"/>
