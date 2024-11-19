@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Validation\Rule;
 use App\Models\Student;
 use App\Models\ListStatus;
 use Illuminate\Http\Request;
@@ -58,8 +59,31 @@ class StudentController extends Controller
     }
 
     public function update(Request $request){
-        $data = Student::where('id',$request->id)->update(['status_id' => $request->status]);
-        $data = Student::find($request->id);
+        
+        $request->validate([
+            'firstname' => 'sometimes|required',
+            'lastname' => 'sometimes|required',
+            'middlename' => 'sometimes|required',
+            'sex' => 'sometimes|required',
+            'email' => 'sometimes|required',
+            'contact_no' => 'sometimes|required',
+            'id_number' => ['sometimes','required',Rule::unique('students', 'id_number')->ignore($request->id)]
+        ]);
+
+        if($request->status){
+            $data = Student::where('id',$request->id)->update(['status_id' => $request->status]);
+        }else{    
+            $data = Student::where('id',$request->id)->update([
+                'contact_no' => $request->contact_no,
+                'email' => $request->email,
+                'firstname' => $request->firstname,
+                'middlename' => $request->middlename,
+                'lastname' => $request->lastname,
+                'sex' => $request->sex,
+                'id_number' => $request->id_number
+            ]);
+        }
+        $data = Student::with('status')->where('id',$request->id)->first();
         return back()->with([
             'data' =>  new StudentResource($data),
             'message' => 'User update was successful!', 

@@ -40,8 +40,8 @@
                                 <th style="width: 33%;">Document</th>
                                 <th style="width: 15%;" class="text-center">Status</th>
                                 <th style="width: 15%;" class="text-center">Pages</th>
-                                <th style="width: 15%;" class="text-center">Quantity</th>
-                                <th style="width: 15%;" class="text-center">Fee</th>
+                                <th style="width: 15%;" class="text-center">Computation</th>
+                                <th style="width: 15%;" class="text-center">Total</th>
                             </tr>
                         </thead>
                         <tbody class="fs-12">
@@ -60,14 +60,14 @@
                                         -
                                     </center>
                                 </td>
-                                <td class="text-center">{{ list.quantity}}</td>
-                                <td class="text-center">{{ list.total}}</td>
+                                <td class="text-center">({{ list.quantity}} x {{ list.pages }}) * {{ list.fee }}</td>
+                                <td class="text-center">{{ total(list.quantity,list.pages,list.fee)}}</td>
                             </tr>
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
                                 <td colspan="5"></td>
-                                <td class="text-center fs-12 fw-semibold">{{ selected.payment.total }}</td>
+                                <td class="text-center fs-12 fw-semibold">{{ grandTotal }}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -110,14 +110,31 @@ export default {
                 lists: [],
                 payment: {}
             },
+            totals: [],
             form: {},
             showModal: false
+        }
+    },
+    computed: {
+        grandTotal() {
+            return this.selected.lists
+                .map(item => {
+                    const fee = parseFloat(item.fee.replace('₱', '').trim());
+                    return item.quantity * item.pages * fee;
+                })
+                .reduce((sum, itemTotal) => sum + itemTotal, 0); 
         }
     },
     methods: { 
         show(data){
             this.selected = data;
             this.showModal = true;
+        }, 
+        total(quantity,page,fee){
+            const numericFee = parseFloat(fee.replace('₱', '').trim());
+            const result = (quantity * page) * numericFee;
+            this.totals.push(result);
+            return `₱${result.toFixed(2)}`;
         },
         submit(data){
             this.form = this.$inertia.form({

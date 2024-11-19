@@ -26,10 +26,6 @@ class DashboardController extends Controller
         }else{
             if(\Auth::user()->role == 'Administrator'){
                 return inertia('Dashboard/Index');
-            }else if(\Auth::user()->role == 'Cashier'){
-                return inertia('Dashboard/Cashier',[
-                    'requests' => $this->cashier()
-                ]);
             }else if(\Auth::user()->role == 'Student'){
                 return inertia('Dashboard/Student',[
                     'lists' => $this->student_lists(),
