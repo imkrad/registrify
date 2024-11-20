@@ -60,13 +60,13 @@ class UserController extends Controller
         $data->role = $request->role;
         if($data->save()){
 
-            $data = UserProfile::where('user_id',$request->id)->first();
-            $data->firstname = $request->firstname;
-            $data->lastname = $request->lastname;
-            $data->middlename = $request->middlename;
-            $data->gender = $request->gender;
-            $data->mobile = $request->mobile;
-            $data->save();
+            $profile = UserProfile::where('user_id',$request->id)->first();
+            $profile->firstname = $request->firstname;
+            $profile->lastname = $request->lastname;
+            $profile->middlename = $request->middlename;
+            $profile->gender = $request->gender;
+            $profile->mobile = $request->mobile;
+            $profile->save();
         }
 
         return back()->with([
