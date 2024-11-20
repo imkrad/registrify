@@ -55,7 +55,7 @@ class UserController extends Controller
     }
 
     public function update(Request $request){
-        $data = User::find($request->id);
+        $data = User::with('profile')->where('id',$request->id)->first();
         $data->email = $request->email;
         $data->role = $request->role;
         if($data->save()){
