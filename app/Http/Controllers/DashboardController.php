@@ -125,6 +125,19 @@ class DashboardController extends Controller
                     }
                 }
             break;
+            case 'comment': 
+                $data = new RequestComment;
+                $data->message = $request->message;
+                $data->request_id = $request->id;
+                $data->save();
+
+                return back()->with([
+                    'data' => $data,
+                    'message' => 'Comment was added.',
+                    'info' => 'You\'ve successfully added a comment.',
+                    'status' => true,
+                ]);
+            break;
             case 'seen':
                 $data = RequestComment::where('request_id', $request->id)
                 ->update(['is_seened' => 1]);
