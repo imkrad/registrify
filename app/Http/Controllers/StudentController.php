@@ -73,20 +73,20 @@ class StudentController extends Controller
         if($request->status){
             $data = Student::where('id',$request->id)->update(['status_id' => $request->status]);
         }else{    
-            $data = Student::where('id',$request->id)->update([
-                'contact_no' => $request->contact_no,
-                'email' => $request->email,
-                'firstname' => $request->firstname,
-                'middlename' => $request->middlename,
-                'lastname' => $request->lastname,
-                'sex' => $request->sex,
-                'id_number' => $request->id_number
-            ]);
+            $data = Student::where('id',$request->id)->first();
+            $data->contact_no = $request->contact_no;
+            $data->email = $request->email;
+            $data->firstname = $request->firstname;
+            $data->middlename = $request->middlename;
+            $data->lastname = $request->lastname;
+            $data->sex = $request->sex;
+            $data->id_number = $request->id_number;
+            $data->save();
         }
         $data = Student::with('status')->where('id',$request->id)->first();
         return back()->with([
             'data' =>  new StudentResource($data),
-            'message' => 'User update was successful!', 
+            'message' => 'Student update was successful!', 
             'info' => "You've successfully update user profile.",
             'status' => true
         ]);

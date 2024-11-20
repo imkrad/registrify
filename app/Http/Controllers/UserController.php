@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 
@@ -58,12 +59,14 @@ class UserController extends Controller
         $data->email = $request->email;
         $data->role = $request->role;
         if($data->save()){
-            $data->profile()->update([
-                'firstname' => $request->firstname,
-                'lastname' => $request->lastname,
-                'middlename' => $request->middlename,
-                'mobile' => $request->mobile
-            ]);
+
+            $data = UserProfile::where('user_id',$request->id)->first();
+            $data->firstname = $request->firstname;
+            $data->lastname = $request->lastname;
+            $data->middlename = $request->middlename;
+            $data->gender = $request->gender;
+            $data->mobile = $request->mobile;
+            $data->save();
         }
 
         return back()->with([

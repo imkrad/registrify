@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Student extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'firstname','middlename','lastname','suffix','email','contact_no','sex','id_number','status_id','user_id'
@@ -56,6 +58,15 @@ class Student extends Model
     public function getCreatedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getActivitylogOptions(): LogOptions {
+        return LogOptions::defaults()
+        ->logOnly(['firstname','lastname','middlename','mobile','email','contact_no'])
+        ->setDescriptionForEvent(fn(string $eventName) => "{$eventName} the user information")
+        ->useLogName('Student')
+        ->logOnlyDirty()
+        ->dontSubmitEmptyLogs();
     }
   
 }

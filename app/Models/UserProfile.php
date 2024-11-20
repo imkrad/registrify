@@ -45,8 +45,7 @@ class UserProfile extends Model
     protected static $recordEvents = ['updated'];
     public function getActivitylogOptions(): LogOptions {
         return LogOptions::defaults()
-        ->logOnly(['firstname','lastname','middlename'])
-        ->setDescriptionForEvent(fn(string $eventName) => "$eventName the profile information")
+        ->logOnly(['firstname','lastname','middlename','mobile'])
         ->useLogName('User Profile')
         ->logOnlyDirty()
         ->dontSubmitEmptyLogs();

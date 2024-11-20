@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Spatie\Activitylog\Models\Activity;
+use App\Models\AuthenticationLog;
 use GuzzleHttp\Client;
 use App\Models\Student;
 use App\Models\Request as Transaction;
@@ -15,6 +17,8 @@ use App\Models\RequestAttachment;
 use App\Traits\HandlesTransaction;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\StudentResource;
+use App\Http\Resources\AuthenticationResource;
+use App\Http\Resources\ActivityResource;
 
 class DashboardController extends Controller
 {
@@ -25,7 +29,10 @@ class DashboardController extends Controller
             return inertia('Auth/Login');
         }else{
             if(\Auth::user()->role == 'Administrator'){
-                return inertia('Dashboard/Index');
+                return inertia('Dashboard/Index',[
+                    'authentications' => $this->authentications(),
+                    'activities' => $this->activities()
+                ]);
             }else if(\Auth::user()->role == 'Student'){
                 return inertia('Dashboard/Student',[
                     'lists' => $this->student_lists(),
@@ -421,5 +428,15 @@ class DashboardController extends Controller
             ];
         });
         return $data;
+    }
+    
+    public function authentications(){
+        $data = AuthenticationLog::orderBy('created_at','DESC')->limit(5)->get();
+        return AuthenticationResource::collection($data);
+    }
+
+    public function activities(){
+        $data = Activity::with('causer.profile')->orderBy('created_at','DESC')->limit(5)->get();
+        return ActivityResource::collection($data);
     }
 }
