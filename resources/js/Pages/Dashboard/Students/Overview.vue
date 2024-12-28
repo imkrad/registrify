@@ -14,19 +14,35 @@
                             <tr class="fs-11">
                                 <th style="width: 50%;">Code</th>
                                 <th style="width: 20%;" class="text-center">Status</th>
-                                <th style="width: 20%;" class="text-center">Payment</th>
+                                <!-- <th style="width: 20%;" class="text-center">Payment</th> -->
                                 <th style="width: 10%;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(list,index) in lists.requests.data" v-bind:key="index">
-                                <td> {{ list.code }} </td>
-                                <td class="text-center">
-                                    <span :class="'badge '+list.status.color">{{list.status.name}}</span>
+                                <td>
+                                    <h5 class="fs-13 mb-0 text-dark">{{list.code}}</h5>
+                                    <p class="fs-12 text-danger mb-0" v-if="list.comments.length > 0">
+                                        <span v-if="count(list.comments) > 0">
+                                            {{ count(list.comments) }} unseen <span v-if="list.comments.length == 1">comment</span><span v-else>comments</span>
+                                        </span>
+                                        <span v-else class="fs-12 text-muted mb-0">
+                                            No comments
+                                        </span>
+                                    </p>
+                                    <p class="fs-12 text-muted mb-0" v-else>No comments</p>
                                 </td>
                                 <td class="text-center">
+                                    <span :class="'badge '+list.status.color">
+                                        <span v-if="list.status.name == 'Completed'">Ready for Release</span>
+                                        <span v-else-if="list.status.name == 'Pending'">Unpaid</span>
+                                        <span v-else-if="list.status.name == 'Confirmed'">For Payment</span>
+                                        <span v-else>{{list.status.name}}</span>
+                                    </span>
+                                </td>
+                                <!-- <td class="text-center">
                                     <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span>
-                                </td>
+                                </td> -->
                                 <td class="text-end">
                                     <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                                         <i class="ri-eye-fill align-bottom"></i>
@@ -119,6 +135,9 @@ export default {
         },
         updateData(data){
             this.lists.requests.data = data;
+        },
+        count(array){
+            return array.filter(item => item.is_seened === 0).length;
         }
     }
 }

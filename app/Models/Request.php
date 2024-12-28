@@ -33,6 +33,11 @@ class Request extends Model
         return $this->hasMany('App\Models\RequestList', 'request_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Models\RequestComment', 'request_id');
+    }
+
     public function payment()
     {
         return $this->hasOne('App\Models\RequestPayment', 'request_id');

@@ -23,7 +23,7 @@
             <b-container class="showmobile"> 
                 <b-row class="align-items-center gy-3">
                 <div class="d-grid mt-n3 mb-n5" >
-                    <BButton @click="openRegister()" variant="warning" class="submit-btn w-80 h-100 fw-semibold" type="submit">BOOK NOW</BButton>
+                    <BButton @click="openSignup()" variant="warning" class="submit-btn w-80 h-100 fw-semibold" type="submit">SIGN UP</BButton>
                 </div>
             </b-row>
             </b-container>
@@ -48,9 +48,8 @@
                 <div class="row gy-4 mt-0">
                     
                     <div class="col-lg-12">
-                        <div class="card mb-0 ribbon-box right">
+                        <div class="card mb-0 right">
                             <div class="card-body p-4 m-2">
-                                <div class="ribbon-two ribbon-two-danger"><span>Popular</span></div>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
                                         <h5 class="mb-0 fw-semibold rstitle1">College Unit</h5>
@@ -84,9 +83,8 @@
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <div class="card mb-0 ribbon-box right">
+                        <div class="card mb-0 right">
                             <div class="card-body p-4 m-2">
-                                <div class="ribbon-two ribbon-two-warning"><span>Hot</span></div>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
                                         <h5 class="mb-0 fw-semibold rstitle1">Graduate School</h5>
@@ -136,7 +134,7 @@
                             </div>
                             <div class="mt-4 fs-13 hidemobile">
                                 <p>Registrify | College Registrar's Office </p>
-                                <p class="ff-secondary">Goodwash Mobile Carwash, brings professional car detailing right at your doorstep. Enjoy our quality services, including exterior wash, waxing, interior cleaning, and more, all at affordable prices. </p>
+                                <p class="ff-secondary">A college registrar's office is an administrative department within a college or university that is responsible for maintaining student records, managing course registration, and handling various academic services. </p>
                             </div>
                         </div>
                     </b-col>

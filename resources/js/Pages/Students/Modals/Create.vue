@@ -94,6 +94,7 @@ export default {
         edit(data){
             this.editable = true;
             this.form.id = data.id;
+            this.form.id_number = data.id_number;
             this.form.firstname = data.firstname;
             this.form.middlename = data.middlename;
             this.form.lastname = data.lastname;
@@ -109,7 +110,6 @@ export default {
                     preserveScroll: true,
                     onSuccess: (response) => {
                         this.$emit('updateData',this.$page.props.flash.data.data);
-                        this.form.reset();
                         this.hide();
                     }
                 });
@@ -128,6 +128,7 @@ export default {
         },
         hide(){
             this.form.reset();
+            this.form.clearErrors();
             this.editable = false;
             this.showModal = false;
         }

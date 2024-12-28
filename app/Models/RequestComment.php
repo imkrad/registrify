@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RequestAttachment extends Model
+class RequestComment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['request_id','size','file'];
+    protected $fillable = ['message','request_id','user_id','is_seened'];
 
     public function request()
     {
