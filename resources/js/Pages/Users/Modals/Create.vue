@@ -46,14 +46,6 @@
                     <InputLabel for="name" value="Contact no." :message="form.errors.mobile"/>
                     <TextInput type="text" v-model="form.mobile" class="form-control" placeholder="Please mobile" @input="handleInput('mobile')" :light="true"/>
                 </BCol>
-                <BCol lg="12">
-                    <Multiselect 
-                    :options="roles" 
-                    v-model="form.role"
-                    @input="handleInput('role')"
-                    :searchable="true" 
-                    placeholder="Select Role"/>
-                </BCol>
             </BRow>
         </form>
         <template v-slot:footer>
@@ -86,7 +78,6 @@ export default {
                 gender: null,
                 role: null
             }),
-            roles: ['Receiver','Processor','Releaser','Cashier','Registrar'],
             showModal: false,
             editable: false
         }
@@ -106,7 +97,7 @@ export default {
             this.form.email = data.email;
             this.form.mobile = data.mobile;
             this.form.gender = data.gender;
-            this.form.role = data.role;
+            this.form.role = 'Staff';
             this.showModal = true;
         },
         submit(){

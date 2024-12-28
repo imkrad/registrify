@@ -116,6 +116,18 @@
                         </div>
                     </BCol>
                     <BCol lg="12" v-if="form.type_id" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.type_id" style="margin-top: 13px; margin-bottom: -5px;">
+                        <div class="row fs-11">
+                            <BCol lg="6" :class="(form.errors.is_express) ? 'text-danger' : ''">Pickup Method :</BCol>
+                            <div class="col-md-3" v-for="(list,index) in pickups"  v-bind:key="index">
+                                <div class="custom-control custom-radio mb-3">
+                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('type')" :value="list.value" v-model="form.is_personal">
+                                    <label class="custom-control-label fw-normal" for="customRadio1">{{list}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </BCol>
+                    <BCol lg="12" v-if="form.type_id" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
                 </BRow>
                 <div class="mt-4 form-check">
                     <input type="checkbox" v-model="form.check" class="form-check-input" id="checkTerms">
@@ -165,6 +177,7 @@ export default {
                 others: [],
                 type_id: null,
                 is_express: null,
+                is_personal: null,
                 user_id: this.$page.props.user.data.id,
                 check: false
             }),
@@ -175,6 +188,7 @@ export default {
             searched: false,
             primaryDocuments: [],
             nonPrimaryDocuments: [],
+            pickups: ['Personal','Authorized'],
             tos: false
         }
     },
