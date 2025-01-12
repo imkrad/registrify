@@ -51,7 +51,12 @@
                             </div>
                         </div>
                     </BCol>
-                    <BCol lg="12" class="mt-n2 mb-n3"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" class="mt-n2 mb-n3">
+                        <hr class="text-muted"/>
+                    </BCol>
+                    <BCol lg="12" v-if="form.type_id" class="mt-2 mb-n2">
+                        <span class="fs-11 text-muted">Primary Documents <span v-if="form.errors.checked" class="text-danger fs-10">(Select at least 1 document)</span></span>
+                    </BCol>
                     <BCol lg="12" v-if="form.type_id">
                         <div class="primary-documents-grid fs-14">
                             <div v-for="(primaryDoc, index) in primaryDocuments" :key="index" class="primary-item">
@@ -59,6 +64,7 @@
                                     <BFormCheckbox 
                                     :value="primaryDoc" 
                                     v-model="form.checked" 
+                                    @input="handleInput('checked')"
                                     @change="onCheckboxChange(primaryDoc)"
                                     :id="'formCheck'+index">
                                         <span class="fs-12">{{ primaryDoc.name }}</span>
@@ -84,7 +90,7 @@
                         mode="tags"
                         placeholder="Select name"/>
                     </BCol> -->
-                    <BCol lg="12" v-if="form.type_id">
+                    <BCol lg="12" v-if="form.type_id" class="mt-2">
                         <div class="primary-documents-grid fs-14">
                             <div v-for="(primaryDoc, index) in nonPrimaryDocuments" :key="index" class="primary-item">
                                 <BFormGroup class="form-check-primary mb-n1">
@@ -109,7 +115,7 @@
                             <BCol lg="6" :class="(form.errors.is_express) ? 'text-danger' : ''">Processing Type :</BCol>
                             <div class="col-md-3" v-for="(list,index) in fees"  v-bind:key="index">
                                 <div class="custom-control custom-radio mb-3">
-                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('type')" :value="list.value" v-model="form.is_express">
+                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('is_express')" :value="list.value" v-model="form.is_express">
                                     <label class="custom-control-label fw-normal" for="customRadio1">{{list.type}} <span class="text-muted fs-11">({{ list.others }})</span></label>
                                 </div>
                             </div>
@@ -118,16 +124,36 @@
                     <BCol lg="12" v-if="form.type_id" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
                     <BCol lg="12" v-if="form.type_id" style="margin-top: 13px; margin-bottom: -5px;">
                         <div class="row fs-11">
-                            <BCol lg="6" :class="(form.errors.is_express) ? 'text-danger' : ''">Pickup Method :</BCol>
+                            <BCol lg="6" :class="(form.errors.is_personal) ? 'text-danger' : ''">Pickup Method :</BCol>
                             <div class="col-md-3" v-for="(list,index) in pickups"  v-bind:key="index">
                                 <div class="custom-control custom-radio mb-3">
-                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('type')" :value="list.value" v-model="form.is_personal">
-                                    <label class="custom-control-label fw-normal" for="customRadio1">{{list}}</label>
+                                    <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('is_personal')" :value="list.value" v-model="form.is_personal">
+                                    <label class="custom-control-label fw-normal" for="customRadio1">{{list.name}}</label>
                                 </div>
                             </div>
                         </div>
                     </BCol>
-                    <BCol lg="12" v-if="form.type_id" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.is_personal == false" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.is_personal == false" style="margin-top: 13px; margin-bottom: -5px;">
+                        <div class="row fs-11">
+                            <BCol lg="6" :class="(form.errors.is_personal) ? 'text-danger' : ''">
+                                <div class="form-floating">
+                                    <input type="text" v-model="form.name" class="form-control">
+                                    <label>Authorized Person</label>
+                                </div>
+                            </BCol>
+                            <BCol lg="6">
+                                <input class="mt-3" type="file" id="file-upload" multiple @change="uploadFieldChange"/>
+                            </BCol>
+                        </div>
+                    </BCol>
+                    <BCol lg="12" :class="(form.is_personal == false) ? 'mt-n2 mb-n4' : 'mt-n3 mb-n4'"><hr class="text-muted"/></BCol>
+                    <BCol lg="12" v-if="form.type_id" :class="(form.errors.purpose) ? 'text-danger' : ''">
+                        <div class="form-floating">
+                            <input type="text" v-model="form.purpose" class="form-control">
+                            <label :class="(form.errors.purpose) ? 'text-danger' : ''">Purpose</label>
+                        </div>
+                    </BCol>                
                 </BRow>
                 <div class="mt-4 form-check">
                     <input type="checkbox" v-model="form.check" class="form-check-input" id="checkTerms">
@@ -179,8 +205,12 @@ export default {
                 is_express: null,
                 is_personal: null,
                 user_id: this.$page.props.user.data.id,
-                check: false
+                name: null,
+                purpose: null,
+                check: false,
+                attachments: []
             }),
+            value: null,
             showQuantityModal: false,
             selectedDoc: null,
             student: null,
@@ -188,7 +218,16 @@ export default {
             searched: false,
             primaryDocuments: [],
             nonPrimaryDocuments: [],
-            pickups: ['Personal','Authorized'],
+            pickups: [
+                {
+                    'value': true,
+                    'name': 'Personal'
+                },
+                {
+                    'value': false,
+                    'name': 'Authorized Person'
+                }
+            ],
             tos: false
         }
     },
@@ -212,14 +251,33 @@ export default {
     },
     methods: {
         submit(){
-            this.form.post('/',{
+            // this.form.post('/',{
+            //     preserveScroll: true,
+            //     onSuccess: (response) => {
+            //         this.form.idnumber = null;
+            //         this.form.clearErrors();
+            //         this.form.reset();
+            //         this.showModal = false;
+            //     },
+            // });
+            if(this.form.attachments.length > 0){
+                for (var i = this.form.attachments.length - 1; i >= 0; i--) {
+                    this.value.append('files[]', this.form.attachments[i]);
+                }
+            }else{
+                this.value.append('files[]', []);
+            }
+            this.value.append('idnumber', this.form.idnumber);
+            this.$inertia.post('/', this.value, {
                 preserveScroll: true,
+                forceFormData: true,
                 onSuccess: (response) => {
-                    this.form.idnumber = null;
-                    this.form.clearErrors();
-                    this.form.reset();
+                    this.$emit('update',this.$page.props.flash.data.data);
                     this.showModal = false;
                 },
+                onError: () => {
+                    this.errors = this.$page.props.errors;
+                }
             });
         },
         onCheckboxChange(doc) {
@@ -228,6 +286,16 @@ export default {
                 this.showQuantityModal = true;
             } else {
                 doc.quantity = 1;
+            }
+        },
+        uploadFieldChange(e) {
+            e.preventDefault();
+            var files = e.target.files || e.dataTransfer.files;
+
+            if (!files.length)
+                return;
+            for (var i = files.length - 1; i >= 0; i--) {
+                this.form.attachments.push(files[i]);
             }
         },
         confirmQuantity() {

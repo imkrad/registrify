@@ -22,7 +22,11 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type_id' => 'required',
+            'is_express' => 'required',
+            'is_personal' => 'required',
+            'purpose' => 'required',
+            'checked' => 'required|array|min:1'
         ];
     }
 }

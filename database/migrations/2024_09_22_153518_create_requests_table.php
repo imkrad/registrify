@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->datetime('due_at')->nullable();
             $table->datetime('claimed_at')->nullable();
+            $table->string('purpose',200);
             $table->boolean('is_express');
+            $table->boolean('is_personal');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->tinyInteger('type_id')->unsigned()->index();

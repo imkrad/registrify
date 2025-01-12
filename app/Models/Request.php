@@ -10,7 +10,7 @@ class Request extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code','user_id','type_id','status_id','due_at','claimed_at','is_express'
+        'code','user_id','type_id','status_id','due_at','claimed_at','is_express','is_personal'
     ];
 
     public function user()

@@ -95,8 +95,10 @@ class WelcomeController extends Controller
             $data = new Transaction;
             $data->code = 'RGSTR-'.date('m').date('Y').'-'.str_pad((Transaction::count()+1), 4, '0', STR_PAD_LEFT);  
             $data->is_express = ($request->is_express == 4) ? false : true;
+            $data->is_personal = $request->is_personal;
             $data->user_id = $request->user_id;
             $data->type_id = $request->type_id;
+            $data->purpose = $request->purpose;
             $data->status_id = 5;
             if($data->save()){
                 $total = 0;

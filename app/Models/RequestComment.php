@@ -13,6 +13,6 @@ class RequestComment extends Model
 
     public function request()
     {
-        return $this->belongsTo('App\Models\Request', 'type_id', 'id');
+        return $this->belongsTo('App\Models\Request', 'request_id', 'id');
     }
 }
