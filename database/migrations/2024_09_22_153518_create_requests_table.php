@@ -15,7 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('code')->unique();
-            $table->datetime('due_at')->nullable();
+            $table->date('due_at')->nullable();
             $table->datetime('claimed_at')->nullable();
             $table->string('purpose',200);
             $table->boolean('is_express');

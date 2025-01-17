@@ -3,6 +3,7 @@
         class="v-modal-custom" content-class="border-0 overflow-hidden" centered hide-header-close>
         <div class="modal-body login-modal p-5">
             <h5 class="text-white fs-16 mb-1 mt-n4">Request Form</h5>
+            {{ value }}
             <p class="text-white-50 fs-11 mb-4">Please fill out the form carefully to ensure all information is accurate.</p>
             <div class="vstack gap-2 justify-content-center">
                <form class="customform mb-n5" style="color: white;">
@@ -55,7 +56,7 @@
                         <hr class="text-muted"/>
                     </BCol>
                     <BCol lg="12" v-if="form.type_id" class="mt-2 mb-n2">
-                        <span class="fs-11 text-muted">Primary Documents <span v-if="form.errors.checked" class="text-danger fs-10">(Select at least 1 document)</span></span>
+                        <span class="fs-11 text-muted">Primary Documents <span v-if="errors.checked" class="text-danger fs-10">(Select at least 1 document)</span></span>
                     </BCol>
                     <BCol lg="12" v-if="form.type_id">
                         <div class="primary-documents-grid fs-14">
@@ -112,7 +113,7 @@
                     <BCol lg="12" v-if="form.type_id" class="mt-0 mb-n3"><hr class="text-muted"/></BCol>
                     <BCol lg="12" v-if="form.type_id" style="margin-top: 13px; margin-bottom: -5px;">
                         <div class="row fs-11">
-                            <BCol lg="6" :class="(form.errors.is_express) ? 'text-danger' : ''">Processing Type :</BCol>
+                            <BCol lg="6" :class="(errors.is_express) ? 'text-danger' : ''">Processing Type :</BCol>
                             <div class="col-md-3" v-for="(list,index) in fees"  v-bind:key="index">
                                 <div class="custom-control custom-radio mb-3">
                                     <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('is_express')" :value="list.value" v-model="form.is_express">
@@ -124,7 +125,7 @@
                     <BCol lg="12" v-if="form.type_id" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
                     <BCol lg="12" v-if="form.type_id" style="margin-top: 13px; margin-bottom: -5px;">
                         <div class="row fs-11">
-                            <BCol lg="6" :class="(form.errors.is_personal) ? 'text-danger' : ''">Pickup Method :</BCol>
+                            <BCol lg="6" :class="(errors.is_personal) ? 'text-danger' : ''">Pickup Method :</BCol>
                             <div class="col-md-3" v-for="(list,index) in pickups"  v-bind:key="index">
                                 <div class="custom-control custom-radio mb-3">
                                     <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('is_personal')" :value="list.value" v-model="form.is_personal">
@@ -148,10 +149,10 @@
                         </div>
                     </BCol>
                     <BCol lg="12" :class="(form.is_personal == false) ? 'mt-n2 mb-n4' : 'mt-n3 mb-n4'"><hr class="text-muted"/></BCol>
-                    <BCol lg="12" v-if="form.type_id" :class="(form.errors.purpose) ? 'text-danger' : ''">
+                    <BCol lg="12" v-if="form.type_id" :class="(errors.purpose) ? 'text-danger' : ''">
                         <div class="form-floating">
                             <input type="text" v-model="form.purpose" class="form-control">
-                            <label :class="(form.errors.purpose) ? 'text-danger' : ''">Purpose</label>
+                            <label :class="(errors.purpose) ? 'text-danger' : ''">Purpose</label>
                         </div>
                     </BCol>                
                 </BRow>
@@ -210,7 +211,7 @@ export default {
                 check: false,
                 attachments: []
             }),
-            value: null,
+            errors: [],
             showQuantityModal: false,
             selectedDoc: null,
             student: null,
@@ -220,11 +221,11 @@ export default {
             nonPrimaryDocuments: [],
             pickups: [
                 {
-                    'value': true,
+                    'value': 1,
                     'name': 'Personal'
                 },
                 {
-                    'value': false,
+                    'value': 0,
                     'name': 'Authorized Person'
                 }
             ],
@@ -251,24 +252,23 @@ export default {
     },
     methods: {
         submit(){
-            // this.form.post('/',{
-            //     preserveScroll: true,
-            //     onSuccess: (response) => {
-            //         this.form.idnumber = null;
-            //         this.form.clearErrors();
-            //         this.form.reset();
-            //         this.showModal = false;
-            //     },
-            // });
+            let data = new FormData();
+            data.append('idnumber',this.form.idnumber);
+            data.append('checked[]', (this.form.checked.length != 0) ? JSON.stringify(this.form.checked) : []);
+            data.append('others[]', (this.form.others.length != 0) ? JSON.stringify(this.form.others) : []);
+            data.append('is_express', (this.form.is_express) ? this.form.is_express : '');
+            data.append('is_personal', (this.form.is_personal) ? this.form.is_personal : '');
+            data.append('purpose', (this.form.purpose) ? this.form.purpose : '');
+            data.append('user_id', this.form.user_id);
+            data.append('type_id', this.form.type_id);
             if(this.form.attachments.length > 0){
                 for (var i = this.form.attachments.length - 1; i >= 0; i--) {
-                    this.value.append('files[]', this.form.attachments[i]);
+                    data.append('files[]', this.form.attachments[i]);
                 }
             }else{
-                this.value.append('files[]', []);
+                data.append('files[]', []);
             }
-            this.value.append('idnumber', this.form.idnumber);
-            this.$inertia.post('/', this.value, {
+            this.$inertia.post('/', data, {
                 preserveScroll: true,
                 forceFormData: true,
                 onSuccess: (response) => {
@@ -316,7 +316,7 @@ export default {
             });
         },
         handleInput(field) {
-            this.form.errors[field] = false;
+            this.errors[field] = false;
         },
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Request as Transaction;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\ListDropdown;
+use App\Models\ListStatus;
 use App\Models\RequestList;
 use App\Models\RequestPayment;
 use App\Models\RequestComment;
@@ -43,20 +44,12 @@ class DashboardController extends Controller
                         'fees' => $this->fees()
                     ]
                 ]);
-            }else if(\Auth::user()->role == 'Registrar'){
-                return inertia('Dashboard/Registrar',[
-                    'requests' => $this->registrar(),
-                    'students' => $this->students(),
-                    'counts' => $this->counts_registrar()
-                ]);
             }else{
                 return inertia('Dashboard/Staff',[
-                    'counts' => $this->counts(),
-                    'documents' => [
-                        'pending' => $this->pending(),
-                        'processing' => $this->processing(),
-                        'release' => $this->release()
-                    ]
+                    'requests' => $this->registrar(),
+                    'students' => $this->students(),
+                    'counts' => $this->counts_registrar(),
+                    'statuses' => $this->statuses()
                 ]);
             }
         }
@@ -451,5 +444,18 @@ class DashboardController extends Controller
     public function activities(){
         $data = Activity::with('causer.profile')->orderBy('created_at','DESC')->limit(5)->get();
         return ActivityResource::collection($data);
+    }
+
+    public function statuses(){
+        $data = ListStatus::where('type','Request')->where('is_active',1)->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => ($item->name == 'Confirmed') ? 'For Payment' : $item->name,
+                'type' => $item->type,
+                'color' => $item->color,
+                'others' => $item->others,
+            ];
+        });
+        return $data;
     }
 }

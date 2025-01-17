@@ -71,6 +71,11 @@
             display: block; /* Ensure the label is on a new line */
             margin-top: 5px; /* Space above the label */
         }
+        .name {
+            font-size: 10px;
+            margin-bottom: -20px;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -80,18 +85,23 @@
     <!-- Footer for signatures -->
     <div class="footer">
         <table>
-            <tr>
-                <td>
+            <tr style="font-size: 9px;">
+                <!-- <td>
+                    <span class="name">{{$data['log']['prepared']['profile']['firstname']}} {{$data['log']['prepared']['profile']['lastname']}}</span>
                     <div class="signature-line"></div>
                     <span class="signature">Prepared By</span>
+                </td> -->
+                <td width="33.3%">
+                    <span style="font-weight: bold; font-size: 9px; color: #072388;">{{$data['log']['prepared']['profile']['firstname']}} {{$data['log']['prepared']['profile']['lastname']}}</span>
+                    <hr style="margin-top: 0px; margin-bottom: 1px; border: .1px solid black; width: 95%;">Prepared by
                 </td>
-                <td>
-                    <div class="signature-line"></div>
-                    <span class="signature">Approved By</span>
+                <td width="33.3%">
+                    <span style="font-weight: bold; font-size: 9px; color: #072388;">-</span>
+                    <hr style="margin-top: 0px; margin-bottom: 1px; border: .1px solid black; width: 95%;">Approved by
                 </td>
-                <td>
-                    <div class="signature-line"></div>
-                    <span class="signature">Received By</span>
+                <td width="33.3%">
+                    <span style="font-weight: bold; font-size: 9px; color: #072388;">-</span>
+                    <hr style="margin-top: 0px; margin-bottom: 1px; border: .1px solid black; width: 100%;">Received by
                 </td>
             </tr>
         </table>

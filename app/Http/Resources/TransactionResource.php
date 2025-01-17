@@ -25,7 +25,10 @@ class TransactionResource extends JsonResource
             'lists' => $this->lists,
             'payment' => $this->payment,
             'comments' => $this->comments,
+            'log' => $this->log,
             'attachments' => $this->attachments,
+            'due_at' => $this->due_at,
+            'claimed_at' => $this->claimed_at,
             'created_at' => $this->created_at
         ];
     }

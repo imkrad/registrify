@@ -117,12 +117,13 @@ export default {
     },
     computed: {
         grandTotal() {
-            return this.selected.lists
-                .map(item => {
-                    const fee = parseFloat(item.fee.replace('₱', '').trim());
-                    return item.quantity * item.pages * fee;
-                })
-                .reduce((sum, itemTotal) => sum + itemTotal, 0); 
+            return `₱${this.selected.lists
+            .map(item => {
+                const fee = parseFloat(item.fee.replace('₱', '').replace(/,/g, '').trim());
+                return item.quantity * item.pages * fee;
+            })
+            .reduce((sum, itemTotal) => sum + itemTotal, 0)
+            .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
     },
     methods: { 
@@ -131,10 +132,10 @@ export default {
             this.showModal = true;
         }, 
         total(quantity,page,fee){
-            const numericFee = parseFloat(fee.replace('₱', '').trim());
+            const numericFee = parseFloat(fee.replace('₱', '').replace(/,/g, '').trim());
             const result = (quantity * page) * numericFee;
             this.totals.push(result);
-            return `₱${result.toFixed(2)}`;
+            return `₱${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         },
         submit(data){
             this.form = this.$inertia.form({

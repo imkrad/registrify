@@ -43,6 +43,11 @@ class Request extends Model
         return $this->hasOne('App\Models\RequestPayment', 'request_id');
     }
 
+    public function log()
+    {
+        return $this->hasOne('App\Models\RequestLog', 'request_id');
+    }
+
     public function attachments()
     {
         return $this->hasMany('App\Models\RequestAttachment', 'request_id');
@@ -54,6 +59,16 @@ class Request extends Model
     }
 
     public function getCreatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getDueAtAttribute($value)
+    {
+        return date('M d, Y', strtotime($value));
+    }
+
+    public function getClaimedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));
     }

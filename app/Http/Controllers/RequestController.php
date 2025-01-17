@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Request as Transaction;
+use App\Models\RequestLog;
+use App\Models\RequestList;
+use App\Models\RequestPayment;
 use App\Models\DocumentFee;
 use Illuminate\Http\Request;
+use App\Services\SmsService;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
 
 class RequestController extends Controller
 {
+    protected $sms;
+
+    public function __construct(SmsService $sms)
+    {
+        $this->sms = $sms;
+    }
+
     public function index(Request $request){
         switch($request->option){
             case 'lists':
@@ -23,16 +35,102 @@ class RequestController extends Controller
         }
     }
 
+    public function update(Request $request){
+        $data = RequestList::where('id',$request->id)->update([
+            'status_id' => $request->status_id,
+            'user_id' => \Auth::user()->id
+        ]);
+        $data = RequestList::with('status','document.name','document.type','user.profile')->where('id',$request->id)->first();
+        return back()->with([
+            'data' => $data,
+            'message' => 'Document processing has '.($request->status_id == 11) ? 'started' : 'been completed',
+            'info' => 'You\'ve successfully updated the list.',
+            'status' => true,
+        ]);
+    }
+
+    public function store(Request $request){
+        switch($request->type){
+            case 'confirm':
+                $data = Transaction::with('user.student')->where('id',$request->id)->update([
+                    'status_id' => 6
+                ]);
+                if($data){
+                    $total = 0;
+                    foreach($request->lists as $list){
+                        RequestList::where('id',$list['id'])->update([
+                            'pages' => $list['pages'],
+                            'total' => str_replace(['₱ ', '₱', ',', ' '], '', $list['total'])*$list['pages']
+                        ]);
+                        $total += str_replace(['₱ ', '₱', ',', ' '], '', $list['total'])*$list['pages'];
+                    }
+                    RequestPayment::where('request_id',$request->id)->update(['total' => $total]);
+                    RequestLog::create([
+                        'prepared_by' => \Auth::user()->id,
+                        'prepared_date' => now(),
+                        'request_id' => $request->id
+                    ]);
+                    $student = Transaction::with('user.student')->where('id',$request->id)->first();
+                    $content = 'Hi '.$student->user->student->firstname.' '.$student->user->student->lastname.', Your request for documents has been confirmed and is now ready for payment. Please upload the receipt to the system once payment is made. Thank you!';
+                    $this->sms->sendSms($student->user->student->contact_no, $content);
+
+                    $data = Transaction::with('user.student','type','payment.status','status')
+                    ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
+                }
+            break;
+            case 'process':
+                $data = Transaction::where('id',$request->id)->first();
+                $is_express = $data->is_express;
+                $currentDate = Carbon::now();
+                if($is_express){
+                    $calculatedDate = $currentDate->addDays(3);
+                }else{
+                    $calculatedDate = $currentDate->addDays(7);
+                }
+                $data = Transaction::where('id',$request->id)->update(['status_id' => 7, 'due_at' => $calculatedDate]);
+                if($data){
+                    RequestLog::where('request_id',$request->id)->update(['processed_by' => \Auth::user()->id,'processed_date' => now(),]);
+                    $data = Transaction::with('user.student','type','payment.status','status')
+                    ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
+                }
+            break;
+            case 'completed':
+                $data = Transaction::with('user.student')->where('id',$request->id)->update([ 'status_id' => 13]);
+                if($data){
+                    RequestLog::where('request_id',$request->id)->update(['completed_by' => \Auth::user()->id,'completed_date' => now(),]);
+                    $data = Transaction::with('user.student','type','payment.status','status')
+                    ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
+                    $student = Transaction::with('user.student')->where('id',$request->id)->first();
+                    $content = 'Hi '.$student->user->student->firstname.' '.$student->user->student->lastname.', Your requested document is ready for pickup. Please visit the Ateneo de Zamboanga University College Registrar\'s Office. Thank you.';
+                    $this->sms->sendSms($data->user->student->contact_no, $content);
+                }
+            break;
+            case 'release':
+                $data = Transaction::where('id',$request->id)->update(['status_id' => 14, 'claimed_at' => now()]);
+                if($data){
+                    RequestLog::where('request_id',$request->id)->update(['released_by' => \Auth::user()->id,'released_date' => now(),]);
+                    $data = Transaction::with('user.student','type','payment.status','status')
+                    ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
+                }
+            break;
+        }
+
+        return back()->with([
+            'data' => new TransactionResource($data),
+            'message' => 'Request was updated.',
+            'info' => 'You\'ve successfully updated the request.',
+            'status' => true,
+        ]);
+    }
+
     private function lists($request){
         $data = TransactionResource::collection(
             Transaction::query()
             ->with('user.student','type','payment.status','status')
-            ->with('lists.status','lists.document.name','lists.document.type')
-            // ->when($request->keyword, function ($query, $keyword) {
-            //     $query->whereHas('name',function ($query) use ($keyword) {
-            //         $query->where('name', 'LIKE', "%{$keyword}%");
-            //     });
-            // })
+            ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
+            ->when($request->status, function ($query, $status) {
+                $query->where('status_id', $status);
+            })
             ->orderBy('created_at','DESC')
             ->paginate($request->count)
         );
@@ -42,6 +140,7 @@ class RequestController extends Controller
     private function print($request){
         $id = $request->id;
         $data = Transaction::where('id',$id)
+        ->with('log.prepared.profile')
         ->with('user.student','type','payment','status')
         ->with('lists.status','lists.document.name','lists.document.type')
         ->first();

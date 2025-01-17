@@ -92,6 +92,7 @@ class WelcomeController extends Controller
 
     public function store(TransactionRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
+            $lists = $request->checked;
             $data = new Transaction;
             $data->code = 'RGSTR-'.date('m').date('Y').'-'.str_pad((Transaction::count()+1), 4, '0', STR_PAD_LEFT);  
             $data->is_express = ($request->is_express == 4) ? false : true;
@@ -102,7 +103,11 @@ class WelcomeController extends Controller
             $data->status_id = 5;
             if($data->save()){
                 $total = 0;
-                foreach($request->checked as $list){
+                $checked = $request->input('checked', []);
+                $lists = array_map(function ($item) {
+                return json_decode($item, true); 
+                }, $checked);
+                foreach($lists[0] as $list){
                     $document_fee = DocumentFee::where('document_id',$list['value'])->where('type_id',$request->is_express)->first();
 
                     $data->lists()->create([
@@ -114,19 +119,25 @@ class WelcomeController extends Controller
                     ]);
                     $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'];
                 }
+                $lists = $request->others;
+                $others = $request->input('others', []);
+                $lists = array_map(function ($item) {
+                return json_decode($item, true); 
+                }, $others);
+                foreach($lists as $list){
+                    if($list){
+                        $document_fee = DocumentFee::where('document_id',$list)->where('type_id',$request->is_express)->first();
+                        
+                        $data->lists()->create([
+                            'quantity' => (int) $list['quantity'],
+                            'fee' => $document_fee->fee,
+                            'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'],
+                            'status_id' => 10,
+                            'document_id' => $list['value']
+                        ]);
 
-                foreach($request->others as $list){
-                    $document_fee = DocumentFee::where('document_id',$list)->where('type_id',$request->is_express)->first();
-                    
-                    $data->lists()->create([
-                        'quantity' => (int) $list['quantity'],
-                        'fee' => $document_fee->fee,
-                        'total' => str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'],
-                        'status_id' => 10,
-                        'document_id' => $list['value']
-                    ]);
-
-                    $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'];
+                        $total += str_replace(['₱ ', '₱', ',', ' '], '', $document_fee->fee)*(int) $list['quantity'];
+                    }
                 }
                 
                 $data->payment()->create([
@@ -158,33 +169,4 @@ class WelcomeController extends Controller
         ]);
 
     }
-
-    // public function store(CustomerRequest $request){
-    //     $result = $this->handleTransaction(function () use ($request) {
-    //         $data = Customer::create(array_merge($request->all(),[
-    //             'reserved_at' => $request->date.' '.$request->time,
-    //             'status_id' => 1
-    //         ]));
-    //         if($data){
-    //             $ip = $request->ip();
-    //             $data->log()->create([
-    //                 'ip_address' => $ip,
-    //                 'user_agent' => $request->userAgent(),
-    //                 'location' => json_encode(geoip()->getLocation($ip)->toArray()),
-    //             ]);
-    //         }
-    //         return [
-    //             'data' => $data,
-    //             'message' => 'Your booking was completed successfully!', 
-    //             'info' => "We will call you for confirmation. Thank you for choosing us."
-    //         ];
-    //     });
-
-    //     return back()->with([
-    //         'data' => $result['data'],
-    //         'message' => $result['message'],
-    //         'info' => $result['info'],
-    //         'status' => $result['status'],
-    //     ]);
-    // }
 }

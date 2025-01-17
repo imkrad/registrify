@@ -65,7 +65,7 @@ export default {
             formData.append('id', this.value);
             formData.append('option', 'receipt');
 
-            axios.post('/dashboard', formData, {
+            axios.post('/payment', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
