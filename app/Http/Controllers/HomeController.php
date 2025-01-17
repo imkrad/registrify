@@ -7,7 +7,11 @@ use App\Models\ListStatus;
 use App\Models\ListDropdown;
 use Illuminate\Http\Request;
 use App\Models\Request as Transaction;
+use Spatie\Activitylog\Models\Activity;
+use App\Models\AuthenticationLog;
 use App\Http\Resources\TransactionResource;
+use App\Http\Resources\AuthenticationResource;
+use App\Http\Resources\ActivityResource;
 
 class HomeController extends Controller
 {
@@ -37,6 +41,16 @@ class HomeController extends Controller
                 ]);
             }
         }
+    }
+
+    public function authentications(){
+        $data = AuthenticationLog::orderBy('created_at','DESC')->limit(5)->get();
+        return AuthenticationResource::collection($data);
+    }
+
+    public function activities(){
+        $data = Activity::with('causer.profile')->orderBy('created_at','DESC')->limit(5)->get();
+        return ActivityResource::collection($data);
     }
 
     public function statuses(){
