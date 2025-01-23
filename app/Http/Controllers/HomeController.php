@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use App\Models\Document;
 use App\Models\ListStatus;
 use App\Models\ListDropdown;
@@ -12,6 +13,7 @@ use App\Models\AuthenticationLog;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\AuthenticationResource;
 use App\Http\Resources\ActivityResource;
+use App\Http\Resources\StudentResource;
 
 class HomeController extends Controller
 {
@@ -36,11 +38,72 @@ class HomeController extends Controller
                 ]);
             }else{
                 return inertia('Dashboard/Staff',[
+                    'stats' => $this->stats(),
                     'statuses' => $this->statuses(),
-                    'counts' => $this->counts($this->statuses())
+                    'reminders' => $this->reminders(),
+                    'counts' => $this->counts($this->statuses()),
+                    'students' => $this->students()
                 ]);
             }
         }
+    }
+
+    private function students(){
+        $data = StudentResource::collection(
+            Student::query()
+            ->with('status','attachments')
+            ->where('status_id',15)
+            ->orderBy('created_at','DESC')
+            ->get()
+        );
+        return $data;
+    }
+
+    private function stats(){
+        return [
+            [
+                'name' => 'Pending Requests',
+                'description' => 'Tests conducted by the analyst',
+                'count' => Transaction::where('status_id',5)->count(),
+                'icon' => 'ri-record-circle-fill fs-20',
+                'color' => 'text-warning'
+            ],
+            [
+                'name' => 'Ongoing Requests',
+                'description' => 'Tests conducted by the analyst',
+                'count' => Transaction::whereIn('status_id',[6,7])->count(),
+                'icon' => 'ri-play-circle-fill fs-20',
+                'color' => 'text-info'
+            ],
+            [
+                'name' => 'Completed',
+                'description' => 'Cost of all tests performed by the analyst',
+                'count' => Transaction::where('status_id',13)->count(),
+                'icon' => 'ri-checkbox-circle-fill fs-20',
+                'color' => 'text-success'
+            ]
+        ];
+    }
+
+    private function reminders(){
+        return [
+            [
+                'name' => 'For Student Verification',
+                'short' => 'Approve student access requests for eligibility',
+                'description' => 'Review and approve student access requests to ensure eligibility before granting system access.',
+                'count' => Student::where('status_id',15)->count(),
+                'icon' => 'ri-group-2-fill',
+                'color' => 'bg-info-subtle text-info'
+            ],
+            [
+                'name' => 'Document Requests',
+                'short' => 'Record of document requests with status',
+                'description' => 'A record of all submitted document requests, showing their status and details for easy tracking.',
+                'count' => Transaction::whereIn('status_id',[5,6,7])->count(),
+                'icon' => 'ri-file-list-fill',
+                'color' => 'bg-danger-subtle text-danger'
+            ],
+        ];
     }
 
     public function authentications(){

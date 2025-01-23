@@ -5,12 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Services\SmsService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
+    protected $sms;
+
+    public function __construct(SmsService $sms)
+    {
+        $this->sms = $sms;
+    }
+
     public function store(RegisterRequest $request){
         $user = User::create([
             'email' => $request->email,
@@ -28,6 +36,8 @@ class RegisterController extends Controller
                 ])
             );
             if($student){
+                $content = 'Hi '.$request->firstname.' '.$request->lastname.', Your registration is complete. Your request is now awaiting approval from the university. You will be notified once access to the system is granted.';
+                $this->sms->sendSms($request->contact_no, $content);
                 Auth::login($user);
 
                 return redirect(route('dashboard', absolute: false));

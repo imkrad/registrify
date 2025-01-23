@@ -6,11 +6,19 @@ use Illuminate\Validation\Rule;
 use App\Models\Student;
 use App\Models\ListStatus;
 use Illuminate\Http\Request;
+use App\Services\SmsService;
 use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {
+    protected $sms;
+
+    public function __construct(SmsService $sms)
+    {
+        $this->sms = $sms;
+    }
+
     public function index(Request $request){
         switch($request->option){
             case 'lists':
@@ -27,6 +35,7 @@ class StudentController extends Controller
         $data = StudentResource::collection(
             Student::query()
             ->with('status')
+            ->with('attachments')
             ->when($request->type, function ($query, $type) {
                 $query->where('status_id',$type);
             })
@@ -72,6 +81,9 @@ class StudentController extends Controller
 
         if($request->status){
             $data = Student::where('id',$request->id)->update(['status_id' => $request->status]);
+            $data = Student::where('id',$request->id)->first();
+            $content = 'Hi '.$data->firstname.' '.$data->lastname.', Your access has been granted! You are now verified as a student of Ateneo de Zamboanga University and can use the system. Welcome!';
+            $this->sms->sendSms($data->contact_no, $content);
         }else{    
             $data = Student::where('id',$request->id)->first();
             $data->contact_no = $request->contact_no;

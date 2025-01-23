@@ -46,13 +46,35 @@ class DashboardController extends Controller
                 ]);
             }else{
                 return inertia('Dashboard/Staff',[
-                    'requests' => $this->registrar(),
-                    'students' => $this->students(),
+                    // 'requests' => $this->registrar(),
+                    // 'students' => $this->students(),
+                    'reminders' => 'wew',
                     'counts' => $this->counts_registrar(),
                     'statuses' => $this->statuses()
                 ]);
             }
         }
+    }
+
+    private function reminders(){
+        return [
+            [
+                'name' => 'For Student Verification',
+                'short' => 'Approve student access requests for eligibility',
+                'description' => '"Review and approve student access requests to ensure eligibility before granting system access.',
+                'info' => 1,
+                'icon' => 'ri-error-warning-line',
+                'color' => 'bg-warning-subtle text-warning'
+            ],
+            [
+                'name' => 'Document Requests',
+                'short' => 'Record of document requests with status',
+                'description' => 'A record of all submitted document requests, showing their status and details for easy tracking.',
+                'count' => 1,
+                'icon' => 'ri-error-warning-fill',
+                'color' => 'bg-danger-subtle text-danger'
+            ],
+        ];
     }
 
     public function store(Request $request){

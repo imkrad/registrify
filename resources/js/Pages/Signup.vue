@@ -19,15 +19,15 @@
                             <hr class="text-muted"/>
                         </BCol>
                         <BCol lg="6" class="mt-n2">
-                            <InputLabel for="name" value="Lastname" :message="form.errors.lastname"/>
+                            <InputLabel for="name" value="Last name" :message="form.errors.lastname"/>
                             <TextInput type="text" v-model="form.lastname" class="form-control" placeholder="Please lastname" @input="handleInput('lastname')" :light="true"/>
                         </BCol>
                         <BCol lg="6" class="mt-n2">
-                            <InputLabel for="name" value="Firstname" :message="form.errors.firstname"/>
+                            <InputLabel for="name" value="First name" :message="form.errors.firstname"/>
                             <TextInput type="text" v-model="form.firstname" class="form-control" placeholder="Please firstname" @input="handleInput('firstname')" :light="true"/>
                         </BCol>
                         <BCol lg="6" class="mt-0">
-                            <InputLabel for="name" value="Middlename" :message="form.errors.middlename"/>
+                            <InputLabel for="name" value="Middle name" :message="form.errors.middlename"/>
                             <TextInput type="text" v-model="form.middlename" class="form-control" placeholder="Please middlename" @input="handleInput('middlename')" :light="true"/>
                         </BCol>
                         <BCol lg="6" class="mt-0">

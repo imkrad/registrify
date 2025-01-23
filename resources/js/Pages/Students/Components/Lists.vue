@@ -56,14 +56,16 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
+    <View ref="view"/>
     <Create :statuses="statuses" @update="fetch()" @updateData="updateData" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';
+import View from '../Modals/View.vue';
 import Create from '../Modals/Create.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { Pagination, Create },
+    components: { Pagination, Create, View },
     props:['statuses'],
     data(){
         return {

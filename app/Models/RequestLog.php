@@ -38,4 +38,24 @@ class RequestLog extends Model
         return $this->belongsTo('App\Models\User', 'released_by', 'id');
     }
 
+    public function getPreparedDateAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getProcessedDateAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getCompletedDateAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
+    public function getReleasedDateAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
+
 }

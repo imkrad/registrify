@@ -199,86 +199,6 @@ export default {
             </BDropdownItem>
           </BDropdown>
 
-          <!-- <BDropdown class="dropdown" variant="ghost-secondary" dropstart
-            :offset="{ alignmentAxis: 55, crossAxis: 15, mainAxis: -50 }"
-            toggle-class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle arrow-none"
-            menu-class="dropdown-menu-end">
-          
-            <BLink href="javascript:void(0);" class="dropdown-item notify-item language py-2"
-              v-for="(entry, key) in languages" :data-lang="entry.language" :title="entry.title"
-              @click="setLanguage(entry.language, entry.title, entry.flag)" :key="key">
-              <img :src="entry.flag" alt="user-image" class="me-2 rounded" height="18">
-              <span class="align-middle">{{ entry.title }}</span>
-            </BLink>
-          </BDropdown> -->
-
-          <!-- <BDropdown class="dropdown" variant="ghost-secondary" dropstart
-            :offset="{ alignmentAxis: 57, crossAxis: 0, mainAxis: -42 }"
-            toggle-class="btn-icon btn-topbar rounded-circle mode-layout ms-1 arrow-none"
-            menu-class="p-0 dropdown-menu-end">
-            <template #button-content>
-              <i class="bx bx-category-alt fs-22"></i>
-            </template>
-            <div class="p-3 border-top-0 dropdown-head border-start-0 border-end-0 border-dashed border dropdown-menu-lg">
-              <BRow class="align-items-center">
-                <BCol>
-                  <h6 class="m-0 fw-semibold fs-15">Web Apps</h6>
-                </BCol>
-                <BCol cols="auto">
-                  <BLink href="#!" class="btn btn-sm btn-soft-info">
-                    View 
-                    <i class="ri-arrow-right-s-line align-middle"></i>
-                  </BLink>
-                </BCol>
-              </BRow>
-            </div>
-
-            <div class="p-2">
-              <BRow class="g-0">
-                <BCol>
-                  <BLink class="dropdown-icon-item" @click="openInNewTab('/dashboard')">
-                    <img src="@assets/images/apps/laboratory.png" alt="lab"/>
-                    <span>Laboratory</span>
-                  </BLink>
-                </BCol>
-                <BCol>
-                  <BLink class="dropdown-icon-item" @click="openInNewTab('/inventory')">
-                    <img src="@assets/images/apps/inventory.png" alt="invent" />
-                    <span>Inventory</span>
-                  </BLink>
-                </BCol>
-                <BCol>
-                  <BLink class="dropdown-icon-item" @click="openInNewTab('/calendar')">
-                    <img src="@assets/images/apps/calendar.png" alt="chatbox" />
-                    <span>Calendar</span>
-                  </BLink>
-                </BCol>
-              </BRow>
-              <BRow class="g-0">
-                <BCol>
-                  <BLink class="dropdown-icon-item" href="#!">
-                    <img src="@assets/images/apps/testservices.png" alt="test" />
-                    <span>Testservices</span>
-                  </BLink>
-                </BCol>
-                <BCol>
-                  <BLink class="dropdown-icon-item" @click="openInNewTab('/inventory')">
-                    <img src="@assets/images/apps/referral.png" alt="bitbucket" />
-                    <span>Referral</span>
-                  </BLink>
-                </BCol>
-                <BCol>
-                  <BLink class="dropdown-icon-item" @click="openInNewTab('/chatbox')">
-                    <img src="@assets/images/apps/chatbox.png" alt="dribbble" />
-                    <span>Chatbox</span>
-                  </BLink>
-                </BCol>
-              </BRow>
-            </div>
-          </BDropdown>  -->
-
-       
-
           <div class="ms-1 header-item d-none d-sm-flex">
             <BButton type="button" variant="ghost-secondary" class="btn-icon btn-topbar rounded-circle"
               data-toggle="fullscreen" @click="initFullScreen">
@@ -293,7 +213,7 @@ export default {
             </BButton>
           </div>
 
-          <!-- <BDropdown variant="ghost-dark" dropstart class="ms-1 dropdown"
+          <BDropdown variant="ghost-dark" dropstart class="ms-1 dropdown"
             :offset="{ alignmentAxis: 57, crossAxis: 0, mainAxis: -42 }"
             toggle-class="btn-icon btn-topbar rounded-circle arrow-none" id="page-header-notifications-dropdown"
             menu-class="dropdown-menu-lg dropdown-menu-end p-0" auto-close="outside">
@@ -320,8 +240,8 @@ export default {
               </div>
             </div>
             <BTabs nav-class="dropdown-tabs nav-tab-custom bg-primary px-2 pt-2">
-              <BTab title=" All (4) " class="tab-pane fade py-2 ps-2 show" id="all-noti-tab" role="tabpanel">
-                <simplebar data-simplebar style="max-height: 300px" class="pe-2"> -->
+              <BTab title="Students" class="tab-pane fade py-2 ps-2 show" id="all-noti-tab" role="tabpanel">
+                <simplebar data-simplebar style="max-height: 300px" class="pe-2">
                   <!-- <div class="text-reset notification-item d-block dropdown-item position-relative">
                     <div class="d-flex">
                       <div class="avatar-xs me-3 flex-shrink-0">
@@ -373,16 +293,16 @@ export default {
                     </div>
                   </div> -->
 
-                  <!-- <div class="my-3 text-center">
+                  <div class="my-3 text-center">
                     <BButton type="button" variant="soft-success">
                       View All Notifications
                       <i class="ri-arrow-right-line align-middle"></i>
                     </BButton>
                   </div>
                 </simplebar>
-              </BTab> -->
+              </BTab>
 
-              <!-- <BTab title="Requests" class="tab-pane fade py-2 ps-2" id="messages-tab" role="tabpanel"
+              <BTab title="Requests" class="tab-pane fade py-2 ps-2" id="messages-tab" role="tabpanel"
                 aria-labelledby="messages-tab">
                 <simplebar data-simplebar style="max-height: 300px" class="pe-2">
                   
@@ -395,20 +315,8 @@ export default {
                   </div>
                 </simplebar>
               </BTab>
-
-              <BTab title="Referrals" class="p-4">
-                <simplebar data-simplebar style="max-height: 300px" class="pe-2">
-                  <div class="w-25 w-sm-50 pt-3 mx-auto">
-                  </div>
-                  <div class="text-center pb-5 mt-2">
-                    <h6 class="fs-14 fw-semibold lh-base">
-                      Hey! You have no any referrals
-                    </h6>
-                  </div>
-                </simplebar>
-              </BTab>
             </BTabs>
-          </BDropdown> -->
+          </BDropdown>
 
           <BDropdown variant="link" class="ms-sm-3 header-item topbar-user" toggle-class="rounded-circle arrow-none" menu-class="dropdown-menu-end" :offset="{ alignmentAxis: -14, crossAxis: 0, mainAxis: 0 }">
             <template #button-content>

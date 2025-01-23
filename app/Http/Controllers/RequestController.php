@@ -111,6 +111,9 @@ class RequestController extends Controller
                     RequestLog::where('request_id',$request->id)->update(['released_by' => \Auth::user()->id,'released_date' => now(),]);
                     $data = Transaction::with('user.student','type','payment.status','status')
                     ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
+
+                    $content = 'Hi '.$data->user->student->firstname.' '.$data->user->student->lastname.', Your requested document has been released. It is now available for your use. Thank you!';
+                    $this->sms->sendSms($data->user->student->contact_no, $content);
                 }
             break;
         }
@@ -127,9 +130,19 @@ class RequestController extends Controller
         $data = TransactionResource::collection(
             Transaction::query()
             ->with('user.student','type','payment.status','status')
+            ->with('log.prepared.profile','log.processed.profile','log.completed.profile','log.released.profile')
             ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
             ->when($request->status, function ($query, $status) {
                 $query->where('status_id', $status);
+            })
+            ->when($request->keyword, function ($query, $keyword) {
+                $query->where('code', 'LIKE', "%{$keyword}%");
+                $query->orWhereHas('user',function ($query) use ($keyword) {
+                    $query->whereHas('student',function ($query) use ($keyword) {
+                        $query->where(\DB::raw('concat(firstname," ",lastname)'), 'LIKE', "%{$keyword}%")
+                        ->orWhere(\DB::raw('concat(lastname," ",firstname)'), 'LIKE', "%{$keyword}%");
+                    });
+                });
             })
             ->orderBy('created_at','DESC')
             ->paginate($request->count)

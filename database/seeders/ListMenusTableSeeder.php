@@ -130,6 +130,20 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
+            8 => 
+            array (
+                'id' => 9,
+                'name' => 'Students',
+                'icon' => 'ri-team-fill',
+                'route' => '/students',
+                'path' => 'Students',
+                'group' => 'Menu',
+                'module' => 'Main',
+                'order' => 3,
+                'has_child' => 0,
+                'is_mother' => 1,
+                'is_active' => 1,
+            ),
         ));
 
         

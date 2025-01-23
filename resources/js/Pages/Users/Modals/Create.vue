@@ -97,7 +97,7 @@ export default {
             this.form.email = data.email;
             this.form.mobile = data.mobile;
             this.form.gender = data.gender;
-            this.form.role = 'Staff';
+            this.form.role = 'Registrar';
             this.showModal = true;
         },
         submit(){

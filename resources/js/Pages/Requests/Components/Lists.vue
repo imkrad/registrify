@@ -3,7 +3,7 @@
         <b-col lg>
             <div class="input-group mb-1">
                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                <input type="text" v-model="filter.keyword" placeholder="Search Documents" class="form-control" style="width: 60%;">
+                <input type="text" v-model="filter.keyword" placeholder="Search Transaction" class="form-control" style="width: 60%;">
                 <select v-model="filter.type" @change="fetch()" class="form-select" id="inputGroupSelect01" style="width: 100px;">
                     <option :value="null" selected>Select Type</option>
                     <option :value="list.value" v-for="list in documents" v-bind:key="list.id">{{list.name}}</option>
