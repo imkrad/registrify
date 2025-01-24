@@ -4,6 +4,7 @@ import Navigation from '@/Shared/Layouts/Components/Navigation.vue';
 import Configuration from '@/Shared/Layouts/Components/Configuration.vue';
 import Menu from '@/Shared/Layouts/Components/Menu.vue';
 export default {
+  props: ['notification'],
   mounted() {
     this.initActiveMenu();
   },
@@ -44,7 +45,7 @@ export default {
 <template>
   <div>
     <div id="layout-wrapper">
-      <Navigation />
+      <Navigation :notification="notification" />
       <!-- ========== App Menu ========== -->
       <div class="app-menu navbar-menu">
         <!-- LOGO -->

@@ -3,13 +3,14 @@ import { layoutComputed } from "@/Shared/State/helpers";
 import Vertical from "./Vertical.vue";
 import Horizontal from "./Horizontal.vue";
 import TwoColumns from "./Twocolumn.vue";
-
+import { Inertia } from "@inertiajs/inertia";
 export default {
     components: {
         Vertical,
         Horizontal,
         TwoColumns
     },
+    props: ['notification'],
     data() {
         return {};
     },
@@ -19,26 +20,56 @@ export default {
             return (this.$page.props.flash.message) ?  true : false;
         }
     },
+    mounted() {
+            document.addEventListener("scroll", function () {
+                var pageTopbar = document.getElementById("page-topbar");
+                if (pageTopbar) {
+                    document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50 ? pageTopbar
+                        .classList.add(
+                            "topbar-shadow") : pageTopbar.classList.remove("topbar-shadow");
+                }
+            });
+            if (document.getElementById("topnav-hamburger-icon"))
+                document.getElementById("topnav-hamburger-icon").addEventListener("click", this.toggleHamburgerMenu);
+
+//                 console.log("Mounted hook is running");
+//                 this.refreshInterval = setInterval(() => {
+//                     Inertia.render(window.location.href, {
+//     only: ['notification'],
+//     replace: true,
+//     preserveState: true,  // Keeps the state from previous page visits
+// });
+//     }, 5000);
+
+        },
+    //     beforeUnmount() {
+    //       if (this.refreshInterval) {
+    //           clearInterval(this.refreshInterval);
+    //       }
+    //   },
     methods: {
         check(){
             this.$page.props.flash = {};
             this.message = false;
-        }
+        },
+        refreshData() {
+        Inertia.reload({ only: ['notification'] }); // Specify the prop you want to refresh
+        },
     }
 };
 </script>
 
 <template>
     <div>
-        <Vertical v-if="layoutType === 'vertical' || layoutType === 'semibox'" :layout="layoutType">
+        <Vertical :notification="notification" v-if="layoutType === 'vertical' || layoutType === 'semibox'" :layout="layoutType">
             <slot />
         </Vertical>
 
-        <Horizontal v-if="layoutType === 'horizontal'" :layout="layoutType">
+        <Horizontal :notification="notification" v-if="layoutType === 'horizontal'" :layout="layoutType">
             <slot />
         </Horizontal>
 
-        <TwoColumns v-if="layoutType === 'twocolumn'" :layout="layoutType">
+        <TwoColumns :notification="notification" v-if="layoutType === 'twocolumn'" :layout="layoutType">
             <slot />
         </TwoColumns>
     </div>

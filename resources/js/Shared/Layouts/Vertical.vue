@@ -12,6 +12,7 @@ localStorage.setItem('hoverd', false);
  */
 export default {
   components: { Menu, Footer, Navigation, Configuration, simplebar},
+  props: ['notification'],
   data() {
     return {
       isMenuCondensed: false,
@@ -88,7 +89,7 @@ export default {
   
 <template>
   <div id="layout-wrapper">
-    <Navigation />
+    <Navigation :notification="notification"/>
     <div>
       <!-- ========== Left Sidebar Start ========== -->
       <!-- ========== App Menu ========== -->

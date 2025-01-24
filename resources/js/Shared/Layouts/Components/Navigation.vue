@@ -1,22 +1,20 @@
-<script setup>
+<script>
 import View from '../../../Pages/Dashboard/Modals/View.vue';
 import Student from '../../../Pages/Dashboard/Modals/Student.vue';
     import { router } from '@inertiajs/vue3';
     import { layoutMethods } from "@/Shared/State/helpers";
-    const logout = () => {
-        router.post('/logout');
-    };
-</script>
-
-<script>
     import simplebar from "simplebar-vue";
     export default {
+      props: ['notification'],
+
+     
         data() {
             return {
                 currentUrl: window.location.origin,
                 text: null,
                 value: null,
                 myVar: 1,
+                refreshInterval: null,
             };
         },
         components: {
@@ -25,6 +23,16 @@ import Student from '../../../Pages/Dashboard/Modals/Student.vue';
 
         methods: {
             ...layoutMethods,
+            logout() {
+      router.post('/logout');
+    },
+    refreshNotifications() {
+        console.log("Manually refreshing...");
+        Inertia.visit(window.location.href, {
+            only: ['notification'],
+            preserveScroll: true,
+        });
+    },
             toggleHamburgerMenu() {
                 var windowSize = document.documentElement.clientWidth;
                 let layoutType = document.documentElement.getAttribute("data-layout");
@@ -96,6 +104,8 @@ import Student from '../../../Pages/Dashboard/Modals/Student.vue';
             if (document.getElementById("topnav-hamburger-icon"))
                 document.getElementById("topnav-hamburger-icon").addEventListener("click", this.toggleHamburgerMenu);
 
+             
+
         },
     };
 </script>
@@ -126,7 +136,6 @@ import Student from '../../../Pages/Dashboard/Modals/Student.vue';
                         </span>
                         </Link>
                     </div>
-
                     <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
                         id="topnav-hamburger-icon">
                         <span class="hamburger-icon">
@@ -166,8 +175,8 @@ import Student from '../../../Pages/Dashboard/Modals/Student.vue';
                         auto-close="outside">
                         <template #button-content>
                             <i class='bx bx-bell fs-22'></i>
-                              <span v-if="$page.props.notification.total > 0" class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">
-                                <span class="notification-badge">{{ $page.props.notification.total }}</span>
+                              <span v-if="notification.total > 0" class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">
+                                <span class="notification-badge">{{ notification.total }}</span>
                                 <span class="visually-hidden">notifications</span>
                             </span>
                         </template>
@@ -180,18 +189,18 @@ import Student from '../../../Pages/Dashboard/Modals/Student.vue';
                                         </h6>
                                     </BCol>
                                     <BCol cols="auto" class="dropdown-tabs">
-                                        <BBadge variant="light-subtle" class="bg-light-subtle text-body fs-13"> {{ $page.props.notification.total }} New
+                                        <BBadge variant="light-subtle" class="bg-light-subtle text-body fs-13"> {{ notification.total }} New
                                         </BBadge>
                                     </BCol>
                                 </BRow>
                             </div>
                         </div>
                         <BTabs nav-class="dropdown-tabs nav-tab-custom bg-primary px-2 pt-2">
-                            <BTab :title="$page.props.notification.s" class="tab-pane fade py-2 ps-2 show" id="all-noti-tab"
+                            <BTab :title="notification.s" class="tab-pane fade py-2 ps-2 show" id="all-noti-tab"
                                 role="tabpanel">
                                 <simplebar data-simplebar style="max-height: 300px" class="pe-2">
 
-                                  <div @click="openStudent(list)" v-for="(list,index) in $page.props.notification.student_lists.data" v-bind:key="index" class="text-reset notification-item d-block dropdown-item position-relative">
+                                  <div @click="openStudent(list)" v-for="(list,index) in notification.student_lists.data" v-bind:key="index" class="text-reset notification-item d-block dropdown-item position-relative">
                                     <div class="d-flex">
                                       <div class="avatar-xs me-3 flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle text-primary rounded-circle fs-16">
@@ -225,12 +234,12 @@ import Student from '../../../Pages/Dashboard/Modals/Student.vue';
                                 </simplebar>
                             </BTab>
 
-                            <BTab :title="$page.props.notification.r" class="tab-pane fade py-2 ps-2" id="messages-tab" role="tabpanel"
+                            <BTab :title="notification.r" class="tab-pane fade py-2 ps-2" id="messages-tab" role="tabpanel"
                                 aria-labelledby="messages-tab">
                                
                                 <simplebar data-simplebar style="max-height: 300px" class="pe-2">
                                   
-                                  <div @click="openView(list)" v-for="(list,index) in $page.props.notification.document_lists.data" v-bind:key="index" class="text-reset notification-item d-block dropdown-item position-relative">
+                                  <div @click="openView(list)" v-for="(list,index) in notification.document_lists.data" v-bind:key="index" class="text-reset notification-item d-block dropdown-item position-relative">
                                     <div class="d-flex">
                                       <div class="avatar-xs me-3 flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle text-primary rounded-circle fs-16">
