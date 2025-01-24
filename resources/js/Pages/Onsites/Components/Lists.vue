@@ -12,7 +12,7 @@
                     <i class="bx bx-refresh search-icon"></i>
                 </span>
                 <b-button type="button" variant="primary" @click="openCreate">
-                    <i class="ri-add-circle-fill align-bottom me-1"></i> -
+                    <i class="ri-add-circle-fill align-bottom me-1"></i> Create
                 </b-button>
             </div>
         </b-col>
@@ -23,12 +23,12 @@
                 <tr class="fs-11">
                     <th></th>
                     <th style="width: 10%;">Code</th>
-                    <th style="width: 20%;" class="text-center">Student</th>
-                    <th style="width: 15%;" class="text-center">Type</th>
-                    <th style="width: 15%;" class="text-center">Processing</th>
-                    <th style="width: 10%;" class="text-center">Payment</th>
+                    <th style="width: 20%;" class="text-center">Name</th>
+                    <th style="width: 15%;" class="text-center">Year & Section</th>
+                    <th style="width: 15%;" class="text-center">Documents</th>
+                    <th style="width: 10%;" class="text-center">Request Date</th>
+                    <th style="width: 10%;" class="text-center">Claimed Date</th>
                     <th style="width: 10%;" class="text-center">Status</th>
-                    <th style="width: 10%;" class="text-center">Total</th>
                     <th style="width: 7%;" ></th>
                 </tr>
             </thead>
@@ -38,25 +38,19 @@
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
                     <td class="fs-12">{{list.code}}</td>
-                    <td class="text-center">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</td>
-                    <td class="text-center fs-12">{{list.type.name}}</td>
+                    <td class="text-center">{{list.name}}.</td>
+                    <td class="text-center fs-12">{{list.year}}</td>
                     <td class="text-center fs-12">
-                        <span v-if="list.is_express" class="badge bg-success">Express</span>
-                        <span v-else class="badge bg-info">Regular</span>
+                        -
                     </td>
-                    <td class="text-center fs-12">
-                        <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span>
-                    </td>
+                    <td class="text-center fs-12">{{list.created_at}}</td>
+                    <td class="text-center fs-12">{{list.claimed_at}}</td>
                     <td class="text-center fs-12">
                         <span :class="'badge '+list.status.color">{{list.status.name}}</span>
                     </td>
-                    <td class="text-center fs-12">{{list.payment.total}}</td>
                     <td class="text-end">
                         <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                             <i class="ri-eye-fill align-bottom"></i>
-                        </b-button>
-                        <b-button @click="openPrint(list.id)" variant="soft-success" class="me-1" v-b-tooltip.hover title="Print" size="sm">
-                            <i class="ri-printer-fill align-bottom"></i>
                         </b-button>
                     </td>
                 </tr>
@@ -65,13 +59,16 @@
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
     <View ref="view"/>
+    <Create  :types="types" :graduates="graduates" :colleges="colleges" :fees="fees" @update="fetch" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';
 import View from '../Modals/View.vue';
+import Create from '../Modals/Create.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { Pagination, View },
+    components: { Pagination, View, Create },
+    props: ['graduates','colleges','types','fees'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -98,7 +95,7 @@ export default {
             this.fetch();
         }, 300),
         fetch(page_url){
-            page_url = page_url || '/requests';
+            page_url = page_url || '/onsites';
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
@@ -119,8 +116,8 @@ export default {
         openView(data){
             this.$refs.view.show(data);
         },
-        openPrint(data){
-            window.open('/requests?option=print&id='+data);
+        openCreate(){
+            this.$refs.create.show();
         }
     }
 }

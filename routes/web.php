@@ -13,6 +13,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('/documents', App\Http\Controllers\DocumentController::class);
     Route::resource('/students', App\Http\Controllers\StudentController::class);
     Route::resource('/requests', App\Http\Controllers\RequestController::class);
+    Route::resource('/onsites', App\Http\Controllers\OnsiteController::class);
     Route::resource('/users', App\Http\Controllers\UserController::class);
     Route::resource('/profile', App\Http\Controllers\ProfileController::class);
     Route::resource('/payment', App\Http\Controllers\PaymentController::class);

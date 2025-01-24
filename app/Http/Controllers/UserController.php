@@ -44,7 +44,8 @@ class UserController extends Controller
         $data = User::create(array_merge($request->all(),[
             'password' => bcrypt('123456789'),
             'username' => $request->firstname[0].$request->lastname,
-            'is_active' => 1
+            'is_active' => 1,
+            'email_verified_at' => now()
         ]));
         $data->profile()->create($request->all());
         return back()->with([
