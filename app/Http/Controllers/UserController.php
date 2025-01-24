@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -39,7 +40,7 @@ class UserController extends Controller
         return $data;
     }
 
-    public function store(Request $request){
+    public function store(UserRequest $request){
         $data = User::create(array_merge($request->all(),[
             'password' => bcrypt('123456789'),
             'username' => $request->firstname[0].$request->lastname,

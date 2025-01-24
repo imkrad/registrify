@@ -58,7 +58,7 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <Create :statuses="statuses" @update="fetch()" @updateData="updateData" ref="create"/>
+    <Create :statuses="statuses" @update="fetch()" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';

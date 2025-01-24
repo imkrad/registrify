@@ -76,7 +76,7 @@ export default {
                 email: null,
                 mobile: null,
                 gender: null,
-                role: null
+                role: 'Registrar'
             }),
             showModal: false,
             editable: false
@@ -105,7 +105,7 @@ export default {
                 this.form.put('/users/update',{
                     preserveScroll: true,
                     onSuccess: (response) => {
-                        this.$emit('updateData',this.$page.props.flash.data.data);
+                        this.$emit('update',true);
                         this.form.reset();
                         this.hide();
                     }
