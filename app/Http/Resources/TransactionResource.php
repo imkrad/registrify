@@ -21,6 +21,7 @@ class TransactionResource extends JsonResource
             'type' => $this->type,
             'status' => $this->status,
             'student' => $this->user->student,
+            'name' => $this->user->student->lastname.', '.$this->user->student->firstname.' '.$this->user->student->middlename.'.',
             'is_express' => $this->is_express,
             'lists' => $this->lists,
             'payment' => $this->payment,
