@@ -43,6 +43,11 @@ class Request extends Model
         return $this->hasOne('App\Models\RequestPayment', 'request_id');
     }
 
+    public function authorization()
+    {
+        return $this->hasOne('App\Models\RequestAuthorization', 'request_id');
+    }
+
     public function log()
     {
         return $this->hasOne('App\Models\RequestLog', 'request_id');
@@ -70,6 +75,6 @@ class Request extends Model
 
     public function getClaimedAtAttribute($value)
     {
-        return date('M d, Y g:i a', strtotime($value));
+        return ($value) ? date('M d, Y g:i a', strtotime($value)) : '-';
     }
 }

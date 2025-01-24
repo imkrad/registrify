@@ -26,6 +26,7 @@ class TransactionRequest extends FormRequest
             'is_express' => 'required',
             'is_personal' => 'required',
             'purpose' => 'required',
+            'name' => 'sometimes|required',
             'checked' => 'required|array|min:1'
         ];
     }

@@ -4,7 +4,7 @@
             <div class="col-md-10">
                 <div>
                     <h6><span class="fw-semibold text-primary fs-16">{{ selected.student.lastname+', '+selected.student.firstname+' '+selected.student.middlename+'.' }}</span></h6>
-                    <div class="hstack gap-3 fs-12 flex-wrap">
+                    <div class="hstack gap-3 fs-12 flex-wrap mt-n1">
                         <div>
                             <!-- <span class="text-muted">Code</span> :  -->
                             <span v-if="selected.code" class="fw-medium">{{selected.code}}</span>
@@ -39,6 +39,14 @@
                 </b-button>
             </div>
         </div>
+
+        <div v-if="selected.authorization" class="alert alert-warning alert-dismissible alert-label-icon label-arrow material-shadow mt-4" role="alert" aria-live="polite" aria-atomic="true">
+            <i class="ri-alert-line label-icon"></i>Authorized Representative : <strong>{{ selected.authorization.name }} </strong> 
+            <span class="float-end fw-semibold">
+                <a :href="currentUrl+'/storage/'+selected.authorization.file" target="_blank" class="stretched-link">View Attachment</a>
+            </span>
+        </div>
+
         <div class="row g-3 mt-n2">
             <div class="col-md-12 mt-0 mb-n3"><hr class="text-muted"/></div>
             <div class="row mt-0 g-3" v-if="selected">

@@ -140,7 +140,7 @@
                             <BCol lg="6" :class="(form.errors.is_personal) ? 'text-danger' : ''">
                                 <div class="form-floating">
                                     <input type="text" v-model="form.name" class="form-control">
-                                    <label>Authorized Person</label>
+                                    <label :class="(errors.name) ? 'text-danger' : ''">Authorized Person</label>
                                 </div>
                             </BCol>
                             <BCol lg="6">
@@ -257,10 +257,11 @@ export default {
             data.append('checked[]', (this.form.checked.length != 0) ? JSON.stringify(this.form.checked) : []);
             data.append('others[]', (this.form.others.length != 0) ? JSON.stringify(this.form.others) : []);
             data.append('is_express', (this.form.is_express) ? this.form.is_express : '');
-            data.append('is_personal', (this.form.is_personal) ? this.form.is_personal : '');
+            data.append('is_personal', this.form.is_personal);
             data.append('purpose', (this.form.purpose) ? this.form.purpose : '');
             data.append('user_id', this.form.user_id);
             data.append('type_id', this.form.type_id);
+            (!this.form.is_personal) ? data.append('name', this.form.name) : '';
             if(this.form.attachments.length > 0){
                 for (var i = this.form.attachments.length - 1; i >= 0; i--) {
                     data.append('files[]', this.form.attachments[i]);

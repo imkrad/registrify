@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Request as Transaction;
+use App\Models\RequestAuthorization;
 use App\Models\DocumentFee;
 use Hashids\Hashids;
 use Illuminate\Http\Request;
@@ -145,6 +146,10 @@ class WelcomeController extends Controller
                     'status_id' => 8,
                 ]);
 
+                if(!$request->is_personal){
+                    $this->upload($request,$data->id);
+                }
+
                 return [
                     'data' => $data,
                     'message' => 'Your request was completed successfully!', 
@@ -168,5 +173,31 @@ class WelcomeController extends Controller
             'status' => $result['status'],
         ]);
 
+    }
+
+    private function upload($request,$id){
+        $request->validate([
+            'files.*' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // each file must be an image or PDF with max size of 2MB
+        ]);
+        $uploadedFiles = $request->file('files'); 
+        $filePaths = [];
+
+        foreach ($uploadedFiles as $file) {
+            $path = $file->store('uploads/authorizations', 'public');
+            $filePaths[] = $path; 
+            $fileSizeInBytes  = $file->getSize();
+            if ($fileSizeInBytes >= 1048576) { // If 1 MB or more
+                $fileSize = round($fileSizeInBytes / 1048576, 2) . ' MB';
+            } else {
+                $fileSize = round($fileSizeInBytes / 1024, 2) . ' KB';
+            }
+
+            RequestAuthorization::create([
+                'request_id' => $id,
+                'name' => $request->name,
+                'file' => $path,
+                'size' => $fileSize
+            ]);
+        }
     }
 }

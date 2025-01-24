@@ -15,4 +15,9 @@ class RequestAuthorization extends Model
     {
         return $this->belongsTo('App\Models\Request', 'request_id', 'id');
     }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords(strtolower($value));
+    }
 }

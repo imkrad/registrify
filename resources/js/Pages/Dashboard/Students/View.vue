@@ -36,7 +36,16 @@
             </div>
         </div>
         <div class="row g-2 mt-0" >
+            
             <div class="col-md-12 mt-n1 mb-n2"><hr class="text-muted"/></div>
+            <div class="col-md-12 mt-n3" v-if="selected.authorization">
+                <div class="alert alert-warning alert-dismissible alert-label-icon label-arrow material-shadow mt-4" role="alert" aria-live="polite" aria-atomic="true">
+                    <i class="ri-alert-line label-icon"></i>Authorized Representative : <strong>{{ selected.authorization.name }} </strong> 
+                    <span class="float-end fw-semibold">
+                        <a :href="currentUrl+'/storage/'+selected.authorization.file" target="_blank" class="stretched-link">View Attachment</a>
+                    </span>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="card bg-light-subtle shadow-none border">
                     <div class="card-header bg-light-subtle">
