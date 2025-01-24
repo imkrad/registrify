@@ -99,7 +99,7 @@ class HomeController extends Controller
                 'name' => 'Document Requests',
                 'short' => 'Record of document requests with status',
                 'description' => 'A record of all submitted document requests, showing their status and details for easy tracking.',
-                'count' => Transaction::whereIn('status_id',[5,6,7,16])->count(),
+                'count' => Transaction::whereIn('status_id',[5,7,16])->count(),
                 'icon' => 'ri-file-list-fill',
                 'color' => 'bg-danger-subtle text-danger'
             ],

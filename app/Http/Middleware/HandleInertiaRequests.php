@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
         }
 
         $student_count = Student::where('status_id',15)->count();
-        $document_count = Transaction::whereIn('status_id',[5,6,7])->count();
+        $document_count = Transaction::whereIn('status_id',[5,16,7])->count();
         $s = ($student_count == 0) ? '' : '('.$student_count.')';
         $r = ($document_count == 0) ? '' : '('.$document_count.')';
         $documents = '';
@@ -93,9 +93,9 @@ class HandleInertiaRequests extends Middleware
             ->with('user.student','type','payment.status','status','comments.user.profile','authorization')
             ->with('log.prepared.profile','log.processed.profile','log.completed.profile','log.released.profile')
             ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
-            ->whereIn('status_id',[5,16,6,7])
+            ->whereIn('status_id',[5,16,7])
             ->orderBy('created_at','DESC')
-            ->paginate(5)
+            ->get()
         );
         return $data;
     }
