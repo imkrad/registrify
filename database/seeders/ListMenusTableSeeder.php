@@ -144,6 +144,20 @@ class ListMenusTableSeeder extends Seeder
                 'is_mother' => 1,
                 'is_active' => 1,
             ),
+            9 => 
+            array (
+                'id' => 10,
+                'name' => 'Onsite',
+                'icon' => 'ri-walk-fill',
+                'route' => '/onsites',
+                'path' => 'Onsites',
+                'group' => 'Menu',
+                'module' => 'Main',
+                'order' => 2,
+                'has_child' => 0,
+                'is_mother' => 1,
+                'is_active' => 1,
+            ),
         ));
 
         
