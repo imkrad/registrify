@@ -35,7 +35,7 @@ class Request extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Models\RequestComment', 'request_id');
+        return $this->hasMany('App\Models\RequestComment', 'request_id')->orderBy('created_at','DESC');
     }
 
     public function payment()

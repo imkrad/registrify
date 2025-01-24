@@ -117,7 +117,9 @@
                                 <p class="text-muted text-truncate-two-lines fs-11">List of documents requested by students for processing</p>
                             </div>
                             <div class="flex-shrink-0">
-                              
+                                <BButton v-if="selected.comments.length == 0" variant="danger" class="btn-label btn-sm waves-effect waves-light" @click="openComment(selected.id)">
+                                    <i class="ri-message-3-fill label-icon align-middle fs-16 me-2"></i> Add Comment
+                                </BButton>
                             </div>
                         </div>
                     </div>
@@ -196,30 +198,45 @@
                         </div>
                     </div>
                 </div>
-                
-
-                
             </div>
-            <!-- <div class="col-md-12">
-                <hr class="text-muted mb-2 mt-2"/>
-            </div>
-            <div class="col-md-12">
-                <div class="row g-2">
-                    <div class="col-md-4" v-for="(list,index) in selected.attachments" v-bind:key="index">
-                        <div class="d-flex bg-light border border-dashed p-2 rounded position-relative">
-                            <div class="flex-shrink-0">
-                                <i class="ri-image-2-line fs-17 text-danger"></i>
+            <div class="col-md-12 mt-0 mb-n4" v-if="selected.comments.length > 0">
+                <div class="card bg-light-subtle shadow-none border">
+                    <div class="card-header bg-light-subtle">
+                        <div class="d-flex mb-n3">
+                            <div class="flex-shrink-0 me-3">
+                                <div style="height:2.2rem;width:2.2rem;">
+                                    <span class="avatar-title bg-primary-subtle rounded p-2 mt-n1">
+                                        <i class="ri-message-3-fill text-primary fs-24"></i>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="flex-grow-1 ms-2">
-                                <h6 class="mb-0 fs-12">
-                                    <a :href="currentUrl+'/storage/'+list.file" target="_blank" class="stretched-link">Attachment {{index+1}}</a>
-                                </h6>
-                                <small>{{list.size}}</small>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-0 fs-13">
+                                    <span class="text-body">Comments</span>
+                                </h5>
+                                <p class="text-muted text-truncate-two-lines fs-11">List of comments</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <BButton variant="danger" class="btn-sm waves-effect waves-light" @click="openComment(selected.id)">
+                                    Add Comment
+                                </BButton>
                             </div>
                         </div>
                     </div>
+                    <div class="card bg-white border-bottom shadow-none mb-0" style="max-height: 100px; overflow: auto;">
+                        <b-list-group flush>
+                            <BListGroupItem v-for="(list,index) in selected.comments" v-bind:key="index">
+                                <div class="d-flex align-items-center mb-n3">
+                                    <div class="flex-shrink-0">
+                                        <h5 class="fs-12 mb-0">{{list.user.profile.firstname}} {{list.user.profile.lastname}} <small class="text-muted ms-2">({{ list.created_at }})</small></h5>
+                                        <p class="text-muted fs-11">{{ list.message }}</p>
+                                    </div>
+                                </div>
+                            </BListGroupItem>
+                        </b-list-group>
+                    </div>
                 </div>
-            </div> -->
+            </div>
         </div>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
@@ -230,7 +247,7 @@
         </template>
     </b-modal>    
     <More ref="more"/>
-    <Comment ref="comment"/>
+    <Comment @update="updateComment" ref="comment"/>
 </template>
 <script>
 import More from './More.vue';
@@ -246,7 +263,8 @@ export default {
                 payment: {
                     status: {}
                 },
-                status: {}
+                status: {},
+                comments: []
             },
             index: null,
             form: {},
@@ -305,12 +323,18 @@ export default {
                 },
             });
         },
+        updateComment(data){
+            this.selected.comments = data.comments;
+        },
         a(array) {
             return array.every(item => item.status_id === 12);
         },
         viewMore(data){
             this.$refs.more.show(data);
         },  
+        openComment(id){
+            this.$refs.comment.show(id);
+        },
         hide(){
             this.showModal = false;
         }

@@ -2,7 +2,7 @@
     <b-modal v-if="selected" v-model="showModal" header-class="p-3 bg-light" title="More Details" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <div class="row">
             <div class="col-md-12">
-                <div class="row g-2">
+                <div class="row g-2" v-if="selected.attachments.length > 0">
                     <div class="col-md-12" v-for="(list,index) in selected.attachments" v-bind:key="index">
                         <div class="d-flex bg-light border border-dashed p-2 rounded position-relative">
                             <div class="flex-shrink-0">
@@ -17,11 +17,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="row g-2" v-else>
+                    <div class="col-md-12 mb-n4">
+                        <div data-v-e683f25c="" class="text-center fs-12 alert alert-danger material-shadow" role="alert" aria-live="polite" aria-atomic="true">Attachment not yet available. No receipt yet.</div>
+                    </div>
+                </div>
             </div> 
             <div class="col-md-12">
                 <hr class="text-muted"/>
             </div>
-            <div class="col-md-12 mt-n2 mb-n4">
+            <div class="col-md-12 mt-n2 mb-n4" v-if="selected.log">
                 <div class="profile-timeline">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item border-0">
@@ -124,6 +129,9 @@
                     
                     </div>
                 </div>
+            </div>
+            <div class="col-md-12 mt-n2 mb-n4" v-else>
+                <div data-v-e683f25c="" class="text-center fs-12 alert alert-warning material-shadow" role="alert" aria-live="polite" aria-atomic="true">No logs found</div>
             </div>
         </div>
         <template v-slot:footer>

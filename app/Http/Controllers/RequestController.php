@@ -7,6 +7,7 @@ use App\Models\Request as Transaction;
 use App\Models\RequestLog;
 use App\Models\RequestList;
 use App\Models\RequestPayment;
+use App\Models\RequestComment;
 use App\Models\DocumentFee;
 use Illuminate\Http\Request;
 use App\Services\SmsService;
@@ -74,7 +75,7 @@ class RequestController extends Controller
                     $content = 'Hi '.$student->user->student->firstname.' '.$student->user->student->lastname.', Your request for documents has been confirmed and is now ready for payment. Please upload the receipt to the system once payment is made. Thank you!';
                     $this->sms->sendSms($student->user->student->contact_no, $content);
 
-                    $data = Transaction::with('user.student','type','payment.status','status')
+                    $data = Transaction::with('user.student','type','payment.status','status','comments.user.profile')
                     ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
                 }
             break;
@@ -90,7 +91,7 @@ class RequestController extends Controller
                 $data = Transaction::where('id',$request->id)->update(['status_id' => 7, 'due_at' => $calculatedDate]);
                 if($data){
                     RequestLog::where('request_id',$request->id)->update(['processed_by' => \Auth::user()->id,'processed_date' => now(),]);
-                    $data = Transaction::with('user.student','type','payment.status','status')
+                    $data = Transaction::with('user.student','type','payment.status','status','comments.user.profile')
                     ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
                 }
             break;
@@ -98,7 +99,7 @@ class RequestController extends Controller
                 $data = Transaction::with('user.student')->where('id',$request->id)->update([ 'status_id' => 13]);
                 if($data){
                     RequestLog::where('request_id',$request->id)->update(['completed_by' => \Auth::user()->id,'completed_date' => now(),]);
-                    $data = Transaction::with('user.student','type','payment.status','status')
+                    $data = Transaction::with('user.student','type','payment.status','status','comments.user.profile')
                     ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
                     $student = Transaction::with('user.student')->where('id',$request->id)->first();
                     $content = 'Hi '.$student->user->student->firstname.' '.$student->user->student->lastname.', Your requested document is ready for pickup. Please visit the Ateneo de Zamboanga University College Registrar\'s Office. Thank you.';
@@ -109,12 +110,21 @@ class RequestController extends Controller
                 $data = Transaction::where('id',$request->id)->update(['status_id' => 14, 'claimed_at' => now()]);
                 if($data){
                     RequestLog::where('request_id',$request->id)->update(['released_by' => \Auth::user()->id,'released_date' => now(),]);
-                    $data = Transaction::with('user.student','type','payment.status','status')
+                    $data = Transaction::with('user.student','type','payment.status','status','comments.user.profile')
                     ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
 
                     $content = 'Hi '.$data->user->student->firstname.' '.$data->user->student->lastname.', Your requested document has been released. It is now available for your use. Thank you!';
                     $this->sms->sendSms($data->user->student->contact_no, $content);
                 }
+            break;
+            case 'comment': 
+                $data = new RequestComment;
+                $data->message = $request->message;
+                $data->request_id = $request->id;
+                $data->user_id = \Auth::user()->id;
+                $data->save();
+
+                $data = Transaction::with('user.student','type','payment.status','status','comments.user.profile')->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
             break;
         }
 
@@ -129,7 +139,7 @@ class RequestController extends Controller
     private function lists($request){
         $data = TransactionResource::collection(
             Transaction::query()
-            ->with('user.student','type','payment.status','status')
+            ->with('user.student','type','payment.status','status','comments.user.profile')
             ->with('log.prepared.profile','log.processed.profile','log.completed.profile','log.released.profile')
             ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
             ->when($request->status, function ($query, $status) {

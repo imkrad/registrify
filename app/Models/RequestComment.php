@@ -15,4 +15,14 @@ class RequestComment extends Model
     {
         return $this->belongsTo('App\Models\Request', 'request_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('M d, Y g:i a', strtotime($value));
+    }
 }

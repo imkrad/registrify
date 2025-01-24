@@ -144,6 +144,7 @@ class DashboardController extends Controller
                 $data = new RequestComment;
                 $data->message = $request->message;
                 $data->request_id = $request->id;
+                $data->user_id = \Auth::user()->id;
                 $data->save();
 
                 return back()->with([
