@@ -58,8 +58,8 @@
         </table>
         <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
     </div>
-    <View ref="view"/>
-    <Create  :types="types" :graduates="graduates" :colleges="colleges" :fees="fees" @update="fetch" ref="create"/>
+    <View @update="fetch()" ref="view"/>
+    <Create  :types="types" :graduates="graduates" :colleges="colleges" :fees="fees" @update="fetch()" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';

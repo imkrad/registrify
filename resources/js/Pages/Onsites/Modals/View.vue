@@ -77,7 +77,7 @@
                                 <th style="width: 30%;">Document</th>
                                 <th style="width: 16%;" class="text-center">Processor</th>
                                 <th style="width: 16%;" class="text-center">Quantity</th>
-                                <th style="width: 15%;" class="text-center">Status</th>
+                                <!-- <th style="width: 15%;" class="text-center">Status</th> -->
                             </tr>
                         </thead>
                         <tbody class="fs-12">
@@ -86,9 +86,9 @@
                                 <td>{{ list.document.name.name}}</td>
                                 <td class="text-center">{{ (list.user) ? list.user.profile.firstname+' '+list.user.profile.lastname : '-'}}</td>
                                 <td class="text-center">{{ list.quantity }}</td>
-                                <td class="text-center">
+                                <!-- <td class="text-center">
                                     <span :class="'badge '+list.status.color">{{list.status.name}}</span>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -97,9 +97,7 @@
         </div>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
-            <b-button v-if="selected.status.name == 'Pending'" @click="submit('confirm')" variant="primary" :disabled="form.processing" block>Confirm</b-button>
-            <b-button v-if="selected.status.name == 'Waiting'" @click="submit('process')" variant="primary" :disabled="form.processing" block>Process</b-button>
-            <b-button v-if="a(selected.lists) && selected.status.name == 'Processing'" @click="submit('completed')" variant="primary" :disabled="form.processing" block>Mark as Completed</b-button>
+            <b-button v-if="selected.status.name == 'Processing'" @click="submit('completed')" variant="primary" :disabled="form.processing" block>Mark as Completed</b-button>
             <b-button v-if="selected.status.name == 'Completed'" @click="submit('release')" variant="primary" :disabled="form.processing" block>Release</b-button>
         </template>
     </b-modal>    
@@ -142,11 +140,10 @@ export default {
         submit(data){
             this.form = this.$inertia.form({
                 id: this.selected.id,
-                lists: this.selected.lists,
-                type: data
+                status: data
             });
 
-            this.form.post('/requests',{
+            this.form.put('/onsites/update',{
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.$emit('update',true);

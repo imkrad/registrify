@@ -73,6 +73,26 @@ class OnsiteController extends Controller
         ]);
     }
 
+    public function update(Request $request){
+        $data = Onsite::where('id',$request->id)->update([
+            'status_id' => ($request->status == 'completed') ? 13 : 14,
+            'id' => $request->id,
+            'claimed_at' => ($request->status != 'completed') ? now() : null,
+        ]);
+        
+        $data = Onsite::with('user.profile','status')
+        ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
+        ->where('id',$request->id)->first();
+        
+        return back()->with([
+            'data' => $data,
+            'message' => 'Status updated',
+            'info' => 'You\'ve successfully updated the onsite.',
+            'status' => true,
+        ]);
+    }
+
+
     private function colleges(){
         $data = Document::with('name','type','fees','addons')->where('type_id',2)->get()->map(function ($item) {
             return [
