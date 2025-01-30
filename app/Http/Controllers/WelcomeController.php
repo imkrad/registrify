@@ -15,6 +15,8 @@ use App\Traits\HandlesTransaction;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FormSubmissionMail;
 use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\TransactionResource;
+use App\Events\NotificationEvent;
 
 class WelcomeController extends Controller
 {
@@ -145,6 +147,16 @@ class WelcomeController extends Controller
                     'total' => $total,
                     'status_id' => 8,
                 ]);
+
+                $transaction = new TransactionResource(
+                    Transaction::query()
+                    ->with('user.student','type','payment.status','status','comments.user.profile','authorization')
+                    ->with('log.prepared.profile','log.processed.profile','log.completed.profile','log.released.profile')
+                    ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
+                    ->where('id',$data->id)
+                    ->first()
+                );
+                broadcast(new NotificationEvent($transaction,'documnet'));
 
                 if(!$request->is_personal){
                     $this->upload($request,$data->id);

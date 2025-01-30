@@ -6,6 +6,8 @@ use App\Models\Student;
 use App\Models\StudentAttachment;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Resources\StudentResource;
+use App\Events\NotificationEvent;
 
 class ProfileController extends Controller
 {
@@ -42,6 +44,13 @@ class ProfileController extends Controller
         }
 
         Student::where('id',\Auth::user()->student->id)->update(['status_id' => 15]);
+        $data = new StudentResource(
+            Student::query()
+            ->with('status','attachments')
+            ->where('id',\Auth::user()->student->id)
+            ->first()
+        );
+        broadcast(new NotificationEvent($data,'student'));
 
         return response()->json([
             'message' => 'Files uploaded successfully',

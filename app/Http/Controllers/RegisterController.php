@@ -9,6 +9,8 @@ use App\Services\SmsService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\StudentResource;
+
 
 class RegisterController extends Controller
 {
@@ -38,6 +40,7 @@ class RegisterController extends Controller
             if($student){
                 $content = 'Hi '.$request->firstname.' '.$request->lastname.', Your registration is complete. Your request is now awaiting approval from the university. You will be notified once access to the system is granted.';
                 $this->sms->sendSms($request->contact_no, $content);
+
                 Auth::login($user);
 
                 return redirect(route('dashboard', absolute: false));

@@ -261,7 +261,17 @@ export default {
     created(){
         this.fetch();
     },
+    mounted() {
+        // this.setupEchoListener();
+    },
     methods: {
+        // setupEchoListener() {
+        //     window.Echo.channel('system-maintenance')
+        //     .listen('SystemMaintenanceEvent', (event) => {
+        //         alert(event.time);
+        //         console.log(event);
+        //     });
+        // },
         checkSearchStr: _.debounce(function(string) {
             this.fetch();
         }, 300),

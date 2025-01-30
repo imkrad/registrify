@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\NotificationEvent;
 use App\Events\SystemMaintenanceEvent;
 use Illuminate\Console\Command;
 
@@ -15,6 +16,7 @@ class SystemNotifyMaintenanceCommand extends Command
     {
         $time = $this->ask('When should it happen?');
  
-        event(new SystemMaintenanceEvent($time));
+        // event(new SystemMaintenanceEvent($time));
+        event(new NotificationEvent($time));
     }
 }
