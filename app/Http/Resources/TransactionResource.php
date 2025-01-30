@@ -29,6 +29,7 @@ class TransactionResource extends JsonResource
             'log' => $this->log,
             'attachments' => $this->attachments,
             'authorization' => $this->authorization,
+            'purpose' => $this->purpose,
             'due_at' => $this->due_at,
             'claimed_at' => $this->claimed_at,
             'created_at' => $this->created_at

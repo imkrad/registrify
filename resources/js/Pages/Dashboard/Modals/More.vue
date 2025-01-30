@@ -1,6 +1,19 @@
 <template>
     <b-modal v-if="selected" v-model="showModal" header-class="p-3 bg-light" title="More Details" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <div class="row">
+            <div class="col-sm-12 mt-0 mb-3">
+                    <div class="p-1 border border-dashed rounded">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-sm me-0">
+                                <div class="avatar-title rounded bg-transparent text-primary fs-24"><i class="ri-pages-fill"></i></div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <p class="text-muted fs-11 mb-0">Purpose :</p>
+                                <h5 class="fs-13 mb-0">{{(selected.purpose) ? selected.purpose : '-'}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <div class="col-md-12">
                 <div class="row g-2" v-if="selected.attachments.length > 0">
                     <div class="col-md-12" v-for="(list,index) in selected.attachments" v-bind:key="index">
