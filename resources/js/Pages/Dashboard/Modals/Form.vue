@@ -2,8 +2,7 @@
     <BModal v-model="showModal" style="--vz-modal-width: 800px;" hide-footer body-class="p-0" header-class="p-0"
        class="v-modal-custom" content-class="border-0 overflow-hidden" centered hide-header-close>
        <div class="modal-body login-modal p-5">
-           <h5 class="text-white fs-14 mb-1 mt-n4">Request Form</h5>
-           {{ value }}
+           <h5 class="text-white fs-14 mb-1 mt-n4">Onsite Request Form</h5>
            <p class="text-white-50 fs-10 mb-4">Please fill out the form carefully to ensure all information is accurate.</p>
            <div class="vstack gap-2 justify-content-center">
               <form class="customform mb-n5" style="color: white;">

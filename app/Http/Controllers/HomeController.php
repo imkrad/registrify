@@ -42,7 +42,13 @@ class HomeController extends Controller
                     'statuses' => $this->statuses(),
                     'reminders' => $this->reminders(),
                     'counts' => $this->counts($this->statuses()),
-                    'students' => $this->students()
+                    'students' => $this->students(),
+                    'dropdowns' => [
+                        'colleges' => $this->colleges(),
+                        'graduates' => $this->graduates(),
+                        'types' => $this->types(),
+                        'fees' => $this->fees()
+                    ]
                 ]);
             }
         }
@@ -172,6 +178,7 @@ class HomeController extends Controller
                 'value' => $item->id,
                 'name' => $item->name->name,
                 'fees' => $item->fees,
+                'subname' => $item->name->subname,
                 'is_primary' => $item->is_primary,
                 'is_perpage' => $item->is_perpage,
                 'quantity'=> 1
@@ -186,6 +193,7 @@ class HomeController extends Controller
                 'value' => $item->id,
                 'name' => $item->name->name,
                 'fees' => $item->fees,
+                'subname' => $item->name->subname, 
                 'is_primary' => $item->is_primary,
                 'is_perpage' => $item->is_perpage,
                 'quantity'=> 1

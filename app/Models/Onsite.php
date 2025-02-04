@@ -10,7 +10,7 @@ class Onsite extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code','name','total','year','user_id','status_id','claimed_at',
+        'code','name','authorized','total','year','user_id','status_id','claimed_at','due_at','is_personal','is_paid'
     ];
 
     public function lists()

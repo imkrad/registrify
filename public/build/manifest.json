@@ -237,7 +237,7 @@
     "src": "public/images/sidebar/img-4.jpg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-C8IHD_bM.js",
+    "file": "assets/app-Cmkg5vm-.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -254,7 +254,7 @@
       "node_modules/leaflet/dist/leaflet-src.esm.js"
     ],
     "css": [
-      "assets/app-D6lKAq0c.css"
+      "assets/app-C9VLPYZd.css"
     ],
     "assets": [
       "assets/job-IuhbbFLJ.png",

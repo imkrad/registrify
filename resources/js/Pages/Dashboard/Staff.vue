@@ -97,8 +97,8 @@
                             <div class="input-group mb-1">
                                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                                 <input type="text" placeholder="Search Request" class="form-control" style="width: 40%;">
-                                <b-button type="button" variant="primary">
-                                    <i class="ri-add-circle-fill align-bottom me-1"></i> Search
+                                <b-button @click="openForm()" type="button" variant="primary">
+                                    <i class="ri-add-circle-fill align-bottom me-1"></i> Onsite Request
                                 </b-button>
                             </div>
                         </div>
@@ -234,16 +234,18 @@
     </BRow>
     <View @update="fetch()" ref="view"/>
     <Student ref="student"/>
+    <Form :colleges="dropdowns.colleges" :graduates="dropdowns.graduates" :types="dropdowns.types" :fees="dropdowns.fees" ref="form"/>
 </template>
 <script>
 import _ from 'lodash';
+import Form from './Modals/Form.vue';
 import View from './Modals/View.vue';
 import Student from './Modals/Student.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 import Pagination from "@/Shared/Components/Pagination2.vue";
 export default {
-    components: { PageHeader, Pagination, View, Student },
-    props: ['statuses','counts','reminders','stats','students'],
+    components: { PageHeader, Pagination, View, Student, Form },
+    props: ['statuses','counts','reminders','stats','students','dropdowns'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -305,6 +307,9 @@ export default {
         },  
         openStudent(data){
             this.$refs.student.show(data);
+        },
+        openForm(){
+            this.$refs.form.show();
         },
         filterReminder(data){
             if(data == this.activeList){

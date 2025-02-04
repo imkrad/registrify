@@ -98,8 +98,11 @@ class OnsiteController extends Controller
             return [
                 'value' => $item->id,
                 'name' => $item->name->name,
+                'subname' => $item->name->subname,
                 'fees' => $item->fees,
-                'is_primary' => $item->is_primary
+                'is_primary' => $item->is_primary,
+                'is_perpage' => $item->is_perpage,
+                'quantity'=> 1
             ];
         });
         return $data;
@@ -110,8 +113,11 @@ class OnsiteController extends Controller
             return [
                 'value' => $item->id,
                 'name' => $item->name->name,
+                'subname' => $item->name->subname,
                 'fees' => $item->fees,
-                'is_primary' => $item->is_primary
+                'is_primary' => $item->is_primary,
+                'is_perpage' => $item->is_perpage,
+                'quantity'=> 1
             ];
         });
         return $data;
