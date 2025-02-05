@@ -114,7 +114,7 @@
     <p style="font-size:10px;">From: <span style="font-size: 11px; font-weight: bold; margin-left: 6px;">COLLEGE REGISTRAR'S OFFICE</span></p>
 
     <p style="text-align:center; margin-top: 10px; margin-bottom: 15px; font-weight: bold; font-size: 10px;"><i>Please accept payment from:</i></p>
-    <center style="margin-top: -10px; margin-bottom: 10px; font-size: 9px; border: 1px solid; text-transform: uppercase; color:#000; font-weight: bold; padding: 2px;">{{$data['user']['student']['lastname']}}, {{$data['user']['student']['firstname']}} {{$data['user']['student']['middlename'][0]}}.</center>
+    <center style="margin-top: -10px; margin-bottom: 10px; font-size: 9px; border: 1px solid; text-transform: uppercase; color:#000; font-weight: bold; padding: 2px;">{{$data['user']['student']['lastname']}}, {{$data['user']['student']['firstname']}} {{($data['user']['student']['middlename']) ? $data['user']['student']['middlename'][0] : ''}}</center>
     <center style="font-size: 9px; background-color: black; color:#fff; font-weight: bold; padding: 2px;">REQUESTS</center>
     <div class="wew">
     <table style="border: 1px solid black; font-size: 10px;">
