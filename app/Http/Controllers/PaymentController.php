@@ -19,8 +19,9 @@ class PaymentController extends Controller
     }
 
     public function store(Request $request){
-        $data = $this->upload($request);
         if($request->type == 'onsite'){
+            RequestPayment::where('request_id',$request->id)->update(['status_id' => 9]);
+            Transaction::where('id',$request->id)->update(['status_id' => 16]);
             $data = TransactionResource::collection(
                 Transaction::with('comments','log')
                 ->with('user.student','type','payment.status','status','attachments')
@@ -29,6 +30,7 @@ class PaymentController extends Controller
                 ->get()
             );
         }else{
+            $data = $this->upload($request);
             $data = TransactionResource::collection(
                 Transaction::with('comments','log')
                 ->with('payment.status','status','attachments')

@@ -2,7 +2,8 @@
     <b-modal v-model="showModal" header-class="p-3 bg-light" title="Mark as Paid" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <div class="row p-3" >
             <div class="col-lg-12">
-                <div class="align-items-center d-flex">
+                By confirming, you are validating that the request has already been paid
+                <!-- <div class="align-items-center d-flex">
                     <h6 class="text-primary mb-0 flex-grow-1">Files Selected</h6>
                     <div class="flex-shrink-0">
                         <input type="file" id="file-upload" multiple @change="handleFileUpload"/>
@@ -27,7 +28,7 @@
                             <td colspan="2" class="text-center text-muted fs-12">No files attached.</td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
             </div>
         </div>
         <template v-slot:footer>
@@ -61,9 +62,9 @@ export default {
         },
         submit() {
             const formData = new FormData();
-            this.files.forEach((file, index) => {
-                formData.append(`files[${index}]`, file);
-            });
+            // this.files.forEach((file, index) => {
+            //     formData.append(`files[${index}]`, file);
+            // });
             formData.append('id', this.form.id);
             formData.append('type', 'onsite');
             formData.append('option', 'receipt');
