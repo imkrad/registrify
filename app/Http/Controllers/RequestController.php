@@ -144,7 +144,7 @@ class RequestController extends Controller
             Transaction::query()
             ->with('user.student','type','payment.status','status','comments.user.profile','authorization')
             ->with('log.prepared.profile','log.processed.profile','log.completed.profile','log.released.profile')
-            ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
+            ->with('lists.status','lists.document.name','lists.document.addons','lists.document.type','lists.user.profile')
             ->when($request->status, function ($query, $status) {
                 $query->where('status_id', $status);
             })

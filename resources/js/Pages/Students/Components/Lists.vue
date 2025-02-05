@@ -35,7 +35,7 @@
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
                     <td>
-                        <h5 class="fs-13 mb-0 text-dark">{{list.lastname}}, {{list.firstname}} {{list.middlename[0]}}.</h5>
+                        <h5 class="fs-13 mb-0 text-dark">{{list.lastname}}, {{list.firstname}}</h5>
                         <p class="fs-12 text-muted mb-0">{{list.id_number}}</p>
                     </td>
                     <td class="text-center fs-12">{{list.email}}</td>
