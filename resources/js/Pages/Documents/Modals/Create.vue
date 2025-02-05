@@ -57,6 +57,25 @@
                     <InputLabel value="Express Processing Fee" :message="form.errors.amount"/>
                     <Amount @amount="express" ref="testing2" :readonly="false" @input="handleInput('amount')"/>
                 </BCol>
+                <BCol lg="12" class="mt-2 mb-n3"><hr class="text-muted"/></BCol>
+                <BCol lg="8" style="margin-top: 13px; margin-bottom: -12px;" class="fs-12" :class="(form.errors.is_perpage) ? 'text-danger' : ''">Is primary document?</BCol>
+                <BCol lg="4" style="margin-top: 13px; margin-bottom: -12px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="custom-control custom-radio mb-3">
+                                <input type="radio" id="customRadio1" class="custom-control-input me-2" @input="handleInput('is_primary')" :value="true" v-model="form.is_primary">
+                                <label class="custom-control-label fw-normal fs-12" for="customRadio1">Yes</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="custom-control custom-radio mb-3">
+                                <input type="radio" id="customRadio2" class="custom-control-input me-2" @input="handleInput('is_primary')" :value="false" v-model="form.is_primary">
+                                <label class="custom-control-label fw-normal fs-12" for="customRadio2">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </BCol>
+                <BCol lg="12" class="mt-n2 mb-n3"><hr class="text-muted"/></BCol>
             </BRow>
         </form>
         <template v-slot:footer>
@@ -83,6 +102,7 @@ export default {
                 id: null,
                 name_id: null,
                 is_perpage: null,
+                is_primary: null,
                 type_id: null,
                 fees: [
                     {id: null, type_id: 4 , amount: null},

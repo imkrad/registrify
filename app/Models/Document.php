@@ -10,7 +10,7 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = [
-      'name_id','is_perpage','type_id'
+      'name_id','is_perpage','type_id','is_primary'
     ];
 
     public function type()
