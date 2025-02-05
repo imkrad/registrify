@@ -38,7 +38,7 @@
                         {{ (meta.current_page - 1) * meta.per_page + index + 1 }}.
                     </td>
                     <td class="fs-12">{{list.code}}</td>
-                    <td class="text-center">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</td>
+                    <td class="text-center">{{list.name}}</td>
                     <td class="text-center fs-12">{{list.type.name}}</td>
                     <td class="text-center fs-12">
                         <span v-if="list.is_express" class="badge bg-success">Express</span>
