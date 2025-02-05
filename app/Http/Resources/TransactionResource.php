@@ -21,7 +21,7 @@ class TransactionResource extends JsonResource
             'type' => $this->type,
             'status' => $this->status,
             'student' => $this->user->student,
-            'name' => $this->user->student->lastname.', '.$this->user->student->firstname.' '.$this->user->student->middlename.'.',
+            'name' => $this->user->student->lastname.', '.$this->user->student->firstname,
             'is_express' => $this->is_express,
             'lists' => $this->lists,
             'payment' => $this->payment,
@@ -30,6 +30,7 @@ class TransactionResource extends JsonResource
             'attachments' => $this->attachments,
             'authorization' => $this->authorization,
             'purpose' => $this->purpose,
+            'is_onsite' => $this->is_onsite,
             'due_at' => $this->due_at,
             'claimed_at' => $this->claimed_at,
             'created_at' => $this->created_at

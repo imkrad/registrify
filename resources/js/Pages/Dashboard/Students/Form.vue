@@ -252,6 +252,7 @@ export default {
            data.append('purpose', (this.form.purpose) ? this.form.purpose : '');
            data.append('user_id', this.form.user_id);
            data.append('type_id', this.form.type_id);
+           data.append('is_onsite', 0);
            (!this.form.is_personal) ? data.append('name', this.form.name) : '';
            if(this.form.attachments.length > 0){
                for (var i = this.form.attachments.length - 1; i >= 0; i--) {

@@ -125,6 +125,9 @@ class RequestController extends Controller
                 $data->save();
 
                 $data = Transaction::with('user.student','type','payment.status','status','comments.user.profile','authorization')->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')->where('id',$request->id)->first();
+               
+                $content = 'Hello '.$data->user->student->firstname.' '.$data->user->student->lastname.', your account has received a new comment from the registrar. Please log in to your account to view the details. Thank you!';
+                $this->sms->sendSms($data->user->student->contact_no, $content);
             break;
         }
 

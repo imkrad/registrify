@@ -20,16 +20,28 @@ class PaymentController extends Controller
 
     public function store(Request $request){
         $data = $this->upload($request);
-        $data = TransactionResource::collection(
-            Transaction::with('comments','log')
-            ->with('user.student','type','payment.status','status','attachments')
-            ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
-            ->where('user_id',\Auth::user()->id)
-            ->get()
-        );
+        if($request->type == 'onsite'){
+            $data = TransactionResource::collection(
+                Transaction::with('comments','log')
+                ->with('user.student','type','payment.status','status','attachments')
+                ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
+                ->where('id',$request->id)
+                ->get()
+            );
+        }else{
+            $data = TransactionResource::collection(
+                Transaction::with('comments','log')
+                ->with('payment.status','status','attachments')
+                ->with('lists.status','lists.document.name','lists.document.type','lists.user.profile')
+                ->where('user_id',\Auth::user()->id)
+                ->get()
+            );
+        }
+        
         if($data){
-            $content = 'Hi '.\Auth::user()->student->firstname.' '.\Auth::user()->student->lastname.', We have received your payment for the requested documents. Thank you! Registrar office will now process your request.';
-            $this->sms->sendSms(\Auth::user()->student->contact_no, $content);
+            $user = Transaction::with('user.student')->where('id',$request->id)->first();
+            $content = 'Hi '. $user->user->student->firstname.' '. $user->user->student->lastname.', We have received your payment for the requested documents. Thank you! Registrar office will now process your request.';
+            $this->sms->sendSms( $user->user->student->contact_no, $content);
         }
         return response()->json([
             'message' => 'Files uploaded successfully',

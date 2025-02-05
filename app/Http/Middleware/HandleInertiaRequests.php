@@ -79,7 +79,7 @@ class HandleInertiaRequests extends Middleware
                 'student' => $student_count,
                 'document' => $document_count,
                 'total' => $student_count + $document_count,
-                's' => 'Student '.$s,
+                's' => 'Account Pending '.$s,
                 'r' => 'Request '.$r,
                 'document_lists' => $this->lists(),
                 'student_lists' => $this->students()

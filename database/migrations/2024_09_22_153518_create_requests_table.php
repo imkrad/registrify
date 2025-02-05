@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('due_at')->nullable();
             $table->datetime('claimed_at')->nullable();
             $table->string('purpose',200);
+            $table->boolean('is_onsite')->default(0);
             $table->boolean('is_express');
             $table->boolean('is_personal');
             $table->integer('user_id')->unsigned()->index();

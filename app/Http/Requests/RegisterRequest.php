@@ -23,14 +23,14 @@ class RegisterRequest extends FormRequest
     {
         return [
             'firstname' => 'required|string',
-            'middlename' => 'required|string',
+            'middlename' => 'sometimes|required|string',
             'lastname' => 'required|string',
             'suffix' => 'nullable|string',
             'email' => 'required|email|unique:students,email,'.$this->id,
             'contact_no' => 'required|string',
             'sex' => 'required|string',
             'id_number' => 'required|max:20|unique:students,id_number,'.$this->id,
-            'password' => 'required|confirmed|min:6',
+            'password' => 'sometimes|required|confirmed|min:6',
         ];
     }
 }

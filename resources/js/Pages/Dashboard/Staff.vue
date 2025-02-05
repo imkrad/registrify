@@ -47,10 +47,9 @@
                             </div>
                         </BListGroupItem>
                     </b-list-group>
-
                     <p class="ms-3 mb-0 text-primary fs-12 mt-3 fw-semibold">Document Request Statuses</p>
                     <hr class="text-muted"/>
-                    <ul class="list-group list-group-flush border-dashed mb-n3 mt-n3 p-3">
+                    <ul class="list-group list-group-flush border-dashed mb-n4 mt-n4 p-3">
                         <li class="list-group-item px-0" v-for="(list,index) in stats" v-bind:key="index" style="cursor: pointer;">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 avatar-xs">
@@ -68,7 +67,27 @@
                             </div>
                         </li>
                     </ul>
-                    
+                    <hr class="text-muted"/>
+                    <p class="ms-3 mb-0 text-primary fs-12 mt-0 fw-semibold">Ongoing Processing Type</p>
+                    <hr class="text-muted"/>
+                    <ul class="list-group list-group-flush border-dashed mb-n4 mt-n4 p-3">
+                        <li class="list-group-item px-0" v-for="(list,index) in procs" v-bind:key="index" style="cursor: pointer;">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 avatar-xs">
+                                    <span class="avatar-title bg-light p-1 rounded-circle">
+                                        <i :class="list.icon+' '+list.color"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0 fs-12">{{list.name}}</h6>
+                                    <p class="fs-11 mb-0 text-muted">{{ list.description }}</p>
+                                </div>
+                                <div class="flex-shrink-0 text-end">
+                                    <h6 class="mt-2 fs-12">{{list.count}}</h6>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -96,7 +115,7 @@
                         <div class="flex-shrink-0">
                             <div class="input-group mb-1">
                                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                                <input type="text" placeholder="Search Request" class="form-control" style="width: 40%;">
+                                <input type="text" v-model="keyword" placeholder="Search Request" class="form-control" style="width: 40%;">
                                 <b-button @click="openForm()" type="button" variant="primary">
                                     <i class="ri-add-circle-fill align-bottom me-1"></i> Onsite Request
                                 </b-button>
@@ -149,14 +168,15 @@
                         <table class="table align-middle table-centered">
                             <thead class="table-light">
                                 <tr class="fs-11">
-                                    <th></th>
-                                    <th style="width: 10%;">Code</th>
-                                    <th style="width: 20%;" class="text-center">Student</th>
-                                    <th style="width: 12%;" class="text-center">Type</th>
+                                    <th style="width: 3%;"></th>
+                                    <th>Code</th>
+                                    <th style="width: 15%;" class="text-center">Release Date</th>
                                     <th style="width: 12%;" class="text-center">Processing</th>
-                                    <th style="width: 12%;" class="text-center">Payment</th>
-                                    <th style="width: 12%;" class="text-center">Status</th>
-                                    <th style="width: 12%;" class="text-center">Total</th>
+                                    <!-- <th style="width: 14%;" class="text-center">Type</th> -->
+                                    <th style="width: 8%;" class="text-center">Payment</th>
+                                    <th style="width: 10%;" class="text-center">Total</th>
+                                    <th style="width: 10%;" class="text-center">Status</th>
+                                    <th style="width: 7%;" class="text-center">Method</th>
                                     <th style="width: 7%;" ></th>
                                 </tr>
                             </thead>
@@ -165,23 +185,36 @@
                                     <td class="text-center"> 
                                         {{ index + 1 }}.
                                     </td>
-                                    <td class="fs-12 fw-semibold">{{list.code}}</td>
-                                    <td class="text-center">{{list.student.lastname}}, {{list.student.firstname}} {{list.student.middlename[0]}}.</td>
-                                    <td class="text-center fs-12">{{list.type.name}}</td>
-                                    <td class="text-center fs-12">
+                                    <td class="fs-11">
+                                        <h5 class="fs-12 mb-0 fw-semibold text-primary">{{list.code}}</h5>
+                                        <p class="fs-12 text-muted mb-0">{{list.name}}</p>
+                                    </td>
+                                    <td class="text-center fs-11">{{list.due_at}}</td>
+                                    <td class="text-center fs-11">
                                         <span v-if="list.is_express" class="badge bg-success">Express</span>
                                         <span v-else class="badge bg-info">Regular</span>
                                     </td>
+                                    <!-- <td class="text-center fs-11">{{list.type.name}}</td> -->
+                                    
                                     <td class="text-center fs-12">
-                                        <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span>
+                                        <!-- <span :class="'badge '+list.payment.status.color+' '+list.payment.status.others">{{list.payment.status.name}}</span> -->
+                                        <i v-if="list.payment.status.name == 'Paid'" class="ri-checkbox-circle-fill text-success fs-18" v-b-tooltip.hover :title="list.payment.status.name"></i>
+                                        <i v-else class="ri-close-circle-fill text-danger fs-18" v-b-tooltip.hover :title="list.payment.status.name"></i>
                                     </td>
-                                    <td class="text-center fs-12">
+                                    <td class="text-center fs-11">{{list.payment.total}}</td>
+                                    <td class="text-center fs-11">
                                         <span :class="'badge '+list.status.color">{{list.status.name}}</span>
                                     </td>
-                                    <td class="text-center fs-12">{{list.payment.total}}</td>
+                                    <td class="text-center fs-12">
+                                        <i v-if="list.is_onsite" class="ri-run-fill text-primary fs-18" v-b-tooltip.hover title="Onsite"></i>
+                                        <i v-else class="ri-window-fill text-primary fs-18" v-b-tooltip.hover title="Online"></i>
+                                    </td>
                                     <td class="text-end">
                                         <b-button @click="openView(list)" variant="soft-info" class="me-1" v-b-tooltip.hover title="View" size="sm">
                                             <i class="ri-eye-fill align-bottom"></i>
+                                        </b-button>
+                                        <b-button v-if="list.status.name == 'Confirmed'" @click="openPrint(list.id)" variant="soft-danger" class="me-1" v-b-tooltip.hover title="Receipt" size="sm">
+                                            <i class="ri-printer-fill align-bottom"></i>
                                         </b-button>
                                     </td>
                                 </tr>
@@ -234,7 +267,7 @@
     </BRow>
     <View @update="fetch()" ref="view"/>
     <Student ref="student"/>
-    <Form :colleges="dropdowns.colleges" :graduates="dropdowns.graduates" :types="dropdowns.types" :fees="dropdowns.fees" ref="form"/>
+    <Form @update="fetch()" :colleges="dropdowns.colleges" :graduates="dropdowns.graduates" :types="dropdowns.types" :fees="dropdowns.fees" ref="form"/>
 </template>
 <script>
 import _ from 'lodash';
@@ -245,7 +278,7 @@ import PageHeader from '@/Shared/Components/PageHeader.vue';
 import Pagination from "@/Shared/Components/Pagination2.vue";
 export default {
     components: { PageHeader, Pagination, View, Student, Form },
-    props: ['statuses','counts','reminders','stats','students','dropdowns'],
+    props: ['statuses','counts','procs','reminders','stats','students','dropdowns'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -263,17 +296,12 @@ export default {
     created(){
         this.fetch();
     },
-    mounted() {
-        // this.setupEchoListener();
+    watch: {
+        "keyword"(newVal){
+            this.checkSearchStr(newVal)
+        },
     },
     methods: {
-        // setupEchoListener() {
-        //     window.Echo.channel('system-maintenance')
-        //     .listen('SystemMaintenanceEvent', (event) => {
-        //         alert(event.time);
-        //         console.log(event);
-        //     });
-        // },
         checkSearchStr: _.debounce(function(string) {
             this.fetch();
         }, 300),
@@ -322,7 +350,10 @@ export default {
         },
         isActive(name) {
             return this.activeList === name;
-        }
+        },
+        openPrint(data){
+            window.open('/requests?option=print&id='+data);
+        },
     }
 }
 </script>

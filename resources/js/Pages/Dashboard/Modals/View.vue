@@ -3,7 +3,7 @@
         <div class="row align-items-center g-3">
             <div class="col-md-10">
                 <div>
-                    <h6><span class="fw-semibold text-primary fs-16">{{ selected.student.lastname+', '+selected.student.firstname+' '+selected.student.middlename+'.' }}</span></h6>
+                    <h6><span class="fw-semibold text-primary fs-16">{{ selected.name }}</span></h6>
                     <div class="hstack gap-3 fs-12 flex-wrap mt-n1">
                         <div>
                             <!-- <span class="text-muted">Code</span> :  -->
@@ -34,8 +34,8 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <b-button variant="primary" class="btn-label btn-sm waves-effect waves-light mt-n3" @click="viewMore(selected)">
-                    <i class="ri-user-smile-line label-icon align-middle fs-16 me-2"></i> View more details
+                <b-button variant="primary" class="btn-label btn-sm waves-effect waves-light mt-n3 float-end" @click="viewMore(selected)">
+                    <i class="ri-user-smile-line label-icon align-middle fs-16 me-2"></i> View details
                 </b-button>
             </div>
         </div>
@@ -248,6 +248,7 @@
         </div>
         <template v-slot:footer>
             <b-button @click="hide()" variant="light" block>Close</b-button>
+            <b-button v-if="selected.status.name == 'Confirmed'" @click="markasPaid()" variant="primary" :disabled="form.processing" block>Mark as Paid</b-button>
             <b-button v-if="selected.status.name == 'Pending'" @click="submit('confirm')" variant="primary" :disabled="form.processing" block>Confirm</b-button>
             <b-button v-if="selected.status.name == 'Waiting'" @click="submit('process')" variant="primary" :disabled="form.processing" block>Process</b-button>
             <b-button v-if="a(selected.lists) && selected.status.name == 'Processing'" @click="submit('completed')" variant="primary" :disabled="form.processing" block>Mark as Completed</b-button>
@@ -255,13 +256,15 @@
         </template>
     </b-modal>    
     <More ref="more"/>
+    <Paid @update="updateData" ref="paid"/>
     <Comment @update="updateComment" ref="comment"/>
 </template>
 <script>
+import Paid from './Paid.vue';
 import More from './More.vue';
 import Comment from './Comment.vue';
 export default {
-    components: { Comment, More },
+    components: { Comment, More, Paid },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -334,6 +337,10 @@ export default {
         updateComment(data){
             this.selected.comments = data.comments;
         },
+        updateData(data){
+            this.selected.payment = data[0].payment;
+            this.selected.status = data[0].status;
+        },
         a(array) {
             return array.every(item => item.status_id === 12);
         },
@@ -345,7 +352,10 @@ export default {
         },
         hide(){
             this.showModal = false;
-        }
+        },
+        markasPaid(){
+            this.$refs.paid.show(this.selected.id);
+        },
     }
 }
 </script>

@@ -96,14 +96,16 @@ class WelcomeController extends Controller
     public function store(TransactionRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
             $lists = $request->checked;
+            $name = ($request->is_onsite == 1) ? 'ONSITE' : 'ONLINE';
             $data = new Transaction;
-            $data->code = 'RGSTR-'.date('m').date('Y').'-'.str_pad((Transaction::count()+1), 4, '0', STR_PAD_LEFT);  
+            $data->code = 'R-'.$name.'-'.date('m').date('Y').'-'.str_pad((Transaction::count()+1), 4, '0', STR_PAD_LEFT);  
             $data->is_express = ($request->is_express == 4) ? false : true;
             $data->is_personal = $request->is_personal;
             $data->user_id = $request->user_id;
             $data->type_id = $request->type_id;
             $data->purpose = $request->purpose;
-            $data->status_id = 5;
+            $data->is_onsite = $request->is_onsite;
+            $data->status_id = ($request->is_onsite == 1) ? 5 : 5;
             if($data->save()){
                 $total = 0;
                 $checked = $request->input('checked', []);
@@ -158,8 +160,10 @@ class WelcomeController extends Controller
                 );
                 broadcast(new NotificationEvent($transaction,'documnet'));
 
-                if(!$request->is_personal){
-                    $this->upload($request,$data->id);
+                if($request->is_onsite == 0){
+                    if(!$request->is_personal){
+                        $this->upload($request,$data->id);
+                    }
                 }
 
                 return [

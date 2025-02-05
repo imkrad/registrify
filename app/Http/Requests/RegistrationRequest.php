@@ -18,7 +18,7 @@ class RegistrationRequest extends FormRequest
     {
         return [
             'firstname' => 'required|string|max:255',
-            'middlename' => 'required|string|max:255',
+            'middlename' => 'sometimes|required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|max:150|unique:participants,email,'.$this->id,
             'contact_no' => 'required|numeric|digits:11|unique:participants,contact_no,'.$this->id,

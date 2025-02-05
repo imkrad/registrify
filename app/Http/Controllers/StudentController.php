@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use App\Models\Student;
 use App\Models\ListStatus;
@@ -24,11 +25,34 @@ class StudentController extends Controller
             case 'lists':
                 return $this->lists($request);
             break;
+            case 'students':
+                return $this->students($request);
+            break;
             default: 
                 return inertia('Students/Index',[
                     'statuses' => $this->statuses(),
                 ]);
         }
+    }
+
+    private function students($request){
+        $data = Student::with('user')
+        ->when($request->keyword, function ($query, $keyword) {
+            $query->where(function($query) use ($keyword) {
+                $query->where(\DB::raw('concat(firstname," ",lastname)'), 'LIKE', "%{$keyword}%")
+                ->orWhere(\DB::raw('concat(lastname," ",firstname)'), 'LIKE', "%{$keyword}%")
+                ->orWhere('id_number', 'LIKE', "%{$keyword}%");
+            });
+        })
+        ->where('status_id',2)
+        ->limit(5)->get()->map(function ($item) {
+            return [
+                'value' => $item->user->id,
+                'id_number' => $item->id_number,
+                'name' => $item->firstname.' '.$item->lastname.' ('.$item->id_number.')',
+            ];
+        });
+        return $data;
     }
 
     private function lists($request){

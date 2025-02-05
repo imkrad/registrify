@@ -43,6 +43,7 @@ class HomeController extends Controller
                     'reminders' => $this->reminders(),
                     'counts' => $this->counts($this->statuses()),
                     'students' => $this->students(),
+                    'procs' => $this->procs(),
                     'dropdowns' => [
                         'colleges' => $this->colleges(),
                         'graduates' => $this->graduates(),
@@ -69,24 +70,43 @@ class HomeController extends Controller
         return [
             [
                 'name' => 'Pending Requests',
-                'description' => 'Tests conducted by the analyst',
+                'description' => 'Awaiting Registrar staff review of Request',
                 'count' => Transaction::where('status_id',5)->count(),
                 'icon' => 'ri-record-circle-fill fs-20',
                 'color' => 'text-warning'
             ],
             [
-                'name' => 'Ongoing Requests',
-                'description' => 'Tests conducted by the analyst',
+                'name' => 'Processing Requests',
+                'description' => 'Requested documents under the Processing phase',
                 'count' => Transaction::whereIn('status_id',[6,7])->count(),
                 'icon' => 'ri-play-circle-fill fs-20',
                 'color' => 'text-info'
             ],
             [
                 'name' => 'Completed',
-                'description' => 'Cost of all tests performed by the analyst',
+                'description' => 'Requested documents that finished the End Process',
                 'count' => Transaction::where('status_id',13)->count(),
                 'icon' => 'ri-checkbox-circle-fill fs-20',
                 'color' => 'text-success'
+            ]
+        ];
+    }
+
+    private function procs(){
+        return [
+            [
+                'name' => 'Regular',
+                'description' => 'Awaiting Registrar staff review of Request',
+                'count' => Transaction::where('is_express',0)->whereIn('status_id',[6,7])->count(),
+                'icon' => 'ri-record-circle-fill fs-20',
+                'color' => 'text-success'
+            ],
+            [
+                'name' => 'Express',
+                'description' => 'Requested documents under the Processing phase',
+                'count' => Transaction::where('is_express',1)->whereIn('status_id',[6,7])->count(),
+                'icon' => 'ri-record-circle-fill fs-20',
+                'color' => 'text-danger'
             ]
         ];
     }

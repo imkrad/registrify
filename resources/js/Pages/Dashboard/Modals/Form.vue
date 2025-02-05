@@ -5,33 +5,29 @@
            <h5 class="text-white fs-14 mb-1 mt-n4">Onsite Request Form</h5>
            <p class="text-white-50 fs-10 mb-4">Please fill out the form carefully to ensure all information is accurate.</p>
            <div class="vstack gap-2 justify-content-center">
-              <form class="customform mb-n5" style="color: white;">
+              <form class="customform mb-n5">
                    <BRow class="g-3 mb-2"> 
                        <BCol lg="12" class="mt-n2 mb-0">
                            <hr class="text-muted"/>
                        </BCol>
                        <BCol lg="12">
-                           <div class="mt-n3 mb-n3">
-                               <div class="col">
-                                   <div class="card card-body">
-                                       <div class="d-flex mb-n1 mt-n align-items-center">
-                                           <div class="flex-shrink-0">
-                                               <img  src="images/avatar.png" alt="" class="avatar-xs rounded-circle">
-                                           </div>
-                                           <div class="flex-grow-1 ms-3">
-                                               <h5 class="card-title text-primary fw-semibold fs-13 mb-0">{{$page.props.user.data.name}}</h5>
-                                               <div class="hstack text-dark gap-3 fs-11 flex-wrap">
-                                                   <div><span class="text-muted">ID number :</span> <span class="">{{$page.props.user.data.username}}</span></div>
-                                                   <div class="vr"></div>
-                                                   <div><span class="text-muted">Email :</span> <span class="">{{$page.props.user.data.email}}</span></div>
-                                                   <div class="vr"></div>
-                                                   <div><span class="text-muted">Contact no.</span> : <span class="">{{$page.props.user.data.mobile}}</span></div>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
+                            <div class="d-flex mt-n4 mb-3">
+                                <div style="width: 100%;">
+                                    <InputLabel for="conforme" value="User" :message="form.errors.user_id" style="color: white;"/>
+                                    <Multiselect 
+                                    @search-change="fetchUser" 
+                                    :options="users" 
+                                    v-model="form.user" 
+                                    label="name"
+                                    object
+                                    @input="handleInput('user')"
+                                    :searchable="true" 
+                                    placeholder="Select User"/>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <b-button @click="openAdd()" style="margin-top: 20px;" variant="light" class="waves-effect waves-light ms-1"><i class="ri-add-circle-fill"></i></b-button>
+                                </div>
+                            </div>
                        </BCol>
                    </BRow>
               </form>
@@ -124,29 +120,23 @@
                            </div>
                        </div>
                    </BCol>
-                   <BCol lg="12" v-if="form.is_personal == false" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
-                   <BCol lg="12" v-if="form.is_personal == false" style="margin-top: 13px; margin-bottom: -5px;">
-                       <div class="row fs-11">
-                           <BCol lg="6" :class="(form.errors.is_personal) ? 'text-danger' : ''">
-                               <div class="form-floating">
-                                   <input type="text" v-model="form.name" class="form-control">
-                                   <label :class="(errors.name) ? 'text-danger' : ''">Authorized Person</label>
-                               </div>
-                           </BCol>
-                           <BCol lg="6">
-                               <input class="mt-3" type="file" id="file-upload" multiple @change="uploadFieldChange"/>
-                           </BCol>
-                       </div>
+                   <BCol lg="12" class="mt-n3 mb-n4"><hr class="text-muted"/></BCol>
+                   <BCol lg="6" v-if="form.is_personal == false" style="margin-top: 13px; margin-bottom: -5px;">
+                        <div class="form-floating">
+                            <input type="text" v-model="form.name" class="form-control">
+                            <label :class="(errors.name) ? 'text-danger' : ''">Authorized Person</label>
+                        </div>
                    </BCol>
                    <!-- <BCol lg="12" :class="(form.is_personal == false) ? 'mt-n2 mb-n4' : 'mt-n3 mb-n4'"><hr class="text-muted"/></BCol> -->
-                   <BCol lg="12" v-if="form.type_id" :class="(errors.purpose) ? 'text-danger' : ''" class="mt-2">
+                   
+                   <BCol :lg="(form.is_personal == false) ? '6' : '12'" v-if="form.type_id" :class="(errors.purpose) ? 'text-danger' : ''" style="margin-top: 13px; margin-bottom: -5px;">
                        <div class="form-floating">
                            <input type="text" v-model="form.purpose" class="form-control">
                            <label :class="(errors.purpose) ? 'text-danger' : ''">Purpose</label>
                        </div>
                    </BCol>                
                </BRow>
-               <div class="mt-2 form-check">
+               <div class="mt-3 form-check">
                    <input type="checkbox" v-model="form.check" class="form-check-input" id="checkTerms">
                    <label class="form-check-label text-muted" for="checkTerms">I agree to the <span class="text-primary fw-semibold">Terms of Service & Privacy Policy</span></label>
                </div>
@@ -177,31 +167,35 @@
            </div>
        </div>
    </BModal>
+   <Add @selected="set" ref="add"/>
 </template>
 <script>
 import { useForm } from '@inertiajs/vue3';
+import Add from './Add.vue';
 import Multiselect from "@vueform/multiselect";
 import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
 import TextInput from '@/Shared/Components/Forms/TextInput.vue';
 export default {
-   components: {Multiselect, InputLabel, TextInput },
+   components: {Multiselect, InputLabel, TextInput, Add },
    props: ['graduates','colleges','types','fees'],
    data(){
        return {
            form: useForm({
-               idnumber: this.$page.props.user.data.username,
+               idnumber: null,
                checked: [],
                others: [],
                type_id: null,
                is_express: null,
                is_personal: null,
-               user_id: this.$page.props.user.data.id,
+               is_onsite: 1,
+               user_id: null,
                name: null,
                purpose: null,
                check: false,
                attachments: []
            }),
            errors: [],
+           users: [],
            showQuantityModal: false,
            selectedDoc: null,
            student: null,
@@ -243,13 +237,14 @@ export default {
    methods: {
        submit(){
            let data = new FormData();
-           data.append('idnumber',this.form.idnumber);
+           data.append('idnumber',(this.form.user) ? this.form.user.idnumber : null);
            data.append('checked[]', (this.form.checked.length != 0) ? JSON.stringify(this.form.checked) : []);
            data.append('others[]', (this.form.others.length != 0) ? JSON.stringify(this.form.others) : []);
            data.append('is_express', (this.form.is_express) ? this.form.is_express : '');
            data.append('is_personal', this.form.is_personal);
+           data.append('is_onsite', this.form.is_onsite);
            data.append('purpose', (this.form.purpose) ? this.form.purpose : '');
-           data.append('user_id', this.form.user_id);
+           data.append('user_id', (this.form.user) ? this.form.user.value : null);
            data.append('type_id', this.form.type_id);
            (!this.form.is_personal) ? data.append('name', this.form.name) : '';
            if(this.form.attachments.length > 0){
@@ -263,7 +258,7 @@ export default {
                preserveScroll: true,
                forceFormData: true,
                onSuccess: (response) => {
-                   this.$emit('update',this.$page.props.flash.data.data);
+                   this.$emit('update',true);
                    this.showModal = false;
                },
                onError: () => {
@@ -309,6 +304,28 @@ export default {
        handleInput(field) {
            this.errors[field] = false;
        },
+       openAdd(){
+            this.$refs.add.show();
+        },
+        fetchUser(code){
+            if(code != ''){
+                axios.get('/students',{
+                    params: {
+                        option: 'students',
+                        keyword: code
+                    }
+                })
+                .then(response => {
+                    this.users = response.data;
+                })
+                .catch(err => console.log(err));
+            }
+        },
+        set(data){
+            this.users = [];
+            this.users.push(data);
+            this.form.user = data;
+        },
    }
 }
 </script>
