@@ -156,7 +156,7 @@ class ListMenusTableSeeder extends Seeder
                 'order' => 2,
                 'has_child' => 0,
                 'is_mother' => 1,
-                'is_active' => 1,
+                'is_active' => 0,
             ),
         ));
 

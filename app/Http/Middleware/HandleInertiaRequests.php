@@ -26,7 +26,7 @@ class HandleInertiaRequests extends Middleware
         $currentRole = (\Auth::check()) ? \Auth::user()->role : null;
         $laboratory = []; $inventory = [];
 
-        $lists = ListMenu::where('is_mother',1)->where('module','Executive')->orderBy('order','ASC')->get();
+        $lists = ListMenu::where('is_mother',1)->where('module','Executive')->orderBy('order','ASC')->where('is_active',1)->get();
         foreach($lists as $list){
             $submenus = [];
             if($list['has_child']){
@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             ];
         }
 
-        $lists = ListMenu::where('is_mother',1)->where('module','Main')->orderBy('order','ASC')->get();
+        $lists = ListMenu::where('is_mother',1)->where('module','Main')->orderBy('order','ASC')->where('is_active',1)->get();
         foreach($lists as $list){
             $submenus = [];
             if($list['has_child']){
