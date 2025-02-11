@@ -8,7 +8,7 @@
                 <b-row class="align-items-center gy-4">
                     <b-col sm>
                         <div>
-                            <h4 class="text-white mb-0 fw-semibold">Registrify | College Registrar's Office </h4>
+                            <h4 class="text-white mb-0 fw-semibold">ADZU COLLEGE REGISTRAR DOCUMENTS REQUEST SYSTEM</h4>
                         </div>
                     </b-col>
                     <b-col sm="auto">
