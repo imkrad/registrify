@@ -135,7 +135,8 @@
                                </div>
                            </BCol>
                            <BCol lg="6">
-                               <input class="mt-3" type="file" id="file-upload" multiple @change="uploadFieldChange"/>
+                                <p class="mb-1 text-muted text-danger">Please attach  the authorized person’s id and letter</p>
+                                <input type="file" id="file-upload" multiple @change="uploadFieldChange"/>
                            </BCol>
                        </div>
                    </BCol>

@@ -193,7 +193,7 @@ class HomeController extends Controller
     }
 
     private function colleges(){
-        $data = Document::with('name','type','fees','addons')->where('type_id',2)->get()->map(function ($item) {
+        $data = Document::with('name','type','fees','addons.lists.name')->where('type_id',2)->get()->map(function ($item) {
             return [
                 'value' => $item->id,
                 'name' => $item->name->name,
@@ -201,6 +201,7 @@ class HomeController extends Controller
                 'subname' => $item->name->subname,
                 'is_primary' => $item->is_primary,
                 'is_perpage' => $item->is_perpage,
+                'addons' => $item->addons,
                 'quantity'=> 1
             ];
         });
@@ -208,7 +209,7 @@ class HomeController extends Controller
     }
 
     private function graduates(){
-        $data = Document::with('name','type','fees','addons')->where('type_id',3)->get()->map(function ($item) {
+        $data = Document::with('name','type','fees','addons.lists.name')->where('type_id',3)->get()->map(function ($item) {
             return [
                 'value' => $item->id,
                 'name' => $item->name->name,
@@ -216,6 +217,7 @@ class HomeController extends Controller
                 'subname' => $item->name->subname, 
                 'is_primary' => $item->is_primary,
                 'is_perpage' => $item->is_perpage,
+                'addons' => $item->addons,
                 'quantity'=> 1
             ];
         });

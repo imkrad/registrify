@@ -15,8 +15,8 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="text-primary mt-1">
-                                            <h4 class="fs-16 fw-semibold">AdZU | Registrify</h4>
-                                            <p class="mt-n2">Document Management System</p>
+                                            <h4 class="fs-16 fw-semibold">ADZU College Registrar</h4>
+                                            <p class="mt-n2">Document Request System</p>
                                         </div>
                                     </div>
                                 </div>

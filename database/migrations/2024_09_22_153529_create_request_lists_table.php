@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('pages')->default(1);
             $table->decimal('fee',12,2)->default(0.00);
             $table->decimal('total',12,2)->default(0.00);
+            $table->boolean('is_addon')->default(0);
             $table->tinyInteger('status_id')->unsigned()->index();
             $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');
             $table->tinyInteger('document_id')->unsigned()->index();

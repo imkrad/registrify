@@ -147,7 +147,17 @@
                                 <tbody class="fs-12">
                                     <tr v-for="(list,index) in selected.lists" v-bind:key="index">
                                         <td class="text-center">{{ index + 1 }}</td>
-                                        <td>{{ list.document.name.name}}</td>
+                                        <td>
+                                            <h5 class="fs-13 mb-0 text-dark">{{list.document.name.name}}</h5>
+                                            <p class="fs-11 text-muted mb-0">
+                                                <span v-for="(addon,index2) in list.document.addons" v-bind:key="index2">
+                                                   Addons :
+                                                    <template v-for="(a,index3) in addon.lists" v-bind:key="index3">
+                                                        {{ a.name.name }} - {{ addon.fee }} 
+                                                    </template>
+                                                </span>
+                                            </p>
+                                        </td>
                                         <td class="text-center">
                                             <span :class="'badge '+list.status.color">{{list.status.name}}</span>
                                         </td>
@@ -160,8 +170,19 @@
                                                 -
                                             </center>
                                         </td>
-                                        <td class="text-center">({{ list.quantity}} x {{ list.pages }}) * {{ list.fee }}</td>
-                                        <td class="text-center">{{ total(list.quantity,list.pages,list.fee)}}</td>
+                                        <td class="text-center">
+                                           
+                                            <h5 class="fs-12 mb-0 text-dark"> ({{ list.quantity}} x {{ list.pages }}) * {{ list.fee }}</h5>
+                                            <p class="fs-11 text-muted mb-0">
+                                                <span v-for="(addon,index2) in list.document.addons" v-bind:key="index2">
+                                                   Addons :
+                                                    <template v-for="(a,index3) in addon.lists" v-bind:key="index3">
+                                                         {{ addon.fee }} x {{ list.quantity }}
+                                                    </template>
+                                                </span>
+                                            </p>
+                                        </td>
+                                        <td class="text-center">{{ total(list.quantity,list.pages,list.fee,list.document.addons)}}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot class="table-light">
@@ -288,7 +309,10 @@ export default {
             return `₱${this.selected.lists
             .map(item => {
                 const fee = parseFloat(item.fee.replace('₱', '').replace(/,/g, '').trim());
-                return item.quantity * item.pages * fee;
+                let addonTotal = item.document.addons.reduce((sum, addon) => {
+                return sum + (addon.fee.replace('₱', '').replace(/,/g, '').trim() * item.quantity); 
+            }, 0);
+                return item.quantity * item.pages * fee + addonTotal;
             })
             .reduce((sum, itemTotal) => sum + itemTotal, 0)
             .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -314,9 +338,12 @@ export default {
                 },
             });
         },
-        total(quantity,page,fee){
+        total(quantity,page,fee,addons){
             const numericFee = parseFloat(fee.replace('₱', '').replace(/,/g, '').trim());
-            const result = (quantity * page) * numericFee;
+            let addonTotal = addons.reduce((sum, addon) => {
+                return sum + (addon.fee.replace('₱', '').replace(/,/g, '').trim() * quantity); 
+            }, 0);
+            const result = (quantity * page) * numericFee + addonTotal;
             this.totals.push(result);
             return `₱${result.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         },

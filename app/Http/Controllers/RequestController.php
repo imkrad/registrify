@@ -59,11 +59,22 @@ class RequestController extends Controller
                 if($data){
                     $total = 0;
                     foreach($request->lists as $list){
+                        if(count($list['document']['addons']) > 0){
+                            $subtotal = 0;
+                            foreach($list['document']['addons'] as $addon){
+                                $subtotal += str_replace(['₱ ', '₱', ',', ' '], '', $addon['fee']);
+                            }
+                            $subtotal = $list['quantity']*$subtotal;
+                        }else{
+                            $subtotal = 0;
+                        }
                         RequestList::where('id',$list['id'])->update([
                             'pages' => $list['pages'],
                             'total' => str_replace(['₱ ', '₱', ',', ' '], '', $list['total'])*$list['pages']
                         ]);
+                        
                         $total += str_replace(['₱ ', '₱', ',', ' '], '', $list['total'])*$list['pages'];
+                        $total = $total + $subtotal;
                     }
                     RequestPayment::where('request_id',$request->id)->update(['total' => $total]);
                     RequestLog::create([
@@ -144,7 +155,7 @@ class RequestController extends Controller
             Transaction::query()
             ->with('user.student','type','payment.status','status','comments.user.profile','authorization')
             ->with('log.prepared.profile','log.processed.profile','log.completed.profile','log.released.profile')
-            ->with('lists.status','lists.document.name','lists.document.addons','lists.document.type','lists.user.profile')
+            ->with('lists.status','lists.document.name','lists.document.addons.lists.name','lists.document.type','lists.user.profile')
             ->when($request->status, function ($query, $status) {
                 $query->where('status_id', $status);
             })
